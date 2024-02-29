@@ -10,9 +10,9 @@ import Chart, { useChart } from 'src/components/chart';
 
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 400;
+const CHART_HEIGHT = 480;
 
-const LEGEND_HEIGHT = 72;
+const LEGEND_HEIGHT = 82;
 
 const StyledChart = styled(Chart)(({ theme }) => ({
   height: CHART_HEIGHT,
@@ -88,7 +88,9 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
         series={chartSeries}
         options={chartOptions}
         width="100%"
-        height={280}
+        height={320}
+        sx={{fontSize:'20px'}}
+        
       />
     </Card>
   );

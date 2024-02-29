@@ -1,8 +1,13 @@
+import moment from "moment";
+import { useState} from 'react';
 import { faker } from '@faker-js/faker';
 
+import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
+
+// import Typography from '@mui/material/Typography';
+// import { useRouter } from 'src/routes/hooks';
 
 import Iconify from 'src/components/iconify';
 
@@ -10,110 +15,193 @@ import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
 import AppOrderTimeline from '../app-order-timeline';
 import AppCurrentVisits from '../app-current-visits';
-import AppWebsiteVisits from '../app-website-visits';
+// import AppWebsiteVisits from '../app-website-visits';
 import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 
 // ----------------------------------------------------------------------
-
+const API =import.meta.env.VITE_REACT_APP_API;
+let state=0;
 export default function AppView() {
+  const [data,setData]=useState({data:[],dataAll:[]});
+  const [Machines,setMachines]=useState('...');
+  const [Onlines,setOnlines]=useState('...');
+  
+ 
+ 
+  const theme = useTheme('...');
+  // const router=useRouter();
+
+
+
+  const filterOnline = q => moment().diff(moment.utc((q.lastHeartbeatTime || q.lastOnTime).replace('Z', '')), 'minute') < 5;
+  
+  // const online = m => moment().diff(moment.utc((m.lastHeartbeatTime || m.lastOnTime).replace('Z', '')), 'minute') < 5;
+
+  const amountText = amt => {
+    amt = amt || 0;
+ 
+    if(amt>=10000000) {
+        const cr = parseInt(amt / 100000, 10) / 100;
+        const Cr = parseFloat(cr.toFixed(2));
+        return `${Cr} Cr`;
+    } 
+    if(amt>=1000000) {
+        const l = parseInt(amt / 1000 ,10) / 100;
+        const L = parseFloat(l.toFixed(6));
+        return  `${L} L`;
+    } 
+    if(amt>=1000) {
+        const k = parseInt(amt / 10 ,10) / 100;
+        const K = parseFloat(k.toFixed(2));
+        return  `${K} K`;
+    }
+
+    // Remove the unnecessary else statement
+    return amt;
+}
+
+const LoadData=()=>{
+  const apiUrl = `${API}/api/machine/data?status=Online,Offline&city=Mumbai`; // Replace with your API URL
+  const url = `${apiUrl}`;
+  
+  // Set up the headers
+  const headers = new Headers({
+    'x-token': sessionStorage.getItem('token'),
+  });
+  
+  // Check if a request is already in progress
+ 
+    fetch(url, { method: 'GET', headers })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((json) => {
+      
+    
+        
+        setData(json.data);
+        setMachines(json.data.dataAll.length);
+        setOnlines(json.data.data.filter(filterOnline).length);
+      
+     
+       
+    }).catch((error) => {
+       
+        // router.push('/');
+      })
+      .finally(() => {
+        // setRequestInProgress(false);
+      });
+  
+}
+
+
+const sum = (a, b) => a + b;
+
+  
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+console.log(state)
+  if(state===0)
+  {
+    LoadData();
+    setInterval(()=>{
+      LoadData()
+      state=1;
+
+    },5000)
+   
+  }
+
+  // useEffect(()=>{
+  //    LoadData();
+  // },[data])
+  
+ 
+
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi, Welcome back 👋
-      </Typography>
+    <Container maxWidth="xl" >
+      
 
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Weekly Sales"
-            total={714000}
+            title="Total Machines"
+            total={Machines}
             color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
           />
         </Grid>
 
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="New Users"
-            total={1352831}
+            title="Online Machines"
+            total={Onlines}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            icon={<img alt="icon" src="/assets/icons/online.png" />}
           />
         </Grid>
 
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Item Orders"
-            total={1723315}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+            title="Total Collections"
+            total={data.data.length ?amountText(data.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
+            color="info"
+            icon={<img alt="icon" src="/assets/icons/collection.png" />}
           />
         </Grid>
 
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Bug Reports"
-            total={234}
+            title="Item Despensed"
+            total={data.data.length ?(data.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
             color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            icon={<img alt="icon" src="/assets/icons/items.png" />}
           />
         </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
-          <AppWebsiteVisits
-            title="Website Visits"
-            subheader="(+43%) than last year"
+        <Grid xs={12} md={6} lg={6}>
+          <AppCurrentVisits
+            title="Machine Status"
             chart={{
-              labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ],
               series: [
-                {
-                  name: 'Team A',
-                  type: 'column',
-                  fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
+                { label: 'Online', value:data.data.filter(filterOnline).length||0 },
+                { label: 'Offline', value:(data.data.length - data.data.filter(filterOnline).length) ||0},
+             
               ],
+              colors:[
+                theme.palette.success.main,
+                theme.palette.error.main,
+              ]
             }}
           />
         </Grid>
+       
 
-        <Grid xs={12} md={6} lg={4}>
+        <Grid xs={12} md={6} lg={6}>
           <AppCurrentVisits
-            title="Current Visits"
+            title="Stock Status"
             chart={{
               series: [
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'Ok', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 3).length ||0},  // Example color
+                { label: 'Low', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 1).length ||0},
+                { label: 'Empty', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 0).length ||0 },
+                { label: 'Unknown', value:data.data.filter(filterOnline).filter(m => m.spiral_a_status === 2).length ||0},
               ],
+              colors:[
+                theme.palette.success.main,
+                theme.palette.warning.main,
+                theme.palette.error.main,
+                theme.palette.info.main,
+               
+               
+               ]
+             
             }}
           />
         </Grid>

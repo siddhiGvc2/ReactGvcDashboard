@@ -129,7 +129,7 @@ export default function useChart(options) {
       position: 'top',
       horizontalAlign: 'right',
       markers: {
-        radius: 12,
+        radius: 13,
       },
       fontWeight: 500,
       itemMargin: {

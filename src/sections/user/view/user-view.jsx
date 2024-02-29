@@ -95,7 +95,7 @@ export default function UserPage() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
@@ -123,10 +123,13 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
+                  { id: 'email', label: 'UserName' },
                   { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'zone', label: 'Zone' },
+                  { id: 'ward', label: 'Ward' },
+                  { id: 'city', label: 'City' },
+                  // { id: 'ward', label: 'Verified', align: 'center' },
+                  // { id: 'city', label: 'Status' },
                   { id: '' },
                 ]}
               />

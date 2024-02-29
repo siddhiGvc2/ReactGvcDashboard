@@ -1,76 +1,135 @@
-import { useState } from 'react';
+import React,{ useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Snackbar from '@mui/material/Snackbar';
+
+// import Button from '@mui/material/Button';
+
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+// import Typography from '@mui/material/Typography';
+// import IconButton from '@mui/material/IconButton';
+import MuiAlert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
-import InputAdornment from '@mui/material/InputAdornment';
+// import InputAdornment from '@mui/material/InputAdornment';
+
 
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
+const API =import.meta.env.VITE_REACT_APP_API;
+const Alert = React.forwardRef((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
+
+
 
 export default function LoginView() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [message,setMessage]=useState("");
+  const [type,setType]=useState("")
+
+  console.log(API);
   const theme = useTheme();
 
   const router = useRouter();
 
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  const showAlertMessage = () => {
+    setShowAlert(true);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+    // You can optionally set a timeout to hide the alert after a few seconds
+    setTimeout(() => {
+    setShowAlert(false);
+    }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
+};
+
+  const handleClick = (event) => {
+    console.log(event)
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const Data= {email: data.get('email'),
+        password: data.get('password')}
+
+        fetch(`${API}/pub/login`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(Data),
+        })
+          .then((res) => res.json()) // Return the result here
+          .then((json) => {
+            localStorage.setItem('name', json.data.user.name);
+            window.sessionStorage.setItem('token', json.data.token);
+            showAlertMessage();
+            setType("success");
+            setMessage("Login Successsfull With Admin")
+            router.push('/dashboard');
+          })
+          .catch((error) => {
+            showAlertMessage();
+            setType("error");
+            setMessage("Entered Email/Password is Incorrect")
+            console.error('Error:', error);
+            // Handle the error, e.g., display an error message to the user
+          });
+        
   };
 
   const renderForm = (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
-
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
-      <LoadingButton
+    
+      <Box component="form" onSubmit={handleClick} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="User Name"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+             <LoadingButton
+        
         fullWidth
         size="large"
         type="submit"
         variant="contained"
-        color="inherit"
-        onClick={handleClick}
+      
+    
+        sx={{marginTop:'10px'}}
       >
         Login
       </LoadingButton>
-    </>
+            
+          
+          </Box>
+      
+
+     
+
+    
+  
   );
 
   return (
@@ -83,68 +142,46 @@ export default function LoginView() {
         height: 1,
       }}
     >
-      <Logo
-        sx={{
-          position: 'fixed',
-          top: { xs: 16, md: 24 },
-          left: { xs: 16, md: 24 },
-        }}
-      />
+       {/* {showAlert && 
+      
+        <Alert severity={type}>
+            {message}
+        </Alert>
+      
+        } */}
+
+<Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
+
+  </Stack>
+
+     
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
           sx={{
             p: 5,
             width: 1,
-            maxWidth: 420,
+            
+            maxWidth:400,
+          
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
-            </Link>
-          </Typography>
+         
 
-          <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
-            </Button>
+          <Stack alignItems="center" justifyContent="center" >
+          <Logo sx={{width:'150px'}} />
           </Stack>
 
-          <Divider sx={{ my: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              OR
-            </Typography>
-          </Divider>
+          <Divider sx={{ my: 3 }}/>
+           
+      
 
           {renderForm}
         </Card>
