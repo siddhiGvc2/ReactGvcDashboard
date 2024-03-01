@@ -24,7 +24,7 @@ export default function MachineCard({ title, total, icon, color = 'primary', sx,
       }}
       {...other}
     >
-      {icon && <Box sx={{ width: 34, height: 34 }}>{icon}</Box>}
+      {icon && <Box sx={{ width: 39, height: 39 }}>{icon}</Box>}
 
       <Stack spacing={0.5}>
         <Typography variant="h4">{total}</Typography>

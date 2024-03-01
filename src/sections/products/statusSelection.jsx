@@ -8,10 +8,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 
 function StatusSelection({ sx, ...other }) {
+  // const [mStatus] = useState(['Online', 'Offline']);
   const [machineStatus, setMachineStatus] = useState(['Online', 'Offline']);
-  const [stockStatus, setStockStatus] = useState(['Ok', 'Low','Empty']);
-  const [burnStatus, setBurnStatus] = useState(['Idle', 'Burning','Error']);
-  const [doorStatus, setDoorStatus] = useState(['0', '1','2']);
+  // const [sStatus] = useState(['Ok', 'Low','Empty']);
+  const [stockStatus, setStockStatus] = useState([]);
+  // const [bStatus] = useState(['Idle', 'Burning','Error']);
+  const [burnStatus, setBurnStatus] = useState([]);
+  // const [dStatus] = useState(['0', '1','2']);
+  const [doorStatus, setDoorStatus] = useState([]);
   // Other state variables for stock status, burn status, door status, etc.
 
 
@@ -49,7 +53,7 @@ function StatusSelection({ sx, ...other }) {
   return (
     <Card
       component={Stack}
-      spacing={1}
+      spacing={0.5}
       direction="column"
       sx={{
         px: 1,
@@ -59,9 +63,9 @@ function StatusSelection({ sx, ...other }) {
       }}
       {...other}
     >
-      <Stack spacing={0.5}>
+      <Stack spacing={0.1}>
         {/* Machine Status Dropdown */}
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Machine Status</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -69,7 +73,7 @@ function StatusSelection({ sx, ...other }) {
                 multiple
                 value={machineStatus}
                 onChange={handleMachineStatusChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -88,7 +92,7 @@ function StatusSelection({ sx, ...other }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Stock Status</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -96,7 +100,7 @@ function StatusSelection({ sx, ...other }) {
                 multiple
                 value={stockStatus}
                 onChange={handleStockStatusChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -120,7 +124,7 @@ function StatusSelection({ sx, ...other }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Burn Status</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -128,7 +132,7 @@ function StatusSelection({ sx, ...other }) {
                 multiple
                 value={burnStatus}
                 onChange={handleBurnStatusChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -151,7 +155,7 @@ function StatusSelection({ sx, ...other }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Door Status</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -159,7 +163,7 @@ function StatusSelection({ sx, ...other }) {
                 multiple
                 value={doorStatus}
                 onChange={handleDoorStatusChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`

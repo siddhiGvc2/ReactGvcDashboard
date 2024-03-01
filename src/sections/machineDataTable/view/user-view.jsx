@@ -1,19 +1,21 @@
 import { useState } from 'react';
 
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
-import Iconify from 'src/components/iconify';
+// import { users } from 'src/_mock/user';
 import Scrollbar from 'src/components/scrollbar';
+
+// import { emptyRows} from '../utils';
+import { store } from "../../../Redux/store";
+// import Iconify from 'src/components/iconify';
 
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -21,7 +23,6 @@ import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
-
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
@@ -37,6 +38,13 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [data,setData]=useState([])
+ 
+  store.subscribe(() => {
+    setData(store.getState().data.data);
+   
+  });
+
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
@@ -47,7 +55,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = dataFiltered.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -87,7 +95,7 @@ export default function UserPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: data,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -96,14 +104,7 @@ export default function UserPage() {
 
   return (
     <Container maxWidth="xl">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
-
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New User
-        </Button>
-      </Stack>
-
+     
       <Card>
         <UserTableToolbar
           numSelected={selected.length}
@@ -113,22 +114,23 @@ export default function UserPage() {
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
+            <Table sx={{ minWidth: 900 }}>
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={data.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'email', label: 'UserName' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'city', label: 'City' },
-                  { id: 'zone', label: 'Zone' },
-                  { id: 'ward', label: 'Ward' },
-                  { id: 'beat', label: 'Beat' },
+                  { id: 'sr', label: 'Sr.No' },
+                  { id: 'machine', label: 'Machine' },
+                  { id: 'status', label: 'Status' },
+                  { id: 'stockStatus', label: 'Stock Status' },
+                  { id: 'burnStatus', label: 'Burning Status' },
+                  { id: 'doorStatus', label: 'Door Status' },
+                  { id: 'info', label: 'Info' },
+                
                   // { id: 'ward', label: 'Verified', align: 'center' },
                   // { id: 'city', label: 'Status' },
                   { id: '' },
@@ -140,13 +142,24 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      email={row.email}
-                      city={row.city}
+                      machineId={row.machineId}
+                      serial={row.serial}
+                      addresss={row.adress}
+                      lat={row.lat}
+                      lon={row.lon}
                       zone={row.zone}
                       ward={row.ward}
                       beat={row.beat}
+                      uid={row.uid}
+                      spiralAStatus={row.spiral_a_status}
+                      spiralBStatus={row.spiral_b_status}
+                      doorCurrent={row.doorCurrent}
+                      qtyCurrent={row.qtyCurrent}
+                      burnCycleCurrent={row.burnCycleCurrent}
+                      burStatus={row.bur_status}
+                      lastStatus={row.last_status}
+                      rssi={row.rssi}
+
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
@@ -155,7 +168,7 @@ export default function UserPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, data.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -167,7 +180,7 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

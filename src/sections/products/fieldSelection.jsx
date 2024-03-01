@@ -159,7 +159,7 @@ useEffect(()=>{
     >
       <Stack spacing={0.5}>
         {/* Machine Status Dropdown */}
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">City</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -169,7 +169,7 @@ useEffect(()=>{
                 multiple
                 value={cityName}
                 onChange={handleCityChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -198,7 +198,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Zone</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -208,7 +208,7 @@ useEffect(()=>{
                 multiple
                 value={zoneName}
                 onChange={handleZoneChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -233,7 +233,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Ward</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -243,7 +243,7 @@ useEffect(()=>{
                 multiple
                 value={wardName}
                 onChange={handleWardChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`
@@ -267,7 +267,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-4 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1">
           <h5 className="text-primary d-inline">Beat</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -277,7 +277,7 @@ useEffect(()=>{
                 multiple
                 value={beatName}
                 onChange={handleBeatChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
                     selected.length > 0
                     ? `${selected.length} Selected`

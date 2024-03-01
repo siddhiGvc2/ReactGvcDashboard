@@ -9,7 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 // import { products } from 'src/_mock/products';
-import { UserView } from 'src/sections/user/view';
+import { UserView } from 'src/sections/machineDataTable/view';
 
 import MachineCard from '../machine-card';
 import { store } from "../../../Redux/store";
@@ -30,15 +30,7 @@ import StatusSelection from '../statusSelection';
 
 export default function ProductsView() {
   const [data,setData]=useState({data:[],dataAll:[]})
-  // const [openFilter, setOpenFilter] = useState(false);
-
-  // const handleOpenFilter = () => {
-  //   setOpenFilter(true);
-  // };
-
-  // const handleCloseFilter = () => {
-  //   setOpenFilter(false);
-  // };
+ 
   store.subscribe(() => {
     setData(store.getState().data);
    
@@ -85,14 +77,14 @@ const sum = (a, b) => a + b;
         <Typography variant="h4" sx={{ mb: 5 }}>
         Machine Data
       </Typography>
-     <Grid container spacing={2} maxWidth='xxl'>
-       <Grid xs={12} md={3} lg={3}>
+     <Grid container spacing={3} maxWidth='xxl'>
+       <Grid xs={12} md={12} lg={2.7}>
          
         <StatusSelection/>
        </Grid>
   
-      <Grid   xs={12} md={10} lg={9} >
-        <Stack  container spacing={1} direction='row' justifyContent='center'>
+      <Grid   xs={12} md={12} lg={9.3} >
+        <Stack  container spacing='1' display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly' >
         <Grid  xs={12} sm={6} md={3}>
           <MachineCard
             title="Total Machines"
@@ -129,13 +121,13 @@ const sum = (a, b) => a + b;
           />
         </Grid>
         </Stack>
-        <Stack  container spacing={1} direction='row' justifyContent='center'>
+        <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'>
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Stock Empty"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).reduce(sum):0}
             color="success"
-            icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
+            icon={<img alt="icon" src="/assets/icons/EmptyStock.png" />}
           />
         </Grid>
 
@@ -144,7 +136,7 @@ const sum = (a, b) => a + b;
             title="Low Stock"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).reduce(sum):0}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/online.png" />}
+            icon={<img alt="icon" src="/assets/icons/LowStock.png" />}
           />
         </Grid>
 
@@ -153,7 +145,7 @@ const sum = (a, b) => a + b;
             title="Burning Enabled"
             total={data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).reduce(sum):0}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/collection.png" />}
+            icon={<img alt="icon" src="/assets/icons/Burning.png" />}
           />
         </Grid>
 
@@ -162,7 +154,7 @@ const sum = (a, b) => a + b;
             title="Total Burning Cycles"
             total={data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).length ?  data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).reduce(sum):0}
             color="error"
-            icon={<img alt="icon" src="/assets/icons/items.png" />}
+            icon={<img alt="icon" src="/assets/icons/BurningCycles.png" />}
           />
         </Grid>
         </Stack>
@@ -171,12 +163,12 @@ const sum = (a, b) => a + b;
   {/* ******************************* */}
 
   <Grid container spacing={2} maxWidth='xxl'>
-       <Grid xs={12} md={3} lg={3}>
+       <Grid xs={12} md={12} lg={2.7}>
          
         <FieldSelection/>
        </Grid>
   
-      <Grid   xs={12} md={10} lg={9} >
+      <Grid   xs={12} md={12} lg={9.3} >
         <UserView style={{position:'relative',marginTop:'-200px'}}/>
       </Grid>
       </Grid>

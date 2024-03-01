@@ -2,29 +2,39 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+// import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
+// import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
-  selected,
-  name,
-  email,
-  city,
+  key,
+  machineId,
+  serial,
+  addresss,
+  lat,
+  lon,
   zone,
-  role,
-  beat,
   ward,
+  beat,
+  uid,
+  spiralAStatus,
+  spiralBStatus,
+  doorCurrent,
+  qtyCurrent,
+  burnCycleCurrent,
+  burStatus,
+  lastStatus,
+  rssi,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
@@ -37,28 +47,28 @@ export default function UserTableRow({
     setOpen(null);
   };
 
+  // const address = m => `<small><a class="text-muted elp" target="_blank" href="https://www.google.com/maps?q=${m.lat},${m.lon}">${m.address}</a></small>`
+
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
-        </TableCell>
-
+      <TableRow hover tabIndex={-1} role="checkbox">
+       
+      <TableCell>{key}</TableCell>
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src="" />
+           
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {addresss}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{email}</TableCell>
+        <TableCell>{}</TableCell>
      
-        <TableCell>
+        {/* <TableCell>
           <Label color={(role === '0' && 'error') || 'success'}>{role ? 'Admin' : 'User'}</Label>
-        </TableCell>
-        <TableCell>{city}</TableCell>
+        </TableCell> */}
+        {/* <TableCell>{city}</TableCell> */}
         <TableCell>{zone}</TableCell>
         <TableCell>{ward}</TableCell>
         <TableCell>{beat}</TableCell>
@@ -103,13 +113,24 @@ export default function UserTableRow({
 }
 
 UserTableRow.propTypes = {
-  city: PropTypes.any,
+  key: PropTypes.any,
+  machineId: PropTypes.any,
+  serial: PropTypes.any,
+  addresss: PropTypes.any,
+  lat: PropTypes.any,
+  lon: PropTypes.any,
   zone: PropTypes.any,
-  email: PropTypes.any,
-  handleClick: PropTypes.func,
-  name: PropTypes.any,
   ward: PropTypes.any,
-  role: PropTypes.any,
-  selected: PropTypes.any,
-  beat: PropTypes.string,
+  beat: PropTypes.any,
+  uid: PropTypes.any,
+  spiralAStatus: PropTypes.any,
+  spiralBStatus: PropTypes.any,
+  doorCurrent: PropTypes.any,
+  qtyCurrent: PropTypes.any,
+  burnCycleCurrent: PropTypes.any,
+  burStatus: PropTypes.any,
+  lastStatus: PropTypes.any,
+  rssi: PropTypes.any,
+  handleClick: PropTypes.func
+
 };
