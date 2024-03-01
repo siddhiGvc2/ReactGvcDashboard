@@ -1,6 +1,10 @@
 import moment from "moment";
-import { useState} from 'react';
 import { faker } from '@faker-js/faker';
+import { useState,useEffect } from 'react';
+
+// import { useLocation } from 'react-router-dom';
+// import { useState} from 'react';
+
 
 import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
@@ -13,6 +17,7 @@ import Iconify from 'src/components/iconify';
 
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
+import {fetchData} from "../../../_mock/machineData";
 import AppOrderTimeline from '../app-order-timeline';
 import AppCurrentVisits from '../app-current-visits';
 // import AppWebsiteVisits from '../app-website-visits';
@@ -22,14 +27,35 @@ import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 
 // ----------------------------------------------------------------------
-const API =import.meta.env.VITE_REACT_APP_API;
-let state=0;
+
+
+
 export default function AppView() {
-  const [data,setData]=useState({data:[],dataAll:[]});
-  const [Machines,setMachines]=useState('...');
-  const [Onlines,setOnlines]=useState('...');
   
+  const [pathName,setPathName]=useState({data:[],dataAll:[]});
  
+
+
+  const LoadData=()=>{
+    fetchData().then((res)=>{
+      setPathName(res);
+    
+    });
+   
+  }
+  useEffect(() => {
+ 
+   
+   
+    // setPathName(1);
+    LoadData();
+    setInterval(()=>{
+      LoadData();
+    },5000)
+  }, []);
+
+  
+  
  
   const theme = useTheme('...');
   // const router=useRouter();
@@ -63,77 +89,23 @@ export default function AppView() {
     return amt;
 }
 
-const LoadData=()=>{
-  const apiUrl = `${API}/api/machine/data?status=Online,Offline&city=Mumbai`; // Replace with your API URL
-  const url = `${apiUrl}`;
-  
-  // Set up the headers
-  const headers = new Headers({
-    'x-token': sessionStorage.getItem('token'),
-  });
-  
-  // Check if a request is already in progress
- 
-    fetch(url, { method: 'GET', headers })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((json) => {
-      
-    
-        
-        setData(json.data);
-        setMachines(json.data.dataAll.length);
-        setOnlines(json.data.data.filter(filterOnline).length);
-      
-     
-       
-    }).catch((error) => {
-       
-        // router.push('/');
-      })
-      .finally(() => {
-        // setRequestInProgress(false);
-      });
-  
-}
+
 
 
 const sum = (a, b) => a + b;
 
   
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-console.log(state)
-  if(state===0)
-  {
-    LoadData();
-    setInterval(()=>{
-      LoadData()
-      state=1;
-
-    },5000)
-   
-  }
-
-  // useEffect(()=>{
-  //    LoadData();
-  // },[data])
-  
- 
 
   return (
     <Container maxWidth="xl" >
       
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} onClick={()=> setPathName(1)}>
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Total Machines"
-            total={Machines}
+            total={pathName.dataAll.length}
             color="success"
             icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
           />
@@ -142,7 +114,7 @@ console.log(state)
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Online Machines"
-            total={Onlines}
+            total={pathName.data.filter(filterOnline).length}
             color="info"
             icon={<img alt="icon" src="/assets/icons/online.png" />}
           />
@@ -151,7 +123,7 @@ console.log(state)
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Total Collections"
-            total={data.data.length ?amountText(data.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
+            total={pathName.data.length ?amountText(pathName.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
             color="info"
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
           />
@@ -160,7 +132,7 @@ console.log(state)
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Item Despensed"
-            total={data.data.length ?(data.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
+            total={pathName.data.length ?(pathName.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
             color="error"
             icon={<img alt="icon" src="/assets/icons/items.png" />}
           />
@@ -170,8 +142,8 @@ console.log(state)
             title="Machine Status"
             chart={{
               series: [
-                { label: 'Online', value:data.data.filter(filterOnline).length||0 },
-                { label: 'Offline', value:(data.data.length - data.data.filter(filterOnline).length) ||0},
+                { label: 'Online', value:pathName.data.filter(filterOnline).length||0 },
+                { label: 'Offline', value:(pathName.data.length - pathName.data.filter(filterOnline).length) ||0},
              
               ],
               colors:[
@@ -188,10 +160,10 @@ console.log(state)
             title="Stock Status"
             chart={{
               series: [
-                { label: 'Ok', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 3).length ||0},  // Example color
-                { label: 'Low', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 1).length ||0},
-                { label: 'Empty', value: data.data.filter(filterOnline).filter(m => m.spiral_a_status === 0).length ||0 },
-                { label: 'Unknown', value:data.data.filter(filterOnline).filter(m => m.spiral_a_status === 2).length ||0},
+                { label: 'Ok', value: pathName.data.filter(filterOnline).filter(m => m.spiral_a_status === 3).length ||0},  // Example color
+                { label: 'Low', value: pathName.data.filter(filterOnline).filter(m => m.spiral_a_status === 1).length ||0},
+                { label: 'Empty', value: pathName.data.filter(filterOnline).filter(m => m.spiral_a_status === 0).length ||0 },
+                { label: 'Unknown', value:pathName.data.filter(filterOnline).filter(m => m.spiral_a_status === 2).length ||0},
               ],
               colors:[
                 theme.palette.success.main,

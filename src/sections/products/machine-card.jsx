@@ -18,7 +18,7 @@ export default function MachineCard({ title, total, icon, color = 'primary', sx,
       sx={{
     
         px: 1,
-        py: 3,
+        py: 5,
         borderRadius: 2,
         ...sx,
       }}

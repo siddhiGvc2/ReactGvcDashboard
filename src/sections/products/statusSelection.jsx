@@ -1,32 +1,50 @@
 import PropTypes from 'prop-types';
+import React, {  useState ,useEffect} from 'react';
 
-// import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-// import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
 
-// import { fShortenNumber } from 'src/utils/format-number';
+function StatusSelection({ sx, ...other }) {
+  const [machineStatus, setMachineStatus] = useState(['Online', 'Offline']);
+  const [stockStatus, setStockStatus] = useState(['Ok', 'Low','Empty']);
+  const [burnStatus, setBurnStatus] = useState(['Idle', 'Burning','Error']);
+  const [doorStatus, setDoorStatus] = useState(['0', '1','2']);
+  // Other state variables for stock status, burn status, door status, etc.
 
-// ----------------------------------------------------------------------
 
+  useEffect(()=>{
+    localStorage.setItem('machineStatus',JSON.stringify(machineStatus));
+    localStorage.setItem('stockStatus',JSON.stringify(stockStatus));
+    localStorage.setItem('burnStatus',JSON.stringify(burnStatus));
+    localStorage.setItem('dorStatus',JSON.stringify(doorStatus));
+  })
+  
 
+  const handleMachineStatusChange = (event) => {
+    setMachineStatus(event.target.value);
+    localStorage.setItem('machineStatus',JSON.stringify(event.target.value));
+    // Handle other logic as needed
+  };
+  const handleStockStatusChange = (event) => {
+    setStockStatus(event.target.value);
+    localStorage.setItem('stockStatus',JSON.stringify(event.target.value));
+    // Handle other logic as needed
+  };
+  const handleBurnStatusChange = (event) => {
+    setBurnStatus(event.target.value);
+    localStorage.setItem('burnStatus',JSON.stringify(event.target.value));
+    // Handle other logic as needed
+  };
+  const handleDoorStatusChange = (event) => {
+    setDoorStatus(event.target.value);
+    localStorage.setItem('dorStatus',JSON.stringify(event.target.value));
+    // Handle other logic as needed
+  };
 
-
-
-export default function StatusSelection({sx, ...other }) {
-
-    // const statusElement = document.querySelector('[name="status"]');
-    // if (statusElement.classList.contains('multiselect-enabled')) {
-    //     // Remove multiselect-specific classes and event listeners
-    //     statusElement.classList.remove('multiselect-enabled');
-    //     statusElement.removeEventListener('change', handleMultiselectChange);
-    // }
-    
-    // // Reinitialize multiselect and trigger change
-    // statusElement.classList.add('multiselect-enabled');
-    // statusElement.addEventListener('change', handleMultiselectChange);
-    // statusElement.dispatchEvent(new Event('change'));
-
+  // Other similar handler functions for different dropdowns
 
   return (
     <Card
@@ -34,7 +52,6 @@ export default function StatusSelection({sx, ...other }) {
       spacing={1}
       direction="column"
       sx={{
-    
         px: 1,
         py: 2,
         borderRadius: 2,
@@ -42,66 +59,139 @@ export default function StatusSelection({sx, ...other }) {
       }}
       {...other}
     >
-    
-
       <Stack spacing={0.5}>
-            
-      <div className="mt-4 pb-2 border-bottom-1">
-                    <h5 className="text-primary d-inline">Machine Status</h5>
-                    <div className="row">
-                        <div className="col-12 d-flex">
-                            <select className="form-control" name="status" multiple>
-                                <option value="Online" selected>Online</option>
-                                <option value="Offline" selected>Offline</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="mt-4 pb-2 border-bottom-1 vending">
-                    <h5 className="text-primary d-inline RECD_STATUS1">Stock Status</h5>
-                    <div className="row">
-                        <div className="col-12 d-flex">
-                            <select className="form-control" name="stock_status" multiple>
-                                <option value="3">Ok</option>
-                                <option value="1">Low</option>
-                                <option value="0">Empty</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="mt-4 pb-2 border-bottom-1 incinerator">
-                    <h5 className="text-primary d-inline RECD_STATUS2">Burn Status</h5>
-                    <div className="row">
-                        <div className="col-12 d-flex">
-                            <select className="form-control" name="burn_status" multiple>
-                                <option value="0">Idle</option>
-                                <option value="1">Burning</option>
-                                <option value="2">Error</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                 <div className="mt-4 pb-2 border-bottom-1">
-                    <h5 className="text-primary d-inline RECD_STATUS3">Door Status</h5>
-                    <div className="row">
-                        <div className="col-12 d-flex">
-                            <select className="form-control" name="last_status" multiple>
-                                <option value="0">Door Open</option>
-                                <option value="1">Door Close</option>
-                                <option value="2">Door Forced Open</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-      
+        {/* Machine Status Dropdown */}
+        <div className="mt-4 pb-2 border-bottom-1">
+          <h5 className="text-primary d-inline">Machine Status</h5>
+          <div className="row">
+            <div className="col-12 d-flex">
+              <Select
+                multiple
+                value={machineStatus}
+                onChange={handleMachineStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+                 <MenuItem value="Online">
+                  <Checkbox checked={machineStatus.indexOf('Online') > -1} />
+                  Online
+                </MenuItem>
+                <MenuItem value="Offline">
+                  <Checkbox checked={machineStatus.indexOf('Offline') > -1} />
+                  Offline
+                </MenuItem>
+              </Select>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 pb-2 border-bottom-1">
+          <h5 className="text-primary d-inline">Stock Status</h5>
+          <div className="row">
+            <div className="col-12 d-flex">
+              <Select
+                multiple
+                value={stockStatus}
+                onChange={handleStockStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+                <MenuItem value="Ok">
+                  <Checkbox checked={stockStatus.indexOf('Ok') > -1} />
+                  Ok
+                </MenuItem>
+                <MenuItem value="Low">
+                  <Checkbox checked={stockStatus.indexOf('Low') > -1} />
+                  Low
+                </MenuItem>
+                <MenuItem value="Empty">
+                  <Checkbox checked={stockStatus.indexOf('Empty') > -1} />
+                  Empty
+                </MenuItem>
+               
+              </Select>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 pb-2 border-bottom-1">
+          <h5 className="text-primary d-inline">Burn Status</h5>
+          <div className="row">
+            <div className="col-12 d-flex">
+              <Select
+                multiple
+                value={burnStatus}
+                onChange={handleBurnStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+                 <MenuItem value="Idle">
+                  <Checkbox checked={burnStatus.indexOf('Idle') > -1} />
+                  Idle
+                </MenuItem>
+                <MenuItem value="Burning">
+                  <Checkbox checked={burnStatus.indexOf('Burning') > -1} />
+                  Burning
+                </MenuItem>
+                <MenuItem value="Error">
+                  <Checkbox checked={burnStatus.indexOf('Error') > -1} />
+                  Error
+                </MenuItem>
+              </Select>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 pb-2 border-bottom-1">
+          <h5 className="text-primary d-inline">Door Status</h5>
+          <div className="row">
+            <div className="col-12 d-flex">
+              <Select
+                multiple
+                value={doorStatus}
+                onChange={handleDoorStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'200px' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+                   <MenuItem value="0">
+                  <Checkbox checked={doorStatus.indexOf('0') > -1} />
+                  Door Open
+                </MenuItem>
+                <MenuItem value="1">
+                  <Checkbox checked={doorStatus.indexOf('1') > -1} />
+                  Door Close
+                </MenuItem>
+                <MenuItem value="2">
+                  <Checkbox checked={doorStatus.indexOf('2') > -1} />
+                  Door Forced Open
+                </MenuItem>
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        {/* Other Dropdowns */}
+        {/* ... */}
       </Stack>
     </Card>
   );
 }
+
 StatusSelection.propTypes = {
-  color: PropTypes.string,
-  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   sx: PropTypes.object,
-  title: PropTypes.string,
-  total: PropTypes.number,
 };
+
+export default StatusSelection;

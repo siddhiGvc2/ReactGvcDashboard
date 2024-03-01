@@ -45,21 +45,24 @@
 
     <script>
       const global = globalThis;
-      // $(document).ready(function () {
-      //       $('[name="zone"]').multiselect('destroy');
-      //       $('[name="zone"]').html(` <option value="1" >1</option>
-      //               <option value="2">2</option>
-      //               <option value="3">3</option>
-      //               <option value="4">4</option>
-      //               <option value="5">5</option>`);
-      //       $('[name="zone"]').multiselect().trigger('change');
+
+      function initializeDropdowns(){
+        $('[name="status"]').multiselect('destroy');
+        $('[name="status"]').multiselect().trigger('change');
+      }
+      $(document).ready(function () {
+          
+
+          initializeDropdowns();
+          // setInterval(()=>{
+          //      initializeDropdowns();
+          // },1000)
+         
 
            
-      //   });
-        console.log(1);
-        $('[name="status"]').multiselect('destroy');
-         
-         $('[name="status"]').multiselect().trigger('change');
+        });
+       
+       
     </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>

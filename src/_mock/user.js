@@ -27,10 +27,10 @@ const API =import.meta.env.VITE_REACT_APP_API;
 
  async function fetchUsers() {
   try {
-    const headers={
-      'x-token':sessionStorage.getItem('token')
-    }
-    const response = await fetch(`${API}/api/admin/users`,headers);
+    const headers = new Headers({
+      'x-token': sessionStorage.getItem('token'),
+    });
+    const response = await fetch(`${API}/api/admin/users`,{ method: 'GET', headers });
     const users = await response.json();
     return users.data.users;
   } catch (error) {
