@@ -24,6 +24,7 @@ function FieldSelection({ sx, ...other }) {
  
  
  useEffect(()=>{
+  sessionStorage.setItem("cities",JSON.stringify(cityName));
   zoneData(cityName).then((res)=>{
     // console.log(res);
     setZones(res);
@@ -39,7 +40,7 @@ function FieldSelection({ sx, ...other }) {
   
   });
 
-  getAllData(cityName,zoneName,wardName,beatName)
+  getAllData();
 
    
 
@@ -50,7 +51,9 @@ function FieldSelection({ sx, ...other }) {
    
       zoneData(cityName).then((res)=>{
         // console.log(res);
+        sessionStorage.setItem("zones",JSON.stringify(res));
         setZonesName(res);
+        
       })
 
   },[cityName])
@@ -60,7 +63,9 @@ useEffect(()=>{
   
     wardData(cityName,zoneName).then((res)=>{
       // console.log(res);
+      sessionStorage.setItem("wards",JSON.stringify(res));
       setWardsName(res);
+     
     
     });
 
@@ -72,8 +77,9 @@ useEffect(()=>{
  
     beatData(cityName,zoneName,wardName).then((res)=>{
       // console.log(res);
+      sessionStorage.setItem("beats",JSON.stringify(res));
       setBeatsName(res);
-    
+      
     });
 
   
@@ -83,66 +89,68 @@ useEffect(()=>{
  
 
   const handleCityChange = (event) => {
+    sessionStorage.setItem("cities",JSON.stringify(event.target.value));
     setCitiesName(event.target.value);
   
     // Handle other logic as needed
   };
   const handleZoneChange = (event) => {
+    sessionStorage.setItem("zones",JSON.stringify(event.target.value));
     setZonesName(event.target.value);
-  
+   
     // Handle other logic as needed
   };
   const handleWardChange = (event) => {
+    sessionStorage.setItem("wards",JSON.stringify(event.target.value));
     setWardsName(event.target.value);
-  
+   
     // Handle other logic as needed
   };
   const handleBeatChange = (event) => {
+    sessionStorage.setItem("beats",JSON.stringify(event.target.value));
     setBeatsName(event.target.value);
-    
+   
     // Handle other logic as needed
   };
  
   const selectAllCities=()=>{
+    sessionStorage.setItem("cities",JSON.stringify(cities));
     setCitiesName(cities)
 
   }
   const selectNoneCities=()=>{
+    sessionStorage.setItem("cities",JSON.stringify([]));
     setCitiesName([])
   }
 
 
   const selectAllZones=()=>{
+    sessionStorage.setItem("zones",JSON.stringify(zones));
     setZonesName(zones)
 
   }
   const selectNoneZones=()=>{
+    sessionStorage.setItem("zones",JSON.stringify([]));
     setZonesName([])
   }
   const selectAllWards=()=>{
+    sessionStorage.setItem("wards",JSON.stringify(wards));
     setWardsName(wards)
   }
   const selectNoneWards=()=>{
+    sessionStorage.setItem("wards",JSON.stringify([]));
     setWardsName([])
   }
 
   const selectAllBeats=()=>{
+    sessionStorage.setItem("beats",JSON.stringify(beats));
     setBeatsName(beats)
   }
   const selectNoneBeats=()=>{
+    sessionStorage.setItem("beats",JSON.stringify([]));
     setBeatsName([])
   }
 
-  // useEffect(()=>{
-  //   zoneData(city).then((res)=>{
-  //     setZones(res);
-    
-  //   });
-
-  // },[zones])
-  
-
-  // Other similar handler functions for different dropdowns
 
   return (
     <Card
@@ -169,12 +177,20 @@ useEffect(()=>{
                 multiple
                 value={cityName}
                 onChange={handleCityChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
-                renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(selected) => {
+                  if (selected.length===cities.length) {
+                       return`All Selected(${selected.length})`;
+                  } 
+                  if(selected.length===0) {
+                       return 'None Selected';
                   }
+                  if(selected.length===1)
+                  {
+                    return `${selected[0]}`
+                  }
+                  return `${selected.length} Selected`
+              }}
               >
                  <MenuItem value="Mumbai">
                   <Checkbox checked={cityName.indexOf('Mumbai') > -1} />
@@ -208,12 +224,20 @@ useEffect(()=>{
                 multiple
                 value={zoneName}
                 onChange={handleZoneChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
-                renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(selected) => {
+                  if (selected.length===zones.length) {
+                       return`All Selected(${selected.length})`;
+                  } 
+                  if(selected.length===0) {
+                       return 'None Selected';
                   }
+                  if(selected.length===1)
+                  {
+                    return `${selected[0]}`
+                  }
+                  return `${selected.length} Selected`
+              }}
               >
 
                 {
@@ -243,12 +267,20 @@ useEffect(()=>{
                 multiple
                 value={wardName}
                 onChange={handleWardChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
-                renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(selected) => {
+                  if (selected.length===wards.length) {
+                       return`All Selected(${selected.length})`;
+                  } 
+                  if(selected.length===0) {
+                       return 'None Selected';
                   }
+                  if(selected.length===1)
+                  {
+                    return `${selected[0]}`
+                  }
+                  return `${selected.length} Selected`
+              }}
               >
 
                 {
@@ -277,12 +309,20 @@ useEffect(()=>{
                 multiple
                 value={beatName}
                 onChange={handleBeatChange}
-                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
-                renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(selected) => {
+                  if (selected.length===beats.length) {
+                       return`All Selected(${selected.length})`;
+                  } 
+                  if(selected.length===0) {
+                       return 'None Selected';
                   }
+                  if(selected.length===1)
+                  {
+                    return `${selected[0]}`
+                  }
+                  return `${selected.length} Selected`
+              }}
               >
 
                {

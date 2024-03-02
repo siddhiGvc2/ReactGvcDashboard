@@ -36,7 +36,7 @@ export default function UserPage() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [data,setData]=useState([])
  
@@ -103,7 +103,7 @@ export default function UserPage() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth='xl'>
      
       <Card>
         <UserTableToolbar
@@ -114,7 +114,7 @@ export default function UserPage() {
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 900 }}>
+            <Table sx={{ minWidth: 1000 }}>
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
@@ -139,12 +139,13 @@ export default function UserPage() {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+                  .map((row,i) => (
                     <UserTableRow
                       key={row.id}
+                      sr={page*rowsPerPage+i+1}
                       machineId={row.machineId}
                       serial={row.serial}
-                      addresss={row.adress}
+                      addresss={row.address}
                       lat={row.lat}
                       lon={row.lon}
                       zone={row.zone}
@@ -159,6 +160,7 @@ export default function UserPage() {
                       burStatus={row.bur_status}
                       lastStatus={row.last_status}
                       rssi={row.rssi}
+                      m={row}
 
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
@@ -183,7 +185,7 @@ export default function UserPage() {
           count={data.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25 ,100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>

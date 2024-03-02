@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
+import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
@@ -11,6 +15,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
+import {zoneData,wardData,beatData} from 'src/_mock/fildData';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -22,9 +27,19 @@ import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
+
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
+  const [cities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+  const [zones,setZones]=useState([]);
+  const [wards,setWards]=useState([]);
+  const [beats,setBeats]=useState([]);
+
+  const [cityName, setCitiesName] = useState(['Mumbai']);
+  const [zoneName,setZonesName]=useState([]);
+  const [wardName,setWardsName]=useState([]);
+  const [beatName,setBeatsName]=useState([]);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -35,7 +50,18 @@ export default function UserPage() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const [open, setOpen] = useState(null);
+
+  const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -94,12 +120,142 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
-  return (
+
+  useEffect(()=>{
+   
+    zoneData(cityName).then((res)=>{
+      // console.log(res);
+      setZones(res);
+    })
+    wardData(cityName,zoneName).then((res)=>{
+      // console.log(res);
+      setWards(res);
+    
+    });
+    beatData(cityName,zoneName,wardName).then((res)=>{
+      // console.log(res);
+      setBeats(res);
+    
+    });
+  
+  
+  
+     
+  
+   },[cityName,zoneName,wardName,beatName])
+    
+  
+    useEffect(()=>{
+     
+        zoneData(cityName).then((res)=>{
+          // console.log(res);
+        
+          setZonesName(res);
+          
+        })
+  
+    },[cityName])
+  
+    
+  useEffect(()=>{
+    
+      wardData(cityName,zoneName).then((res)=>{
+        // console.log(res);
+        
+        setWardsName(res);
+       
+      
+      });
+  
+    
+  
+  },[cityName,zoneName])
+   
+  useEffect(()=>{
+   
+      beatData(cityName,zoneName,wardName).then((res)=>{
+        // console.log(res);
+       
+        setBeatsName(res);
+        
+      });
+  
+    
+  
+  },[cityName,zoneName,wardName])
+   
+   
+  
+    const handleCityChange = (event) => {
+     
+      setCitiesName(event.target.value);
+    
+      // Handle other logic as needed
+    };
+    const handleZoneChange = (event) => {
+     
+      setZonesName(event.target.value);
+     
+      // Handle other logic as needed
+    };
+    const handleWardChange = (event) => {
+     
+      setWardsName(event.target.value);
+     
+      // Handle other logic as needed
+    };
+    const handleBeatChange = (event) => {
+     
+      setBeatsName(event.target.value);
+     
+      // Handle other logic as needed
+    };
+   
+    const selectAllCities=()=>{
+     
+      setCitiesName(cities)
+  
+    }
+    const selectNoneCities=()=>{
+     
+      setCitiesName([])
+    }
+  
+  
+    const selectAllZones=()=>{
+    
+      setZonesName(zones)
+  
+    }
+    const selectNoneZones=()=>{
+     
+      setZonesName([])
+    }
+    const selectAllWards=()=>{
+     
+      setWardsName(wards)
+    }
+    const selectNoneWards=()=>{
+     
+      setWardsName([])
+    }
+  
+    const selectAllBeats=()=>{
+     
+      setBeatsName(beats)
+    }
+    const selectNoneBeats=()=>{
+      
+      setBeatsName([])
+    }
+  
+
+  return <>
     <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button variant="contained" color="inherit"  onClick={handleOpenMenu} startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
         </Button>
       </Stack>
@@ -122,6 +278,7 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
+                  { id: 'id', label: 'Sr.No' },
                   { id: 'name', label: 'Name' },
                   { id: 'email', label: 'UserName' },
                   { id: 'role', label: 'Role' },
@@ -137,8 +294,9 @@ export default function UserPage() {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+                  .map((row,i) => (
                     <UserTableRow
+                      sr={page*rowsPerPage+i+1}
                       key={row.id}
                       name={row.name}
                       role={row.role}
@@ -170,10 +328,273 @@ export default function UserPage() {
           count={users.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25 ,100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
     </Container>
-  );
+    <Popover
+        open={!!open}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: { width: 840,padding:5},
+        }}
+      >
+     
+            <div className="modal-header">
+                <h5 className="modal-title">User</h5>
+                <button type="button" className="btn btn-md btn-default close"  aria-label="Close" onClick={handleCloseMenu}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div className="modal-body">
+                <input type="hidden" className="num" value="0" name="id" />
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Name:</h5>
+                            <input type="text" className="form-control" id="name" name="name" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Username:</h5>
+                            <input type="text" className="form-control" id="email" name="email" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Role</h5>
+                            <select className="form-control" name="isAdmin" id="isAdmin" >
+                                <option value="1">Admin</option>
+                                <option value="0" selected>User</option>
+                              
+                            </select>
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                      <div className="col-md-6 clientName">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Cient Name</h5>
+                               <input type="text" className="form-control" name="clientName" id="clientName"/>
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">City:</h5>
+                            <div className="row">
+                                <div className="col-12 d-flex">
+                                    <button type='button' className="btn btn-sm btn-success text-white my-auto"
+                                       onClick={selectAllCities} ><i className="fa fa-check"/></button>
+                                     <Select
+                multiple
+                value={cityName}
+                onChange={handleCityChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(items) => {
+                  if (items.length===cities.length) {
+                       return`All Selected(${items.length})`;
+                  } 
+                  if(items.length===0) {
+                       return 'None Selected';
+                  }
+                  if(items.length===1)
+                  {
+                    return `${items[0]}`
+                  }
+                  return `${items.length} Selected`
+              }}
+              >
+                 <MenuItem value="Mumbai">
+                  <Checkbox checked={cityName.indexOf('Mumbai') > -1} />
+                  Mumbai
+                </MenuItem>
+                <MenuItem value="Delhi">
+                  <Checkbox checked={cityName.indexOf('Delhi') > -1} />
+                  Delhi
+                </MenuItem>
+                <MenuItem value="SS-UK">
+                  <Checkbox checked={cityName.indexOf('SS-UK') > -1} />
+                  SS-UK
+                </MenuItem>
+                <MenuItem value="DoE-HAR">
+                  <Checkbox checked={cityName.indexOf('DoE-HAR') > -1} />
+                  DoE-HAR
+                </MenuItem>
+              </Select>
+                                    <button type='button' className="btn btn-sm btn-danger text-white my-auto"
+                                       onClick={selectNoneCities} ><i className="fa fa-times"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Zone:</h5>
+                            <div className="row">
+                                <div className="col-12 d-flex">
+                                    <button type='button' className="btn btn-sm btn-success text-white my-auto"
+                                      onClick={selectAllZones}><i className="fa fa-check"/></button>
+                                      <Select
+                multiple
+                value={zoneName}
+                onChange={handleZoneChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(items) => {
+                  if (items.length===zones.length) {
+                       return`All Selected(${items.length})`;
+                  } 
+                  if(items.length===0) {
+                       return 'None Selected';
+                  }
+                  if(items.length===1)
+                  {
+                    return `${items[0]}`
+                  }
+                  return `${items.length} Selected`
+              }}
+              >
+
+                {
+                  zones.map((elem)=>
+                     <MenuItem value={elem}>
+                    <Checkbox checked={zoneName.indexOf(elem) > -1} />
+                    {elem}
+                  </MenuItem>
+
+                  )
+                }
+             
+               
+              </Select>
+                                    <button type='button' className="btn btn-sm btn-danger text-white my-auto"
+                                       onClick={selectNoneZones} ><i className="fa fa-times"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Ward:</h5>
+                            <div className="row">
+                                <div className="col-12 d-flex">
+                                    <button type="button" className="btn btn-sm btn-success text-white my-auto"
+                                        onClick={selectAllWards}><i className="fa fa-check"/></button>
+                                      <Select
+                multiple
+                value={wardName}
+                onChange={handleWardChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(items) => {
+                  if (items.length===wards.length) {
+                       return`All Selected(${items.length})`;
+                  } 
+                  if(items.length===0) {
+                       return 'None Selected';
+                  }
+                  if(items.length===1)
+                  {
+                    return `${items[0]}`
+                  }
+                  return `${items.length} Selected`
+              }}
+              >
+
+                {
+                  wards.map((elem)=>
+                    <MenuItem value={elem}>
+                    <Checkbox checked={wardName.indexOf(elem) > -1} />
+                    {elem}
+                  </MenuItem>
+
+                  )
+                }
+                
+              </Select>
+                                    <button type='button' className="btn btn-sm btn-danger text-white my-auto"
+                                        onClick={selectNoneWards}><i className="fa fa-times"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h5 className="text-primary d-inline">Beat:</h5>
+                            <div className="row">
+                                <div className="col-12 d-flex">
+                                    <button type="button" className="btn btn-sm btn-success text-white my-auto"
+                                        onClick={selectAllBeats}><i className="fa fa-check"/></button>
+                                      <Select
+                multiple
+                value={beatName}
+                onChange={handleBeatChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
+                renderValue={(items) => {
+                  if (items.length===beats.length) {
+                       return`All Selected(${items.length})`;
+                  } 
+                  if(items.length===0) {
+                       return 'None Selected';
+                  }
+                  if(items.length===1)
+                  {
+                    return `${items[0]}`
+                  }
+                  return `${items.length} Selected`
+              }}
+              >
+
+               {
+                  beats.map((elem)=>
+                   <MenuItem value={elem}>
+                    <Checkbox checked={beatName.indexOf(elem) > -1} />
+                    {elem}
+                  </MenuItem>
+
+                  )
+                }
+                  
+              </Select>
+                                    <button type='button' className="btn btn-sm btn-danger text-white my-auto" onClick={selectNoneBeats}><i className="fa fa-times"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h5 className="text-primary d-inline">Password</h5>
+                            <input type="password" className="form-control" id="password" name="password" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h5 className="text-primary d-inline">Confirm Password</h5>
+                            <input type="password" className="form-control" name="password2" id="confirmPassword" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={handleCloseMenu}>Close</button>
+                <button type="button" className="btn btn-primary" >Save changes</button>
+            </div>
+    
+
+      
+      </Popover>
+  </>
 }

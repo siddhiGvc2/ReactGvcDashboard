@@ -33,7 +33,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -42,6 +42,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
               />
             </InputAdornment>
           }
+          sx={{height:'40px'}}
         />
       )}
 
@@ -54,7 +55,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
-            <Iconify icon="ic:round-filter-list" />
+            {/* <Iconify icon="ic:round-filter-list" /> */}
           </IconButton>
         </Tooltip>
       )}

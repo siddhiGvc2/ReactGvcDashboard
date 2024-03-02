@@ -47,9 +47,12 @@ export function applyFilter({ inputData, comparator, filterName }) {
   inputData = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
+    inputData= inputData.filter((item) => {
+      const lowerCaseSearchTerm = filterName.toLowerCase();
+      return Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(lowerCaseSearchTerm)
+      );
+    });
   }
 
   return inputData;

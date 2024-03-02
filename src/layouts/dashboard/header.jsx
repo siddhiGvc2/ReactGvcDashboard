@@ -33,9 +33,9 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-       <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
+       {/* <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
           <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
+        </IconButton> */}
 
       {/* <Searchbar /> */}
 

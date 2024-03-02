@@ -4,15 +4,19 @@ import { saveData } from "../Redux/action";
 const API = import.meta.env.VITE_REACT_APP_API;
 
 
-export const getAllData = async (city, zone, ward, beat) => {
+export const getAllData = async () => {
     try {
       
       const headers = new Headers({
         'x-token': sessionStorage.getItem('token'),
       });
-      const machineStatus=JSON.parse(localStorage.getItem("machineStatus"));
-      const stockStatus=JSON.parse(localStorage.getItem('stockStatus'));
-      const burn_status=JSON.parse(localStorage.getItem('burnStatus'))
+      const city=JSON.parse(sessionStorage.getItem("cities"));
+      const zone=JSON.parse(sessionStorage.getItem("zones"));
+      const ward=JSON.parse(sessionStorage.getItem("wards"));
+      const beat=JSON.parse(sessionStorage.getItem("beats"))
+      const machineStatus=JSON.parse(sessionStorage.getItem("machineStatus"));
+      const stockStatus=JSON.parse(sessionStorage.getItem('stockStatus'));
+      const burn_status=JSON.parse(sessionStorage.getItem('burnStatus'))
   
       const response = await fetch(`${API}/api/machine/data?city=${city.join()}&zone=${zone.join()}&ward=${ward.join()}&beat=${beat.join()}&status=${machineStatus.join()}&burn_status=${burn_status.join()}&stock_status=${stockStatus.join()}`, { method: 'GET', headers });
       const json = await response.json();
@@ -26,6 +30,11 @@ export const getAllData = async (city, zone, ward, beat) => {
       return [];
     }
   };
+
+
+  setInterval(()=>{
+       getAllData();
+  },5000)
   
 
 export const zoneData=async(city)=> {

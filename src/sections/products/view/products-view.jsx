@@ -77,7 +77,7 @@ const sum = (a, b) => a + b;
         <Typography variant="h4" sx={{ mb: 5 }}>
         Machine Data
       </Typography>
-     <Grid container spacing={3} maxWidth='xxl'>
+     <Grid container spacing={2} maxWidth='xxl'>
        <Grid xs={12} md={12} lg={2.7}>
          
         <StatusSelection/>
@@ -162,14 +162,14 @@ const sum = (a, b) => a + b;
       </Grid>
   {/* ******************************* */}
 
-  <Grid container spacing={2} maxWidth='xxl'>
+  <Grid container spacing={1} maxWidth='xxl'>
        <Grid xs={12} md={12} lg={2.7}>
          
         <FieldSelection/>
        </Grid>
   
       <Grid   xs={12} md={12} lg={9.3} >
-        <UserView style={{position:'relative',marginTop:'-200px'}}/>
+        <UserView />
       </Grid>
       </Grid>
       {/* <Stack

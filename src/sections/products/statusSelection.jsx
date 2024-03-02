@@ -7,6 +7,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 
+import {getAllData } from 'src/_mock/fildData';
+
 function StatusSelection({ sx, ...other }) {
   // const [mStatus] = useState(['Online', 'Offline']);
   const [machineStatus, setMachineStatus] = useState(['Online', 'Offline']);
@@ -20,31 +22,36 @@ function StatusSelection({ sx, ...other }) {
 
 
   useEffect(()=>{
-    localStorage.setItem('machineStatus',JSON.stringify(machineStatus));
-    localStorage.setItem('stockStatus',JSON.stringify(stockStatus));
-    localStorage.setItem('burnStatus',JSON.stringify(burnStatus));
-    localStorage.setItem('dorStatus',JSON.stringify(doorStatus));
+    sessionStorage.setItem('machineStatus',JSON.stringify(machineStatus));
+    sessionStorage.setItem('stockStatus',JSON.stringify(stockStatus));
+    sessionStorage.setItem('burnStatus',JSON.stringify(burnStatus));
+    sessionStorage.setItem('dorStatus',JSON.stringify(doorStatus));
+  
   })
   
 
   const handleMachineStatusChange = (event) => {
+    sessionStorage.setItem('machineStatus',JSON.stringify(event.target.value));
     setMachineStatus(event.target.value);
-    localStorage.setItem('machineStatus',JSON.stringify(event.target.value));
+    getAllData();
     // Handle other logic as needed
   };
   const handleStockStatusChange = (event) => {
+    sessionStorage.setItem('stockStatus',JSON.stringify(event.target.value));
     setStockStatus(event.target.value);
-    localStorage.setItem('stockStatus',JSON.stringify(event.target.value));
+    getAllData();
     // Handle other logic as needed
   };
   const handleBurnStatusChange = (event) => {
+    sessionStorage.setItem('burnStatus',JSON.stringify(event.target.value));
     setBurnStatus(event.target.value);
-    localStorage.setItem('burnStatus',JSON.stringify(event.target.value));
+    getAllData();
     // Handle other logic as needed
   };
   const handleDoorStatusChange = (event) => {
+    sessionStorage.setItem('dorStatus',JSON.stringify(event.target.value));
     setDoorStatus(event.target.value);
-    localStorage.setItem('dorStatus',JSON.stringify(event.target.value));
+    getAllData();
     // Handle other logic as needed
   };
 
@@ -74,11 +81,7 @@ function StatusSelection({ sx, ...other }) {
                 value={machineStatus}
                 onChange={handleMachineStatusChange}
                 style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
-                renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
-                  }
+                renderValue={(selected ) =>selected.join(',')}
               >
                  <MenuItem value="Online">
                   <Checkbox checked={machineStatus.indexOf('Online') > -1} />
@@ -107,16 +110,16 @@ function StatusSelection({ sx, ...other }) {
                     : 'None Selected'
                   }
               >
-                <MenuItem value="Ok">
-                  <Checkbox checked={stockStatus.indexOf('Ok') > -1} />
+                <MenuItem value="3">
+                  <Checkbox checked={stockStatus.indexOf('3') > -1} />
                   Ok
                 </MenuItem>
-                <MenuItem value="Low">
-                  <Checkbox checked={stockStatus.indexOf('Low') > -1} />
+                <MenuItem value="1">
+                  <Checkbox checked={stockStatus.indexOf('1') > -1} />
                   Low
                 </MenuItem>
-                <MenuItem value="Empty">
-                  <Checkbox checked={stockStatus.indexOf('Empty') > -1} />
+                <MenuItem value="0">
+                  <Checkbox checked={stockStatus.indexOf('0') > -1} />
                   Empty
                 </MenuItem>
                
@@ -139,16 +142,16 @@ function StatusSelection({ sx, ...other }) {
                     : 'None Selected'
                   }
               >
-                 <MenuItem value="Idle">
-                  <Checkbox checked={burnStatus.indexOf('Idle') > -1} />
+                 <MenuItem value="0">
+                  <Checkbox checked={burnStatus.indexOf('0') > -1} />
                   Idle
                 </MenuItem>
-                <MenuItem value="Burning">
-                  <Checkbox checked={burnStatus.indexOf('Burning') > -1} />
+                <MenuItem value="1">
+                  <Checkbox checked={burnStatus.indexOf('1') > -1} />
                   Burning
                 </MenuItem>
-                <MenuItem value="Error">
-                  <Checkbox checked={burnStatus.indexOf('Error') > -1} />
+                <MenuItem value="2">
+                  <Checkbox checked={burnStatus.indexOf('2') > -1} />
                   Error
                 </MenuItem>
               </Select>
@@ -165,10 +168,10 @@ function StatusSelection({ sx, ...other }) {
                 onChange={handleDoorStatusChange}
                 style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
                 renderValue={(selected ) => 
-                    selected.length > 0
-                    ? `${selected.length} Selected`
-                    : 'None Selected'
-                  }
+                  selected.length > 0
+                  ? `${selected.length} Selected`
+                  : 'None Selected'
+                }
               >
                    <MenuItem value="0">
                   <Checkbox checked={doorStatus.indexOf('0') > -1} />
