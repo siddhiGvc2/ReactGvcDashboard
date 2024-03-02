@@ -1,11 +1,14 @@
-import { useState,useEffect } from 'react';
+// import $ from 'jquery';
+import React, { useState,useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import MuiAlert from '@mui/material/Alert';
 import Popover from '@mui/material/Popover';
+import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
@@ -30,7 +33,22 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
+const API = import.meta.env.VITE_REACT_APP_API;
+const Alert = React.forwardRef((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
+
 export default function UserPage() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [message,setMessage]=useState("");
+  const [type,setType]=useState("")
+  const [name,setName]=useState('');
+  const [email,setEmail]=useState('');
+  const [isAdmin,setIsAdmin]=useState('');
+ 
+  const [password,setPassword]=useState('');
+  const [password2,setPassword2]=useState('');
+  const [clientName,setClientName]=useState('');
   const [cities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
   const [zones,setZones]=useState([]);
   const [wards,setWards]=useState([]);
@@ -61,7 +79,15 @@ export default function UserPage() {
   const handleCloseMenu = () => {
     setOpen(null);
   };
+  
+  const showAlertMessage = () => {
+    setShowAlert(true);
 
+    // You can optionally set a timeout to hide the alert after a few seconds
+    setTimeout(() => {
+    setShowAlert(false);
+    }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
+};
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -80,11 +106,11 @@ export default function UserPage() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, n) => {
+    const selectedIndex = selected.indexOf(n);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, n);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -248,6 +274,86 @@ export default function UserPage() {
       
       setBeatsName([])
     }
+
+    const SaveUser=()=>{
+      const obj = {
+        name,
+        email,
+        isAdmin: isAdmin === '1',
+        city: cityName,
+        zone: zoneName,
+        ward: wardName,
+        beat: beatName,
+        password,
+        password2,
+        clientName
+       }
+       obj.city = obj.city.length && obj.city.join(',') ? obj.city.join(',') : null;
+       obj.zone = obj.zone.length && obj.zone.join(',') ? obj.zone.join(',') : null;
+       obj.ward = obj.ward.length && obj.ward.join(',') ? obj.ward.join(',') : null;
+       obj.beat = obj.beat.length && obj.beat.join(',') ? obj.beat.join(',') : null;
+
+       if (!obj.name) { 
+        showAlertMessage();
+        setType("warning");
+        setMessage("Please Enter Name")
+        }
+       else if (!obj.email) { 
+        showAlertMessage();
+        setType("error");
+        setMessage("Please Enter Username")
+       }
+       else if (!obj.password) { 
+        showAlertMessage();
+        setType("warning");
+        setMessage("Please Enter Password")
+        }
+       else if (!obj.password2) { 
+        showAlertMessage();
+        setType("warning");
+        setMessage("Please Confirm Password")
+        }
+       else if (obj.password !== obj.password2) { 
+        showAlertMessage();
+        setType("error");
+        setMessage("Password Doesn't Match")
+       }
+       else{
+
+        const headers = new Headers({
+          'Content-type':'application/json',
+          'x-token': sessionStorage.getItem('token'),
+
+        });
+         fetch(`${API}/api/admin/user`, { method: 'POST', headers ,body:JSON.stringify(obj)})
+         .then((res)=>
+              res.json()
+         )
+         .then((json)=>{
+          showAlertMessage();
+          setType("success");
+          setMessage("Saved Succesfully");
+          handleCloseMenu();
+
+         })
+         .catch((err)=>{
+          showAlertMessage();
+          setType("error");
+          setMessage("An Error Occured")
+           
+         })
+
+       
+            
+              
+              
+        
+         
+    
+       }
+      
+
+    }
   
 
   return <>
@@ -259,6 +365,15 @@ export default function UserPage() {
           New User
         </Button>
       </Stack>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
+
+     </Stack>
 
       <Card>
         <UserTableToolbar
@@ -356,21 +471,21 @@ export default function UserPage() {
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Name:</h5>
-                            <input type="text" className="form-control" id="name" name="name" />
+                            <input type="text" className="form-control" id="name" name="name" onChange={(e)=>setName(e.target.value)} />
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Username:</h5>
-                            <input type="text" className="form-control" id="email" name="email" />
+                            <input type="text" className="form-control" id="email" name="email" onChange={(e)=>setEmail(e.target.value)}/>
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Role</h5>
-                            <select className="form-control" name="isAdmin" id="isAdmin" >
+                            <select className="form-control" name="isAdmin" id="isAdmin" onChange={(e)=>setIsAdmin(e.target.value)}>
                                 <option value="1">Admin</option>
                                 <option value="0" selected>User</option>
                               
@@ -381,7 +496,7 @@ export default function UserPage() {
                       <div className="col-md-6 clientName">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Cient Name</h5>
-                               <input type="text" className="form-control" name="clientName" id="clientName"/>
+                               <input type="text" className="form-control" name="clientName" id="clientName" onChange={(e)=>setClientName(e.target.value)}/>
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
@@ -575,14 +690,14 @@ export default function UserPage() {
                     <div className="col-md-6">
                         <div className="form-group my-2">
                             <h5 className="text-primary d-inline">Password</h5>
-                            <input type="password" className="form-control" id="password" name="password" />
+                            <input type="password" className="form-control" id="password" name="password" onChange={(e)=>setPassword(e.target.value)} />
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
                             <h5 className="text-primary d-inline">Confirm Password</h5>
-                            <input type="password" className="form-control" name="password2" id="confirmPassword" />
+                            <input type="password" className="form-control" name="password2" id="confirmPassword" onChange={(e)=>setPassword2(e.target.value)} />
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
@@ -590,7 +705,7 @@ export default function UserPage() {
             </div>
             <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal" onClick={handleCloseMenu}>Close</button>
-                <button type="button" className="btn btn-primary" >Save changes</button>
+                <button type="button" className="btn btn-primary" onClick={SaveUser}>Save changes</button>
             </div>
     
 
