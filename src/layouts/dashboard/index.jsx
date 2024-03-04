@@ -9,6 +9,7 @@ import Header from './header';
 
 // ----------------------------------------------------------------------
 
+// main componet of sidepanel
 export default function DashboardLayout({ children }) {
   const [openNav, setOpenNav] = useState(false);
 

@@ -21,6 +21,8 @@ import AccountPopover from './common/account-popover';
 
 // ----------------------------------------------------------------------
 
+
+// top horizontal bar ui
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 

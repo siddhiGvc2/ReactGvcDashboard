@@ -27,12 +27,14 @@ import Logo from 'src/components/logo';
 
 // ----------------------------------------------------------------------
 const API =import.meta.env.VITE_REACT_APP_API;
+
+// Alert Component defined here for popup
 const Alert = React.forwardRef((props, ref) => (
   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 ));
 
 
-
+// started function here of login
 export default function LoginView() {
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
@@ -53,6 +55,9 @@ export default function LoginView() {
     }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
 };
 
+
+
+  // onclick login function executed here with api
   const handleClick = (event) => {
     console.log(event)
     event.preventDefault();
@@ -86,6 +91,8 @@ export default function LoginView() {
         
   };
 
+
+  // login form ui component
   const renderForm = (
     
       <Box component="form" onSubmit={handleClick} noValidate sx={{ mt: 1 }}>

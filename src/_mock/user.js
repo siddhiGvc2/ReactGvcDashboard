@@ -25,7 +25,7 @@ const API =import.meta.env.VITE_REACT_APP_API;
 //   ]),
 // }));
 
- async function fetchUsers() {
+ export const fetchUsers=async()=> {
   try {
     const headers = new Headers({
       'x-token': sessionStorage.getItem('token'),
@@ -41,5 +41,5 @@ const API =import.meta.env.VITE_REACT_APP_API;
 
 
 
- export const  users = await fetchUsers();
+
 

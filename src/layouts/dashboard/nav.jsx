@@ -25,6 +25,8 @@ import navConfig from './config-navigation';
 
 // ----------------------------------------------------------------------
 
+// started side panel ui here
+
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
@@ -37,6 +39,8 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+
+  // account ui
   const renderAccount = (
     <Box
       sx={{
@@ -61,7 +65,8 @@ export default function Nav({ openNav, onCloseNav }) {
       </Box>
     </Box>
   );
-
+ 
+  // menu ui
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
@@ -71,7 +76,7 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 
   
-
+ // combination of account ui and menu ui
   const renderContent = (
     <>
     <Box sx={{width:'100%',height:'90px',backgroundColor:'white',paddingTop:'5px'}}>
@@ -146,6 +151,8 @@ Nav.propTypes = {
 
 // ----------------------------------------------------------------------
 
+
+// menuItems list ui
 function NavItem({ item }) {
   const pathname = usePathname();
 

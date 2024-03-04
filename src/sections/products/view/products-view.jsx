@@ -28,22 +28,33 @@ import StatusSelection from '../statusSelection';
 
 // ----------------------------------------------------------------------
 
+
+
+// machineData ui componet started here
 export default function ProductsView() {
   const [data,setData]=useState({data:[],dataAll:[]})
  
+  // getting data from file 'src/Redux/store'
   store.subscribe(() => {
+    // store in data hook
     setData(store.getState().data);
    
   });
+
 
   useEffect(()=>{
        console.log(data);
   },[data])
 
+
+  // filtering online machines
   const filterOnline = q => moment().diff(moment.utc((q.lastHeartbeatTime || q.lastOnTime).replace('Z', '')), 'minute') < 5;
   
+  //  caheckin machine is online or not
   const online = m => moment().diff(moment.utc((m.lastHeartbeatTime || m.lastOnTime).replace('Z', '')), 'minute') < 5;
 
+
+  // calculated amount as lacks , coror, thound
   const amountText = amt => {
     amt = amt || 0;
  
@@ -78,6 +89,7 @@ const sum = (a, b) => a + b;
         Machine Data
       </Typography>
      <Grid container spacing={2} maxWidth='xxl'>
+        {/* all status selection ui machine status ,burn status, stock sttaus, door status in StatusSelection component */}
        <Grid xs={12} md={12} lg={2.7}>
          
         <StatusSelection/>
@@ -85,6 +97,7 @@ const sum = (a, b) => a + b;
   
       <Grid   xs={12} md={12} lg={9.3} >
         <Stack  container spacing='1' display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly' >
+          {/* total machines ui */}
         <Grid  xs={12} sm={6} md={3}>
           <MachineCard
             title="Total Machines"
@@ -93,7 +106,7 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
           />
         </Grid>
-
+          {/* online machines ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Online Machines"
@@ -102,7 +115,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/online.png" />}
           />
         </Grid>
-
+         
+         {/* total collection ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Total Collections"
@@ -111,7 +125,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
           />
         </Grid>
-
+        
+        {/* item dispensed ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Item Despensed"
@@ -122,6 +137,7 @@ const sum = (a, b) => a + b;
         </Grid>
         </Stack>
         <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'>
+           {/* emty stock ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Stock Empty"
@@ -130,7 +146,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/EmptyStock.png" />}
           />
         </Grid>
-
+         
+         {/* low stock ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Low Stock"
@@ -139,7 +156,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/LowStock.png" />}
           />
         </Grid>
-
+        
+        {/* burning enabled ui */}
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
             title="Burning Enabled"
@@ -148,6 +166,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/Burning.png" />}
           />
         </Grid>
+
+        {/* burning cycles ui */}
 
         <Grid xs={12} sm={6} md={3}>
           <MachineCard
@@ -163,11 +183,14 @@ const sum = (a, b) => a + b;
   {/* ******************************* */}
 
   <Grid container spacing={1} maxWidth='xxl'>
+       {/* zone , ward , beat selection in FieldSelection component */}
        <Grid xs={12} md={12} lg={2.7}>
          
         <FieldSelection/>
        </Grid>
   
+
+       {/* table of machineDat in UserView componet */}
       <Grid   xs={12} md={12} lg={9.3} >
         <UserView />
       </Grid>

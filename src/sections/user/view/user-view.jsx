@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
+import { fetchUsers } from 'src/_mock/user';
 import {zoneData,wardData,beatData} from 'src/_mock/fildData';
 
 import Iconify from 'src/components/iconify';
@@ -34,11 +34,18 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 // ----------------------------------------------------------------------
 
 const API = import.meta.env.VITE_REACT_APP_API;
+
+// error || succes popup compnet defined here
 const Alert = React.forwardRef((props, ref) => (
   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 ));
 
+
+
+//  Users ui started here
+
 export default function UserPage() {
+  const[users,setUsers]=useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
   const [type,setType]=useState("")
@@ -71,6 +78,16 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [open, setOpen] = useState(null);
+
+
+
+  useEffect(()=>{
+    // getting data from fecthData function
+    fetchUsers().then((res)=>{
+    
+      setUsers(res);
+    })
+  },[])
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -146,6 +163,8 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+
+  // below code from 167 to 380 if for zone, ward beat, city selction in Add User
 
   useEffect(()=>{
    
@@ -330,10 +349,15 @@ export default function UserPage() {
               res.json()
          )
          .then((json)=>{
+        
           showAlertMessage();
           setType("success");
           setMessage("Saved Succesfully");
           handleCloseMenu();
+          fetchUsers().then((res)=>{
+    
+            setUsers(res);
+          })
 
          })
          .catch((err)=>{
@@ -448,6 +472,8 @@ export default function UserPage() {
         />
       </Card>
     </Container>
+
+    {/* Add user model ui */}
     <Popover
         open={!!open}
         anchorEl={open}

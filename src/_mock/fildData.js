@@ -21,6 +21,8 @@ export const getAllData = async () => {
       const response = await fetch(`${API}/api/machine/data?city=${city.join()}&zone=${zone.join()}&ward=${ward.join()}&beat=${beat.join()}&status=${machineStatus.join()}&burn_status=${burn_status.join()}&stock_status=${stockStatus.join()}`, { method: 'GET', headers });
       const json = await response.json();
       console.log(json.data);
+      
+      // storing response data in Redux/store
       store.dispatch(saveData(json.data));
   
       // Return the data or another value if needed

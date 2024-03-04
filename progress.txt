@@ -1,0 +1,11 @@
+
+
+
+
+02-03-24:Users API called . Folder/File Name: src/_mock/user.js
+02-03-24: Users Ui with Add User Ui . Folder/File Name :src/sections/user
+01-03-24: All Machine Data Api Called . Folder/File Name :src/_mock/fieldData.js
+29-02-24: Machine Dta ui . Folder/File Name : src/sections/products/view
+28-02-24:Side Panel ui . Folder/File Name : src/layouts/dashboard/nav.jsx
+28-02-24: Dashboar Ui with Api call . Folder/File Name: src/sections/overview/view. Api File: src/_mock/machineData
+27-02-24: Login Ui done. Folder/File Name:src/sections/login/login-view.jsx

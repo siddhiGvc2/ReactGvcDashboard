@@ -1,5 +1,5 @@
 import moment from "moment";
-import { faker } from '@faker-js/faker';
+// import { faker } from '@faker-js/faker';
 import { useState,useEffect } from 'react';
 
 // import { useLocation } from 'react-router-dom';
@@ -13,29 +13,29 @@ import Grid from '@mui/material/Unstable_Grid2';
 // import Typography from '@mui/material/Typography';
 // import { useRouter } from 'src/routes/hooks';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
-import AppTasks from '../app-tasks';
-import AppNewsUpdate from '../app-news-update';
+// import AppTasks from '../app-tasks';
+// import AppNewsUpdate from '../app-news-update';
 import {fetchData} from "../../../_mock/machineData";
-import AppOrderTimeline from '../app-order-timeline';
+// import AppOrderTimeline from '../app-order-timeline';
 import AppCurrentVisits from '../app-current-visits';
 // import AppWebsiteVisits from '../app-website-visits';
 import AppWidgetSummary from '../app-widget-summary';
-import AppTrafficBySite from '../app-traffic-by-site';
-import AppCurrentSubject from '../app-current-subject';
-import AppConversionRates from '../app-conversion-rates';
+// import AppTrafficBySite from '../app-traffic-by-site';
+// import AppCurrentSubject from '../app-current-subject';
+// import AppConversionRates from '../app-conversion-rates';
 
 // ----------------------------------------------------------------------
 
 
-
+// started function of dashboard ui here
 export default function AppView() {
   
   const [pathName,setPathName]=useState({data:[],dataAll:[]});
  
 
-
+  // calling for api data
   const LoadData=()=>{
     fetchData().then((res)=>{
       setPathName(res);
@@ -43,6 +43,8 @@ export default function AppView() {
     });
    
   }
+
+  // calling loadData every 5 seconds
   useEffect(() => {
  
    
@@ -61,11 +63,13 @@ export default function AppView() {
   // const router=useRouter();
 
 
-
+  // filtering onlines machines
   const filterOnline = q => moment().diff(moment.utc((q.lastHeartbeatTime || q.lastOnTime).replace('Z', '')), 'minute') < 5;
   
   // const online = m => moment().diff(moment.utc((m.lastHeartbeatTime || m.lastOnTime).replace('Z', '')), 'minute') < 5;
 
+
+  // converting value in the form of lacks, thousand ,Coror
   const amountText = amt => {
     amt = amt || 0;
  
@@ -91,8 +95,8 @@ export default function AppView() {
 
 
 
-
-const sum = (a, b) => a + b;
+ // calulating some of two numbers
+ const sum = (a, b) => a + b;
 
   
 
@@ -102,6 +106,7 @@ const sum = (a, b) => a + b;
       
 
       <Grid container spacing={3} onClick={()=> setPathName(1)}>
+        {/* total Machines */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Total Machines"
@@ -110,7 +115,7 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
           />
         </Grid>
-
+         {/* online machines */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Online Machines"
@@ -119,7 +124,7 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/online.png" />}
           />
         </Grid>
-
+        {/* total collection */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Total Collections"
@@ -128,7 +133,7 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
           />
         </Grid>
-
+           {/* item dispensed */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Item Despensed"
@@ -137,6 +142,8 @@ const sum = (a, b) => a + b;
             icon={<img alt="icon" src="/assets/icons/items.png" />}
           />
         </Grid>
+
+        {/* Machine Status */}
         <Grid xs={12} md={6} lg={6}>
           <AppCurrentVisits
             title="Machine Status"
@@ -154,7 +161,7 @@ const sum = (a, b) => a + b;
           />
         </Grid>
        
-
+        {/* Stcok Status */}
         <Grid xs={12} md={6} lg={6}>
           <AppCurrentVisits
             title="Stock Status"
@@ -177,8 +184,8 @@ const sum = (a, b) => a + b;
             }}
           />
         </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
+     </Grid>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
             subheader="(+43%) than last year"
@@ -284,7 +291,7 @@ const sum = (a, b) => a + b;
             ]}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
     </Container>
   );
 }
