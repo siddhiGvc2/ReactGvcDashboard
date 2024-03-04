@@ -102,7 +102,7 @@ export default function AppView() {
 
 
   return (
-    <Container maxWidth="xl" >
+    <Container maxWidth="xxl" >
       
 
       <Grid container spacing={3} onClick={()=> setPathName(1)}>

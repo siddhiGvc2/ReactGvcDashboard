@@ -381,7 +381,7 @@ export default function UserPage() {
   
 
   return <>
-    <Container maxWidth="xl">
+    <Container maxWidth="xxl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 

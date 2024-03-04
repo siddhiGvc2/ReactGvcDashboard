@@ -4,6 +4,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import { ProductsView } from 'src/sections/products/view';
+import DailyReports from 'src/sections/Reports/dailyReports';
+
+
 // import StatusSelection from 'src/sections/products/statusSelection';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -31,6 +34,7 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsView /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'dailyReports', element: <DailyReports/>},
       ],
     },
     {

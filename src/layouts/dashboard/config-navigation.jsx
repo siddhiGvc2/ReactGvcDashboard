@@ -22,7 +22,11 @@ const navConfig = [
     path: '/user',
     icon: icon('ic_user'),
   },
-  
+  {
+    title: 'Reports',
+    path: '/dailyReports',
+    icon: icon('file-lines-solid'),
+  },
   {
     title: 'blog',
     path: '/blog',

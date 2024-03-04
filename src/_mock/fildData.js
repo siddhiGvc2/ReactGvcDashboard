@@ -20,8 +20,8 @@ export const getAllData = async () => {
   
       const response = await fetch(`${API}/api/machine/data?city=${city.join()}&zone=${zone.join()}&ward=${ward.join()}&beat=${beat.join()}&status=${machineStatus.join()}&burn_status=${burn_status.join()}&stock_status=${stockStatus.join()}`, { method: 'GET', headers });
       const json = await response.json();
-      console.log(json.data);
-      
+      // console.log(json.data);
+
       // storing response data in Redux/store
       store.dispatch(saveData(json.data));
   
@@ -89,5 +89,21 @@ export const zoneData=async(city)=> {
     }
   }
 
+
+  export const Machines=async(city,zone,ward,beat)=> {
+  
+    try {
+      const headers = new Headers({
+        'x-token': sessionStorage.getItem('token'),
+      });
+      const response = await fetch(`${API}/api/machine/master/machine?city=${city}&zone=${zone}&ward=${ward}&beat=${beat}`, { method: 'GET', headers });
+      const json = await response.json();
+      return json.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+  
+      return [];
+    }
+  }
 
   

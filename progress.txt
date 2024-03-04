@@ -1,7 +1,7 @@
 
 
 
-
+04-03-24: Daily Report Ui . Folder/File Name : src/sections/Reports/dailyReports.js
 02-03-24:Users API called . Folder/File Name: src/_mock/user.js
 02-03-24: Users Ui with Add User Ui . Folder/File Name :src/sections/user
 01-03-24: All Machine Data Api Called . Folder/File Name :src/_mock/fieldData.js
