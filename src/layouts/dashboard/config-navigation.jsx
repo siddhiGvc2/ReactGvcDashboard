@@ -28,6 +28,12 @@ const navConfig = [
     icon: icon('file-lines-solid'),
   },
   {
+    title: 'Login Logs',
+    path: '/loginLogs',
+    icon: icon('right-to-bracket-solid'),
+  },
+  
+  {
     title: 'blog',
     path: '/blog',
     icon: icon('ic_blog'),

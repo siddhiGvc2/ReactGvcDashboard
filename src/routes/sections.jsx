@@ -3,8 +3,10 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import LoginLogs from 'src/sections/Reports/loginLogs';
 import { ProductsView } from 'src/sections/products/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
+
 
 
 // import StatusSelection from 'src/sections/products/statusSelection';
@@ -35,6 +37,7 @@ export default function Router() {
         { path: 'products', element: <ProductsView /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'dailyReports', element: <DailyReports/>},
+        { path: 'loginLogs', element: <LoginLogs/>},
       ],
     },
     {

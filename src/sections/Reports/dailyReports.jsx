@@ -40,46 +40,30 @@ export default function DailyReports(){
     setIsChecked(!isChecked);
   };
 
+
+  // getting data from file "src/_mock/reportData"
     useEffect(()=>{
    
         zoneData(cityName).then((res)=>{
-          // console.log(res);
-          setZones(res);
-        //   setZonesName(res);
+            setZones(res);
+
         })
         wardData(cityName,zoneName).then((res)=>{
-          // console.log(res);
-          setWards(res);
-        //   setWardsName(res);
-        
+            setWards(res);
         });
         beatData(cityName,zoneName,wardName).then((res)=>{
-          // console.log(res);
-          setBeats(res);
-        //   setBeatsName(res);
-        
+           setBeats(res);
         });
         Machines(cityName,zoneName,wardName,beatName).then((res)=>{
-            
             setMachines(res);
-           
-           
         })
        
       
-       },[cityName,zoneName,wardName,beatName,machineName])
+       },[cityName,zoneName,wardName,beatName])
 
-
-  
-     
-        
-      
-        useEffect(()=>{
-         
+         useEffect(()=>{
             zoneData(cityName).then((res)=>{
-              // console.log(res);
-            
-              setZonesName(res);
+               setZonesName(res);
               
             })
       
@@ -169,10 +153,6 @@ export default function DailyReports(){
              setMachineName([])
            }
 
-        //  useEffect(()=>{
-        //     setReportData(reportData);
-        //  },[reportData])
-
            
            const LoadReport=()=>{
             ReportData(cityName,zoneName,wardName,beatName,machineName,startDate,endDate).then((res)=>{
@@ -188,6 +168,7 @@ export default function DailyReports(){
      
     
         <div className="row"  >
+                {/* City selection ui */}
                     <div className=" col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">City:</h5>
@@ -237,6 +218,7 @@ export default function DailyReports(){
                             </div>
                         </div>
                     </div>
+                    {/* Zone selection Ui */}
                     <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2 ">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Zone:</h5>
@@ -282,6 +264,7 @@ export default function DailyReports(){
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {/* Ward selection ui */}
                                                 <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                                                     <div className="form-group my-2">
                                                     <h5 className="text-primary d-inline">Ward:</h5>
@@ -326,6 +309,7 @@ export default function DailyReports(){
                             </div>
                         </div>
                     </div>
+                    {/* Beat selection ui */}
                     <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Beat:</h5>
@@ -369,7 +353,7 @@ export default function DailyReports(){
                             </div>
                         </div>
                     </div>
-
+                     {/* Machine selection ui */}
                     <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2 ">
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Machines:</h5>
@@ -379,6 +363,7 @@ export default function DailyReports(){
                                       onClick={selectAllMachines}><i className="fa fa-check"/></button>
                                       <Select
                                             multiple
+                                    
                                             value={machineName}
                                             onChange={handleMachineChange}
                                             style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%',fontSize:'14px' }}
@@ -391,7 +376,7 @@ export default function DailyReports(){
                                             }
                                             if(items.length===1)
                                             {
-                                                return `${items[0]}`
+                                                return `${items[0].label}`
                                             }
                                             return `${items.length} Selected`
                                         }}
@@ -399,9 +384,9 @@ export default function DailyReports(){
 
                                         
                                                 {
-                                                machines.map((elem) => (
-                                                    <MenuItem value={elem.label}>
-                                                    <Checkbox checked={machineName.indexOf(elem.label) > -1} />
+                                               machines.map((elem) => (
+                                                    <MenuItem value={elem.value} key={elem.key}>
+                                                    <Checkbox checked={machineName.indexOf(elem) > -1} />
                                                     {elem.label}
                                                     </MenuItem>
                                                 ))
@@ -416,7 +401,7 @@ export default function DailyReports(){
                             </div>
                         </div>
                     </div>
-
+                  {/* daily switch button ui */}
                     <div className="col-xl-3 col-lg-5 col-md-6 col-12 col-12 my-2">
                         <h5>Summary Type:</h5>
                         <div className="row">
@@ -437,6 +422,8 @@ export default function DailyReports(){
                     </div>
 
                 </div>
+
+                 {/* date selection ui */}
             
                 <div className="row mt-2">
                     <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2">
@@ -470,8 +457,8 @@ export default function DailyReports(){
 
                 
                
-  
-            {reportData && <TableHeader data={reportData} zones={zones.filter(item => !zoneName.includes(item))} wards={wards.filter(item => !wardName.includes(item))} beats={beats.filter(item => !beatName.includes(item))} startDate endDate/>}
+           {/* report teble ui */}
+            {reportData && <TableHeader data={reportData} zones={zones.filter(item => !zoneName.includes(item))} wards={wards.filter(item => !wardName.includes(item))} beats={beats.filter(item => !beatName.includes(item))} startDate={startDate} endDate={endDate} checked={isChecked}/>}
               
 
 
