@@ -17,7 +17,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function FaultReportRow({
   sr,
   selected,
   name,
@@ -58,7 +58,7 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src="" /> */}
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {row.userName}
             </Typography>
           </Stack>
         </TableCell>
@@ -68,12 +68,12 @@ export default function UserTableRow({
        <i className="fa-solid fa-globe" style={{color: 'blue',cursor: 'pointer'}} /> {row.loginLat}  {row.loginLong }
        </TableCell>
      
-        <TableCell align="center">{row.deviceModel}</TableCell>
-        <TableCell align="center">{row.Remark}</TableCell>
-        <TableCell align="center">{row.MachineNumber}</TableCell>
-        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{row.machineID}</TableCell>
+       <TableCell align="center">{row.faultReported}</TableCell>
+       <TableCell align="center">{row.actionTaken}</TableCell>
+       <TableCell align="center">{row.faultStatus}</TableCell>
       
-
+       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-MM')}</TableCell>
        
       
 
@@ -112,7 +112,7 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+FaultReportRow.propTypes = {
   sr:PropTypes.any,
   city: PropTypes.any,
   zone: PropTypes.any,

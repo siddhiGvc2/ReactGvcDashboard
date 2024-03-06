@@ -1,15 +1,46 @@
+// import rtl from "jss-rtl";
 import moment from "moment";
-import { useEffect } from 'react';
+// import $ from 'jquery';
+
+import * as XLSX from 'xlsx';
+// import html2pdf from 'html2pdf.js';
+
+// import { create } from "jss";
 import PropTypes from 'prop-types';
+import {useRef, useEffect} from 'react';
+
+// import { StylesProvider,jssPreset } from "@mui/system";
+
+
 // import { useEffect } from "react";
 
 
 const sr=1;
 export default function TableHeader({data,zones,wards,beats,startDate,endDate,checked}){
+    const tblDataRef = useRef(null);
     useEffect(()=>{
       console.log(data)
     },[data])
+     
+    const printData=()=> {
+        const printContents = tblDataRef.current.outerHTML;
+     
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+       
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    } 
 
+   
+      const printExcelData = () => {
+        const table = tblDataRef.current;
+        const ws = XLSX.utils.table_to_sheet(table);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+        XLSX.writeFile(wb, 'report.xlsx');
+      };
 
     const start=()=>moment(startDate).format('DD-MMM-YYYY');
     const end=()=>moment(endDate).format('DD-MMM-YYYY');
@@ -41,8 +72,8 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
         <div className="card">
         <div className="card-body">
             <div className="row">
-                <div className="col-12 sm-scroll-h" style={{overflowX: 'scroll'}}>
-        <table className="table table-bordered" id="tblData">
+                <div className="col-12 sm-scroll-h" style={{overflowX: 'scroll'}} >
+        <table className="table table-bordered" id="tblData"  ref={tblDataRef}>
         <thead>
             <tr>
                 <th colSpan="2">Project</th>
@@ -169,10 +200,10 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
     </div>
             </div>
             <p style={{display:'flex',justifyContent:'flex-end'}}>
-                <button type="button" className="btn btn-outline-info" >
+                <button type="button" className="btn btn-outline-info" onClick={printExcelData}>
                     <i className="fas fa-file-excel"/> &nbsp; Excel
                 </button>
-                <button type="button" className="btn btn-outline-success" >Print
+                <button type="button" className="btn btn-outline-success" onClick={printData} >Print
                     Report</button>
             </p>
         </div>

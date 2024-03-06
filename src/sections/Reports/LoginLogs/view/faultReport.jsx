@@ -1,7 +1,7 @@
 // import $ from 'jquery';
 import * as XLSX from 'xlsx';
 import PropTypes from 'prop-types';
-import React, {useRef, useState } from 'react';
+import React, { useRef,useState } from 'react';
 
 import Card from '@mui/material/Card';
 // import Stack from '@mui/material/Stack';
@@ -28,11 +28,15 @@ import Scrollbar from 'src/components/scrollbar';
 // import { UserView } from 'src/sections/user/view';
 
 import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
+import FaultReportRow from '../faultReport-row';
+// import UserTableRow from '../user-table-row';
+
 import TableEmptyRows from '../table-empty-rows';
+// import LastEntryTableRow from '../last-entry-row';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+
 
 
 
@@ -49,7 +53,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 //  Users ui started here
 
-export default function UserPage({users}) {
+export default function FaultReportView({users}) {
   // const[users,setUsers]=useState([]);
   const tblDataRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -63,6 +67,8 @@ export default function UserPage({users}) {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  
 
   const printData=()=> {
     const printContents = tblDataRef.current.outerHTML;
@@ -83,8 +89,6 @@ export default function UserPage({users}) {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'report.xlsx');
   };
-
-
 
  
  
@@ -157,10 +161,11 @@ export default function UserPage({users}) {
                   { id: 'id', label: 'Sr.No' },
                   { id: 'email', label: 'UserName' },
                   { id: 'location', label: 'Location (Lat/Lon)' },
-                  { id: 'ipAddress', label: 'IP Address' },
-                  { id: 'remark', label: 'Remark' },
-                  { id: 'machineNo', label: 'Machine' },
-                  { id: 'date&Time', label: 'Date & Time' },
+                  { id: 'machineNumber', label: 'Machine Number' },
+                  { id: 'faultReported', label: 'Fault Reported' },
+                  { id: 'actionTaken', label: 'Action Taken' },
+                  { id: 'status', label: 'Status' },
+                  { id: 'DateTime', label: 'Date & Time' },
                  
           
                 ]}
@@ -169,11 +174,10 @@ export default function UserPage({users}) {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row,i) => (
-                    <UserTableRow
+                    <FaultReportRow
                       sr={page*rowsPerPage+i+1}
                       key={row.id}
-                      name={row.userName}
-                      email={row.email}
+                 
                       row={row}
                      
                    
@@ -215,8 +219,6 @@ export default function UserPage({users}) {
 }
 
 
-UserPage.propTypes = {
+FaultReportView.propTypes = {
   users:PropTypes.any
 };
-
-

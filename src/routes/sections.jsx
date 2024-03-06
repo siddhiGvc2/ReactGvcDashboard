@@ -4,8 +4,11 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import LoginLogs from 'src/sections/Reports/loginLogs';
-import { ProductsView } from 'src/sections/products/view';
+import FaultReport from 'src/sections/Reports/faultReport';
+import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
+import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -34,10 +37,12 @@ export default function Router() {
       children: [
         {path: 'dashboard', element: <IndexPage />},
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsView /> },
+        { path: 'machineData', element: <ProductsView /> },
+        { path: 'machineMap', element: <MachineMapView/> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'dailyReports', element: <DailyReports/>},
         { path: 'loginLogs', element: <LoginLogs/>},
+        { path: 'faultReport', element: <FaultReport/>},
       ],
     },
     {

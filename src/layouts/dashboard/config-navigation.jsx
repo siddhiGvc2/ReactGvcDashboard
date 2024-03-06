@@ -14,7 +14,12 @@ const navConfig = [
   },
   {
     title: 'Machine Data',
-    path: '/products',
+    path: '/machineData',
+    icon: icon('ic_cart'),
+  },
+  {
+    title: 'Machine Map',
+    path: '/machineMap',
     icon: icon('ic_cart'),
   },
   {
@@ -31,6 +36,11 @@ const navConfig = [
     title: 'Login Logs',
     path: '/loginLogs',
     icon: icon('right-to-bracket-solid'),
+  },
+  {
+    title: 'Technician Report',
+    path: '/faultReport',
+    icon: icon('screwdriver-wrench-solid'),
   },
   
   {

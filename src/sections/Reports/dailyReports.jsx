@@ -1,6 +1,7 @@
 // import 'bootstrap-switch-button/dist/bootstrap3/bootstrap-switch-button.min.css';
 import moment from "moment";
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
+// import * as XLSX from 'xlsx';
 import SwitchButton from 'bootstrap-switch-button-react';
 
 // import { Grid } from '@mui/material';
@@ -20,6 +21,7 @@ import TableHeader from "./dailyReportComponents/tableHeader";
 
 
 export default function DailyReports(){
+    // const tblDataRef = useRef(null);
     const [reportData,setReportData]=useState(null);
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
@@ -39,7 +41,9 @@ export default function DailyReports(){
   const handleChange = () => {
     setIsChecked(!isChecked);
   };
+  
 
+ 
 
   // getting data from file "src/_mock/reportData"
     useEffect(()=>{

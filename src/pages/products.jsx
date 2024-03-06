@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
-import { ProductsView } from 'src/sections/products/view';
-import StatusSelection from 'src/sections/products/statusSelection';
+import { ProductsView } from 'src/sections/MachineData/view';
+import StatusSelection from 'src/sections/MachineData/statusSelection';
 
 
 

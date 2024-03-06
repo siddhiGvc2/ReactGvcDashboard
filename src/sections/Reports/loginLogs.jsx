@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useState } from 'react';
+import { useState} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
 import Card from '@mui/material/Card';
@@ -9,14 +9,19 @@ import Typography from '@mui/material/Typography';
 import { LogInfo } from "src/_mock/loginLogsData";
 
 import { UserView } from "./LoginLogs/view";
+import LastEntry from "./LoginLogs/view/lastEntry";
 
 
 
 export default function LoginLogs(){
+  
     const [data,setData]=useState(null);
+    const [last,setLast]=useState(null);
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
     const [isChecked, setIsChecked] = useState(true);
+
+   
 
     const handleChange = () => {
       setIsChecked(!isChecked);
@@ -24,7 +29,53 @@ export default function LoginLogs(){
     
     const LoadData=()=>{
         LogInfo(startDate,endDate).then((res)=>{
-            setData(res.obj);
+            if(!isChecked)
+            {
+            
+
+              const uniqueEntries = res.obj.reduce((acc, entry) => {
+                const { userName, createdAt } = entry;
+
+               
+                if (!acc[userName]) {
+                    acc[userName] = { firstEntry: entry, lastEntry: entry };
+                } else {
+                    
+                    acc[userName].lastEntry = entry;
+
+                   
+                    if (createdAt < acc[userName].firstEntry.createdAt) {
+                    acc[userName].firstEntry = entry;
+                    }
+                }
+
+                return acc;
+                }, {});
+                // console.log(uniqueEntries);
+                const resultArray = Object.values(uniqueEntries);
+             
+              const results=[];
+               
+            for(let i=0;i<resultArray.length; i += 1)
+            {
+                
+              
+              
+                resultArray[i].firstEntry.lastLocationLat = resultArray[i].lastEntry.loginLat;
+
+                resultArray[i].firstEntry.deviceModel=resultArray[i].lastEntry.deviceModel;
+                resultArray[i].firstEntry.lastLocationLong=resultArray[i].lastEntry.loginLong;
+                resultArray[i].firstEntry.lastDateTime=resultArray[i].lastEntry.createdAt;
+                results.push(resultArray[i].firstEntry);
+              
+            }
+            console.log(results)
+            setLast(results);
+            }
+            else{
+                setData(res.obj);
+            }
+           
         })
 
     }
@@ -63,10 +114,10 @@ export default function LoginLogs(){
                                     checked={isChecked}
                                     onChange={handleChange}
                                     onlabel="All"
-                                    offlabel="Last Only"
+                                    offlabel="First & Last Only"
                                     onstyle='success'
                                     offstyle='info'
-                                    width={120}
+                                    width={180}
                                 />
                             </div>
                         </div>
@@ -84,9 +135,12 @@ export default function LoginLogs(){
                     </div>
                 </div>
                  <div>
-                 {data &&  <UserView users={data}/>}
-                   
+               
+                 {isChecked? data && <UserView  users={data} />: ''}
+                
+                 {!isChecked ? last && <LastEntry users={last}/>:''}
                  </div>
+               
                 </Container>
     </Card>
     

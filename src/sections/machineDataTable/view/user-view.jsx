@@ -103,7 +103,7 @@ export default function UserPage() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Container maxWidth='xl'>
+    <Container maxWidth='xxl'>
      
       <Card>
         <UserTableToolbar
@@ -114,7 +114,7 @@ export default function UserPage() {
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 1000 }}>
+            <Table >
               <UserTableHead
                 order={order}
                 orderBy={orderBy}

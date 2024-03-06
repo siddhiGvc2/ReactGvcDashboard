@@ -1,12 +1,15 @@
-
-05-03-24: Logi logs list ui done with api call . Folder/File Name src/sections/Reports/loginLogs.js & API: src/_mock/loginLogsData.js
+06-03-24: Machine Map 80% completed
+06-03-24: Technician report ui with api displayed. Api folder : src/_mock
+06-03-24: Download options added in daily reports and login reports.
+06-03-24: Login Logs lat entries displayed.
+05-03-24: Login logs list ui done with api call . Folder/File Name src/sections/Reports/loginLogs.js & API: src/_mock/loginLogsData.js
 05-03-24: api of reports called. Folder/File Name : src/_mock/reportData.js
 05-03-24: Report ui 90% done . Folder/File Name : src/sections/Reports/tableHeader.jsx
 04-03-24: Daily Report Ui . Folder/File Name : src/sections/Reports/dailyReports.js
 02-03-24:Users API called . Folder/File Name: src/_mock/user.js
 02-03-24: Users Ui with Add User Ui . Folder/File Name :src/sections/user
 01-03-24: All Machine Data Api Called . Folder/File Name :src/_mock/fieldData.js
-29-02-24: Machine Dta ui . Folder/File Name : src/sections/products/view
+29-02-24: Machine Dta ui . Folder/File Name : src/sections/MachineData/view
 28-02-24:Side Panel ui . Folder/File Name : src/layouts/dashboard/nav.jsx
 28-02-24: Dashboar Ui with Api call . Folder/File Name: src/sections/overview/view. Api File: src/_mock/machineData
 27-02-24: Login Ui done. Folder/File Name:src/sections/login/login-view.jsx
