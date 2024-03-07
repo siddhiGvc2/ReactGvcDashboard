@@ -54,7 +54,7 @@ export default function AppView() {
     setInterval(()=>{
       LoadData();
     },5000)
-  }, []);
+  },[]);
 
   
   

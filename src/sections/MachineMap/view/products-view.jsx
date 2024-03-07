@@ -1,5 +1,5 @@
 import moment from "moment";
-import {  useState } from 'react';
+import {  useState,useEffect } from 'react';
 
 // import Stack from '@mui/material/Stack';
 // import Card from '@mui/material/Card';
@@ -34,41 +34,44 @@ import StatusSelection from '../statusSelection';
 // machineData ui componet started here
 export default function MachineMapView() {
   const [data,setData]=useState({data:[],dataAll:[]})
-  const [mapData,setMapData]=useState(null);
-  const [center,setCenter]=useState([]);
-  const [locations,setLocations]=useState([]);
+  // const [mapData,setMapData]=useState(null);
+  const [center,setCenter]=useState(null);
+  const [locations,setLocations]=useState(null);
  
   // getting data from file 'src/Redux/store'
   store.subscribe(() => {
     // store in data hook
     setData(store.getState().data);
-    setMapData(store.getState().data.data);
-    const Data=store.getState().data.data;
-      console.log(Data);
-                    const index = Data.length > 0 ? parseInt(Data.length / 2 ,10) : 0;
-                
-                     const Lat=Data[index].lat;
-                    const Lon=Data[index].lon;
-                    const centers=[Lat,Lon];
-             
-                     const location=[];
-                    for(let i=0;i<Data.length;i+=1)
-                    {
-                    
-                    const obj={ data:Data[i], coordinates: [Data[i].lat,Data[i].lon] }
-                    location.push(obj);
-            
-                    }
-               
-                  setCenter(centers);
-                  setLocations(location)
+    // setMapData(store.getState().data.data);
+    // const Data=store.getState().data.data;
+      // console.log(Data);
+                   
    
   });
 
 
-  // useEffect(()=>{
-  //     //  console.log(data);
-  // },[data])
+  useEffect(()=>{
+      setTimeout(()=>{
+        const Data=data.data;
+        const index = Data.length > 0 ? parseInt(Data.length / 2 ,10) : 0;
+                
+        const Lat=Data[index].lat;
+       const Lon=Data[index].lon;
+       const centers=[Lat,Lon];
+
+        const location=[];
+       for(let i=0;i<Data.length;i+=1)
+       {
+       
+       const obj={ data:Data[i], coordinates: [Data[i].lat,Data[i].lon] }
+       location.push(obj);
+
+       }
+    //  console.log(location)
+     setCenter(centers);
+     setLocations(location)
+      },2000)
+  },[data])
 
 
   // filtering online machines
@@ -216,7 +219,7 @@ const sum = (a, b) => a + b;
 
        {/* table of machineDat in UserView componet */}
       <Grid   xs={12} md={12} lg={9.3} >
-        {mapData && <Map cs={center} ls={locations}/>}
+        {locations && <Map center={center} locations={locations}/>}
       </Grid>
       </Grid>
       {/* <Stack

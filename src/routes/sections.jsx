@@ -7,7 +7,9 @@ import LoginLogs from 'src/sections/Reports/loginLogs';
 import FaultReport from 'src/sections/Reports/faultReport';
 import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
+import MachinePage from 'src/sections/Machines/view/user-view';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -37,6 +39,7 @@ export default function Router() {
       children: [
         {path: 'dashboard', element: <IndexPage />},
         { path: 'user', element: <UserPage /> },
+        { path: 'machines', element: <MachinePage/> },
         { path: 'machineData', element: <ProductsView /> },
         { path: 'machineMap', element: <MachineMapView/> },
         { path: 'blog', element: <BlogPage /> },
