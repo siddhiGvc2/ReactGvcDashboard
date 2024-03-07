@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import MuiAlert from '@mui/material/Alert';
 import Popover from '@mui/material/Popover';
 import Snackbar from '@mui/material/Snackbar';
@@ -17,10 +17,10 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { fetchUsers } from 'src/_mock/user';
+import { AllMachines } from 'src/_mock/AllMachines';
 import {zoneData,wardData,beatData} from 'src/_mock/fildData';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
@@ -45,7 +45,7 @@ const Alert = React.forwardRef((props, ref) => (
 //  Users ui started here
 
 export default function MachinePage() {
-  const[users,setUsers]=useState([]);
+  const[machines,setMachines]=useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
   const [type,setType]=useState("")
@@ -83,15 +83,15 @@ export default function MachinePage() {
 
   useEffect(()=>{
     // getting data from fecthData function
-    fetchUsers().then((res)=>{
+    AllMachines().then((res)=>{
     
-      setUsers(res);
+      setMachines(res);
     })
   },[])
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  // const handleOpenMenu = (event) => {
+  //   setOpen(event.currentTarget);
+  // };
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -116,7 +116,7 @@ export default function MachinePage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = machines.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -156,7 +156,7 @@ export default function MachinePage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: machines,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -354,9 +354,9 @@ export default function MachinePage() {
           setType("success");
           setMessage("Saved Succesfully");
           handleCloseMenu();
-          fetchUsers().then((res)=>{
+          AllMachines().then((res)=>{
     
-            setUsers(res);
+            setMachines(res);
           })
 
          })
@@ -385,9 +385,9 @@ export default function MachinePage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Machines</Typography>
 
-        <Button variant="contained" color="inherit"  onClick={handleOpenMenu} startIcon={<Iconify icon="eva:plus-fill" />}>
+        {/* <Button variant="contained" color="inherit"  onClick={handleOpenMenu} startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
-        </Button>
+        </Button> */}
       </Stack>
       <Stack spacing={2} sx={{ width: '100%' }}>
     
@@ -412,16 +412,14 @@ export default function MachinePage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={machines.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'id', label: 'Sr.No' },
-                  { id: 'name', label: 'Name' },
-                  { id: 'email', label: 'UserName' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'city', label: 'City' },
+                  { id: 'name', label: 'Serial'},
+                  { id: 'email', label: 'Uid' },
                   { id: 'zone', label: 'Zone' },
                   { id: 'ward', label: 'Ward' },
                   { id: 'beat', label: 'Beat' },
@@ -444,6 +442,7 @@ export default function MachinePage() {
                       zone={row.zone}
                       ward={row.ward}
                       beat={row.beat}
+                      row={row}
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
@@ -452,7 +451,7 @@ export default function MachinePage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, machines.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -464,7 +463,7 @@ export default function MachinePage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={machines.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25 ,100]}

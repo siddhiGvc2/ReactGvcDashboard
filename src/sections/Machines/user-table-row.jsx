@@ -11,13 +11,14 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
+// import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   sr,
+  row,
   selected,
   name,
   email,
@@ -52,17 +53,13 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src="" /> */}
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {row.serial}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{email}</TableCell>
-     
-        <TableCell>
-          <Label color={(role === '0' && 'error') || 'success'}>{role ? 'Admin' : 'User'}</Label>
-        </TableCell>
-        <TableCell>{city}</TableCell>
+        <TableCell>{row.uid}</TableCell>
+    
         <TableCell>{zone}</TableCell>
         <TableCell>{ward}</TableCell>
         <TableCell>{beat}</TableCell>
@@ -117,4 +114,5 @@ UserTableRow.propTypes = {
   role: PropTypes.any,
   selected: PropTypes.any,
   beat: PropTypes.string,
+  row:PropTypes.any
 };
