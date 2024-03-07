@@ -1,5 +1,5 @@
 
-
+07-03-24: Ward wise hourly report comleted . Folder/File Name : src/sections/Reports/hourlyReport.jsx
 07-03-24: All Machines list ui with api . Folder/File Name: src/sections/Machines  Api Folder : src/_mock/AllMachines.js
 06-03-24: Machine Map 80% completed
 06-03-24: Technician report ui with api displayed. Api folder : src/_mock

@@ -47,6 +47,11 @@ const navConfig = [
     path: '/faultReport',
     icon: icon('screwdriver-wrench-solid'),
   },
+  {
+    title: 'Hourly Report',
+    path: '/hourlyReport',
+    icon: icon('screwdriver-wrench-solid'),
+  },
   
   {
     title: 'blog',

@@ -7,8 +7,10 @@ import LoginLogs from 'src/sections/Reports/loginLogs';
 import FaultReport from 'src/sections/Reports/faultReport';
 import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
+import HourlyReport from 'src/sections/Reports/HourlyReport';
 import MachinePage from 'src/sections/Machines/view/user-view';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -46,6 +48,7 @@ export default function Router() {
         { path: 'dailyReports', element: <DailyReports/>},
         { path: 'loginLogs', element: <LoginLogs/>},
         { path: 'faultReport', element: <FaultReport/>},
+        { path: 'hourlyReport', element: <HourlyReport/>},
       ],
     },
     {
