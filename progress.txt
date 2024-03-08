@@ -1,4 +1,5 @@
 
+08-03-24: Beat wise hourly report completed.
 07-03-24: Ward wise hourly report comleted . Folder/File Name : src/sections/Reports/hourlyReport.jsx
 07-03-24: All Machines list ui with api . Folder/File Name: src/sections/Machines  Api Folder : src/_mock/AllMachines.js
 06-03-24: Machine Map 80% completed
@@ -14,5 +15,5 @@
 01-03-24: All Machine Data Api Called . Folder/File Name :src/_mock/fieldData.js
 29-02-24: Machine Dta ui . Folder/File Name : src/sections/MachineData/view
 28-02-24:Side Panel ui . Folder/File Name : src/layouts/dashboard/nav.jsx
-28-02-24: Dashboar Ui with Api call . Folder/File Name: src/sections/overview/view. Api File: src/_mock/machineData
+28-02-24: Dashboard Ui with Api call . Folder/File Name: src/sections/overview/view. Api File: src/_mock/machineData
 27-02-24: Login Ui done. Folder/File Name:src/sections/login/login-view.jsx

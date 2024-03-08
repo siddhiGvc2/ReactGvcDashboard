@@ -6,10 +6,10 @@ import * as XLSX from 'xlsx';
 // import html2pdf from 'html2pdf.js';
 
 // import { create } from "jss";
-import {useRef} from 'react';
 import PropTypes from 'prop-types';
+import {useRef,useState,useEffect} from 'react';
 
-
+import { GetColorsWithRange } from 'src/_mock/hourlyReport';
 // import { StylesProvider,jssPreset } from "@mui/system";
 
 
@@ -18,7 +18,29 @@ import PropTypes from 'prop-types';
 
 // const sr=1;
 export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
+  const [Primary,setPrimary]=useState(null);
+  const [Secondary,setSecondary]=useState(null);
+  const [Tertiary,setTertiary]=useState(null);
+  const [Faulty,setFaulty]=useState(null);
+  const [Range1,setRange1]=useState(null);
+  const [Range2,setRange2]=useState(null);
+  const [Range3,setRange3]=useState(null);
+  const [Range4,setRange4]=useState(null);
     const tblDataRef = useRef(null);
+
+    useEffect(()=>{
+       GetColorsWithRange().then((res)=>{
+           setPrimary(res.Primary);
+           setSecondary(res.Secondary);
+           setTertiary(res.Tertiary);
+           setFaulty(res.Faulty);
+           setRange1(res.Range1);
+           setRange2(res.Range2);
+           setRange3(res.Range3);
+           setRange4(res.Range4);
+
+       })
+    },[])
   
      
     const printData=()=> {
@@ -64,6 +86,30 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
   
      const totalBurningEnabled =(d)=> d.reduce((total, item)=> 
         total +parseInt(item.burningSales,10),0);
+
+
+        const getPercentageColor = (machineOnline, machinesTotal) => {
+          const percent = (machineOnline / machinesTotal) * 100;
+       
+          let color;
+
+              if (percent >= 0 && percent <= Range4) {
+                color = Faulty;
+              } else if (percent >= parseFloat(`${Range4}.01`) + 0.01 && percent <= Range3) {
+                color = Tertiary;
+              } else if (percent >= parseFloat(`${Range3}.01`) + 0.01 && percent <= Range2) {
+                color = Secondary;
+              } else if (percent >= parseFloat(`${Range2}.01`) + 0.01 && percent <= Range1) {
+                color = Primary;
+              } else {
+                color = Faulty;
+              }
+
+              return {
+                color,
+                fontSize: '16px',
+              };
+        };
 
    
    
@@ -185,7 +231,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                             <td   className="fixed_position">{m.ward}</td>
                             <td  >{data[i].machinesTotal}</td>
                             <td  >{data[i].machineOnline}</td>
-                            <td> <p >{Percent(data[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data[i].machineOnline, data[i].machinesTotal)}>{Percent(data[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data[i].qtySales}</td>
                             <td >{data[i].cashSales}</td>
                              <td  >{data[i].machineEmpty}</td>
@@ -193,7 +239,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                             {/* ***** */}
 
                             {data1.length>0 ? <><td  >{data1[i].machineOnline}</td>
-                            <td> <p >{Percent(data1[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data1[i].machineOnline, data[i].machinesTotal)}>{Percent(data1[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data1[i].qtySales}</td>
                              <td >{data1[i].qtySales - data[i].qtySales}</td>
                             <td >{data1[i].cashSales}</td>
@@ -202,7 +248,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                              {/* ***** */}
 
                              {data2.length>0 ? <> <td  >{data2[i].machineOnline}</td>
-                            <td> <p >{Percent(data2[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data2[i].machineOnline, data[i].machinesTotal)}>{Percent(data2[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data2[i].qtySales}</td>
                              <td >{data2[i].qtySales - data1[i].qtySales}</td>
                             <td >{data2[i].cashSales}</td>
@@ -211,7 +257,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                              {/* ***** */}
 
                              {data3.length>0 ? <> <td  >{data3[i].machineOnline}</td>
-                            <td> <p >{Percent(data3[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data3[i].machineOnline, data[i].machinesTotal)}>{Percent(data3[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data3[i].qtySales}</td>
                              <td >{data3[i].qtySales - data2[i].qtySales}</td>
                             <td >{data3[i].cashSales}</td>
@@ -221,7 +267,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                              {/* ***** */}
 
                              {data4.length>0 ? <> <td  >{data4[i].machineOnline}</td>
-                            <td> <p >{Percent(data4[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data4[i].machineOnline, data[i].machinesTotal)}>{Percent(data4[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data4[i].qtySales}</td>
                              <td >{data4[i].qtySales - data3[i].qtySales}</td>
                             <td >{data4[i].cashSales}</td>
@@ -231,7 +277,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                              {/* ***** */}
 
                             {data5.length>0 ? <><td  >{data5[i].machineOnline}</td>
-                            <td> <p >{Percent(data5[i].machineOnline,data[i].machinesTotal)}%</p></td>
+                            <td> <p style={getPercentageColor(data5[i].machineOnline, data[i].machinesTotal)}>{Percent(data5[i].machineOnline,data[i].machinesTotal)}%</p></td>
                              <td >{data5[i].qtySales}</td>
                              <td >{data5[i].qtySales - data4[i].qtySales}</td>
                             <td >{data5[i].cashSales}</td>
@@ -249,7 +295,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                     <td colSpan="2" className="text-center"><b>Total</b></td>
                           <td>{totalMachines(data)}</td>
                           <td>{totalMachineOnline(data)}</td>
-                          <td>{Percent(totalMachineOnline(data),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data),totalMachines(data))}>{Percent(totalMachineOnline(data),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data)}</td>
                           <td>{totalCollection(data)}</td>
                           <td>{totalStockEmpty(data)}</td>
@@ -257,7 +303,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                           </>:null}
                     {data1.length>0 ? <>
                           <td>{totalMachineOnline(data1)}</td>
-                          <td>{Percent(totalMachineOnline(data1),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data1),totalMachines(data))}>{Percent(totalMachineOnline(data1),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data1)}</td>
                           <td>{totalItemsDispends(data1)-totalItemsDispends(data)}</td>
                           <td>{totalCollection(data1)}</td>
@@ -266,7 +312,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data2.length>0 ? <>
                           <td>{totalMachineOnline(data2)}</td>
-                          <td>{Percent(totalMachineOnline(data2),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data2),totalMachines(data))}>{Percent(totalMachineOnline(data2),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data2)}</td>
                           <td>{totalItemsDispends(data2)-totalItemsDispends(data1)}</td>
                           <td>{totalCollection(data2)}</td>
@@ -275,7 +321,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data3.length>0 ? <>
                           <td>{totalMachineOnline(data3)}</td>
-                          <td>{Percent(totalMachineOnline(data3),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data3),totalMachines(data))}>{Percent(totalMachineOnline(data3),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data3)}</td>
                           <td>{totalItemsDispends(data3)-totalItemsDispends(data2)}</td>
                           <td>{totalCollection(data3)}</td>
@@ -284,7 +330,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data4.length>0 ? <>
                           <td>{totalMachineOnline(data4)}</td>
-                          <td>{Percent(totalMachineOnline(data4),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data4),totalMachines(data))}>{Percent(totalMachineOnline(data4),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data4)}</td>
                           <td>{totalItemsDispends(data4)-totalItemsDispends(data3)}</td>
                           <td>{totalCollection(data4)}</td>
@@ -293,7 +339,7 @@ export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data5.length>0 ? <>
                           <td>{totalMachineOnline(data5)}</td>
-                          <td>{Percent(totalMachineOnline(data5),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data5),totalMachines(data))}>{Percent(totalMachineOnline(data5),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data5)}</td>
                           <td>{totalItemsDispends(data5)-totalItemsDispends(data4)}</td>
                           <td>{totalCollection(data5)}</td>

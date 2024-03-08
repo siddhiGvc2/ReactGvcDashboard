@@ -22,14 +22,7 @@ export default function HourlyReport(){
     const [data3,setData3]=useState(null);
     const [data4,setData4]=useState(null);
     const [data5,setData5]=useState(null);
-    // const [Primary,setPrimary]=useState(null);
-    // const [Secondary,setSecondary]=useState(null);
-    // const [Tertiary,setTertiary]=useState(null);
-    // const [Faulty,setFaulty]=useState(null);
-    // const [Range1,setRange1]=useState(null);
-    // const [Range2,setRange2]=useState(null);
-    // const [Range3,setRange3]=useState(null);
-    // const [Range4,setRange4]=useState(null);
+   
  
    
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));

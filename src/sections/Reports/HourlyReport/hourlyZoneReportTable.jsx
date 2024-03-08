@@ -6,8 +6,10 @@ import * as XLSX from 'xlsx';
 // import html2pdf from 'html2pdf.js';
 
 // import { create } from "jss";
-import {useRef} from 'react';
 import PropTypes from 'prop-types';
+import {useRef,useState,useEffect} from 'react';
+
+import { GetColorsWithRange } from 'src/_mock/hourlyReport';
 
 
 // import { StylesProvider,jssPreset } from "@mui/system";
@@ -18,8 +20,29 @@ import PropTypes from 'prop-types';
 
 // const sr=1;
 export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
+  const [Primary,setPrimary]=useState(null);
+  const [Secondary,setSecondary]=useState(null);
+  const [Tertiary,setTertiary]=useState(null);
+  const [Faulty,setFaulty]=useState(null);
+  const [Range1,setRange1]=useState(null);
+  const [Range2,setRange2]=useState(null);
+  const [Range3,setRange3]=useState(null);
+  const [Range4,setRange4]=useState(null);
     const tblDataRef = useRef(null);
-  
+
+    useEffect(()=>{
+      GetColorsWithRange().then((res)=>{
+          setPrimary(res.Primary);
+          setSecondary(res.Secondary);
+          setTertiary(res.Tertiary);
+          setFaulty(res.Faulty);
+          setRange1(res.Range1);
+          setRange2(res.Range2);
+          setRange3(res.Range3);
+          setRange4(res.Range4);
+
+      })
+   },[])
      
     const printData=()=> {
         const printContents = tblDataRef.current.outerHTML;
@@ -101,6 +124,30 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
               return acc
         }, {});
       
+
+        const getPercentageColor = (machineOnline, machinesTotal) => {
+          const percent = (machineOnline / machinesTotal) * 100;
+       
+          let color;
+
+              if (percent >= 0 && percent <= Range4) {
+                color = Faulty;
+              } else if (percent >= parseFloat(`${Range4}.01`) + 0.01 && percent <= Range3) {
+                color = Tertiary;
+              } else if (percent >= parseFloat(`${Range3}.01`) + 0.01 && percent <= Range2) {
+                color = Secondary;
+              } else if (percent >= parseFloat(`${Range2}.01`) + 0.01 && percent <= Range1) {
+                color = Primary;
+              } else {
+                color = Faulty;
+              }
+
+              return {
+                color,
+                fontSize: '16px',
+              };
+        };
+
    
    
      return (
@@ -221,7 +268,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                             <td   className="fixed_position">{i+1}</td>
                             <td  >{MachinesTotal(data,i+1)}</td>
                             <td  >{MachineOnline(data,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data,i+1)}</td>
                             <td >{Collection(data,i+1)}</td>
                              <td  >{StockEmpty(data,i+1)}</td>
@@ -230,7 +277,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
 
                             {data1.length>0 ? <>
                                 <td  >{MachineOnline(data1,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data1,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data1,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data1,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data1,i+1)}</td>
                              <td>{ItemsDispends(data1,i+1)-ItemsDispends(data,i+1)}</td>
                             <td >{Collection(data1,i+1)}</td>
@@ -240,7 +287,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
 
                              {data2.length>0 ? <>
                                 <td  >{MachineOnline(data2,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data2,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data2,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data2,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data2,i+1)}</td>
                              <td>{ItemsDispends(data2,i+1)-ItemsDispends(data1,i+1)}</td>
                             <td >{Collection(data2,i+1)}</td>
@@ -250,7 +297,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
 
                              {data3.length>0 ? <>
                                 <td  >{MachineOnline(data3,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data3,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data3,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data3,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data3,i+1)}</td>
                              <td>{ItemsDispends(data3,i+1)-ItemsDispends(data2,i+1)}</td>
                             <td >{Collection(data3,i+1)}</td>
@@ -261,7 +308,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
 
                              {data4.length>0 ? <>
                                 <td  >{MachineOnline(data4,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data4,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data4,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data4,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data4,i+1)}</td>
                              <td>{ItemsDispends(data4,i+1)-ItemsDispends(data3,i+1)}</td>
                             <td >{Collection(data4,i+1)}</td>
@@ -271,7 +318,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
 
                              {data5.length>0 ? <>
                                 <td  >{MachineOnline(data5,i+1)}</td>
-                            <td> <p >{Percent(MachineOnline(data5,i+1),MachinesTotal(data,i+1))}%</p></td>
+                            <td> <p style={getPercentageColor(MachineOnline(data5,i+1),MachinesTotal(data,i+1))}>{Percent(MachineOnline(data5,i+1),MachinesTotal(data,i+1))}%</p></td>
                              <td >{ItemsDispends(data5,i+1)}</td>
                              <td>{ItemsDispends(data5,i+1)-ItemsDispends(data4,i+1)}</td>
                             <td >{Collection(data5,i+1)}</td>
@@ -289,7 +336,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                     <td colSpan="2" className="text-center"><b>Total</b></td>
                           <td>{totalMachines(data)}</td>
                           <td>{totalMachineOnline(data)}</td>
-                          <td>{Percent(totalMachineOnline(data),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data),totalMachines(data))}>{Percent(totalMachineOnline(data),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data)}</td>
                           <td>{totalCollection(data)}</td>
                           <td>{totalStockEmpty(data)}</td>
@@ -297,7 +344,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                           </>:null}
                     {data1.length>0 ? <>
                           <td>{totalMachineOnline(data1)}</td>
-                          <td>{Percent(totalMachineOnline(data1),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data1),totalMachines(data))}>{Percent(totalMachineOnline(data1),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data1)}</td>
                           <td>{totalItemsDispends(data1)-totalItemsDispends(data)}</td>
                           <td>{totalCollection(data1)}</td>
@@ -306,7 +353,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data2.length>0 ? <>
                           <td>{totalMachineOnline(data2)}</td>
-                          <td>{Percent(totalMachineOnline(data2),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data2),totalMachines(data))}>{Percent(totalMachineOnline(data2),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data2)}</td>
                           <td>{totalItemsDispends(data2)-totalItemsDispends(data1)}</td>
                           <td>{totalCollection(data2)}</td>
@@ -315,7 +362,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data3.length>0 ? <>
                           <td>{totalMachineOnline(data3)}</td>
-                          <td>{Percent(totalMachineOnline(data3),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data3),totalMachines(data))}>{Percent(totalMachineOnline(data3),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data3)}</td>
                           <td>{totalItemsDispends(data3)-totalItemsDispends(data2)}</td>
                           <td>{totalCollection(data3)}</td>
@@ -324,7 +371,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data4.length>0 ? <>
                           <td>{totalMachineOnline(data4)}</td>
-                          <td>{Percent(totalMachineOnline(data4),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data4),totalMachines(data))}>{Percent(totalMachineOnline(data4),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data4)}</td>
                           <td>{totalItemsDispends(data4)-totalItemsDispends(data3)}</td>
                           <td>{totalCollection(data4)}</td>
@@ -333,7 +380,7 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                     </>:null}
                     {data5.length>0 ? <>
                           <td>{totalMachineOnline(data5)}</td>
-                          <td>{Percent(totalMachineOnline(data5),totalMachines(data))}%</td>
+                          <td style={getPercentageColor(totalMachineOnline(data5),totalMachines(data))}>{Percent(totalMachineOnline(data5),totalMachines(data))}%</td>
                           <td>{totalItemsDispends(data5)}</td>
                           <td>{totalItemsDispends(data5)-totalItemsDispends(data4)}</td>
                           <td>{totalCollection(data5)}</td>

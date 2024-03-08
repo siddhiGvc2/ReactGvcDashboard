@@ -20,3 +20,22 @@ export const GetHourlyData=async(date,time)=> {
       return [];
     }
   }
+
+
+  export const GetColorsWithRange=async()=>{
+    try {
+   
+      const headers = new Headers({
+        "Content-type":'application/json',
+        'x-token': sessionStorage.getItem('token'),
+      });
+      const response = await fetch(`${API}/colors/getColors`, { method: 'GET', headers });
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+  
+      return [];
+    }
+
+  }
