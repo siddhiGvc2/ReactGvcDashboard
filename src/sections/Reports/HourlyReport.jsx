@@ -9,8 +9,9 @@ import Typography from '@mui/material/Typography';
 
 import { GetHourlyData } from "src/_mock/hourlyReport";
 
-import FaultReportView from "./LoginLogs/view/faultReport";
-import HourlyTable from "./HourlyReport/hourlyReportTable";
+// import FaultReportView from "./LoginLogs/view/faultReport";
+import HourlyWardTable from "./HourlyReport/hourlyWardReportTable";
+import HourlyZoneTable from "./HourlyReport/hourlyZoneReportTable";
 
 
 export default function HourlyReport(){
@@ -40,8 +41,16 @@ export default function HourlyReport(){
     const handleChange = () => {
       setIsChecked(!isChecked);
     };
+
+   
     
     const LoadData=()=>{
+        setData([]);
+        setData1([]);
+        setData2([])
+        setData3([]);
+        setData4([]);
+        setData5([]);
         const startDateValue = startDate;
 
          // Create a Date object using the obtained date string
@@ -54,23 +63,29 @@ export default function HourlyReport(){
         const date = start.toISOString();
     
         GetHourlyData(date,"18:00").then((res)=>{
-               setData(res);
+             setData(res);
         })
 
         GetHourlyData(startDate,"10:00").then((res)=>{
-            setData1(res);
-        })
+             setData1(res);
+         })
         GetHourlyData(startDate,"12:00").then((res)=>{
-            setData2(res);
+             setData2(res);
+        
         })
         GetHourlyData(startDate,"14:00").then((res)=>{
-            setData3(res);
+             setData3(res);
+            
         })
         GetHourlyData(startDate,"16:00").then((res)=>{
-            setData4(res);
+           
+               setData4(res);
+            
         })
         GetHourlyData(startDate,"18:00").then((res)=>{
-            setData5(res);
+         
+               setData5(res);
+            
         })
 
     }
@@ -103,7 +118,7 @@ export default function HourlyReport(){
                                     checked={isChecked}
                                     onChange={handleChange}
                                     onlabel="Ward"
-                                    offlabel="Beat"
+                                    offlabel="Zone"
                                     onstyle='success'
                                     offstyle='info'
                                     width={100}
@@ -125,9 +140,9 @@ export default function HourlyReport(){
                 </div>
                  <div>
                
-                 { data5 && <HourlyTable data={data} data1={data1} data2={data2} data3={data3} data4={data4} data5={data5} checked={isChecked}/>}
+                 { data5 && isChecked &&<HourlyWardTable data={data} data1={data1} data2={data2} data3={data3} data4={data4} data5={data5}/>}
                 
-                
+                 { data5 && !isChecked &&<HourlyZoneTable data={data} data1={data1} data2={data2} data3={data3} data4={data4} data5={data5}/>}
                  </div>
                
                 </Container>

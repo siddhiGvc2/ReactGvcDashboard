@@ -5,3 +5,10 @@
     border: 2px solid black;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+.fixed_position {
+    position: sticky;
+    left:0;
+    background-color: white; /* Adjust as needed */
+    z-index: 1;
+   }

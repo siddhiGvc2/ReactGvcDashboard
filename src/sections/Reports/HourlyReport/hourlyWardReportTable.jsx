@@ -6,8 +6,9 @@ import * as XLSX from 'xlsx';
 // import html2pdf from 'html2pdf.js';
 
 // import { create } from "jss";
-import PropTypes from 'prop-types';
 import {useRef} from 'react';
+import PropTypes from 'prop-types';
+
 
 // import { StylesProvider,jssPreset } from "@mui/system";
 
@@ -16,7 +17,7 @@ import {useRef} from 'react';
 
 
 // const sr=1;
-export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}){
+export default function HourlyWardTable({data,data1,data2,data3,data4,data5}){
     const tblDataRef = useRef(null);
   
      
@@ -49,21 +50,21 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
       total + parseInt(item.machineOnline, 10), 0);
 
 
-//    var totalCollection = data.reduce(function (total, item) {
-//         return total + item.cashSales;
-//     }, 0);
-//        var totalItemsDispends = data.reduce(function (total, item) {
-//         return total + item.qtySales;
-//     }, 0);
-//        var totalLowStock = data.reduce(function (total, item) {
-//         return total + item.machineLowStock;
-//     }, 0);
-//        var totalStockEmpty = data.reduce(function (total, item) {
-//         return total + item.machineEmpty;
-//     }, 0);
-//        var totalBurningEnabled = data.reduce(function (total, item) {
-//         return total + item.burningSales;
-//     }, 0);
+   const totalCollection =(d)=> d.reduce((total, item)=> 
+         total + parseInt(item.cashSales,10),0);
+ 
+    const totalItemsDispends =(d)=> d.reduce((total, item)=> 
+         total + parseInt(item.qtySales,10),0);
+    
+    // const totalLowStock =(d)=> d.reduce((total, item)=> 
+    //     total + parseInt(item.machineLowStock,10),0);
+   
+     const totalStockEmpty =(d)=> d.reduce((total, item)=> 
+        total + parseInt(item.machineEmpty,10),0);
+  
+     const totalBurningEnabled =(d)=> d.reduce((total, item)=> 
+        total +parseInt(item.burningSales,10),0);
+
    
    
      return (
@@ -78,7 +79,7 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
                                
                               
                                <th >Sr No</th>
-                               <th  className="type fixed_position">{checked? 'Ward':'Beat'}</th>
+                               <th  className="type fixed_position">Ward</th>
                                <th >TOTAL MACHINES</th>
                               <th colSpan="2" className="text-center " >OPENING BALANCE</th>
                               <th colSpan="1" className="text-center " >&gt; </th>
@@ -119,9 +120,9 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
                            
                              </tr>
                              <tr >
-                                 <th ></th>
-                                  <th className="fixed_position"></th>
-                                    <th ></th>
+                                 <th />
+                                  <th className="fixed_position"/>
+                                    <th />
                                           
                                <th>ONLINE MACHINES </th>
                                <th> ONLINE PERCENTAGE</th>
@@ -176,6 +177,7 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
           
         </thead>
         <tbody>
+            {data.length===0 ? <td colSpan={14} align='center'>Loading...</td>:null}
             {
              data.map((m,i)=>
                 <tr className="data">
@@ -247,8 +249,57 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
                     <td colSpan="2" className="text-center"><b>Total</b></td>
                           <td>{totalMachines(data)}</td>
                           <td>{totalMachineOnline(data)}</td>
-                          
+                          <td>{Percent(totalMachineOnline(data),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data)}</td>
+                          <td>{totalCollection(data)}</td>
+                          <td>{totalStockEmpty(data)}</td>
+                          <td>{totalBurningEnabled(data)}</td>
                           </>:null}
+                    {data1.length>0 ? <>
+                          <td>{totalMachineOnline(data1)}</td>
+                          <td>{Percent(totalMachineOnline(data1),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data1)}</td>
+                          <td>{totalItemsDispends(data1)-totalItemsDispends(data)}</td>
+                          <td>{totalCollection(data1)}</td>
+                          <td>{totalStockEmpty(data1)}</td>
+                          <td>{totalBurningEnabled(data1)}</td>
+                    </>:null}
+                    {data2.length>0 ? <>
+                          <td>{totalMachineOnline(data2)}</td>
+                          <td>{Percent(totalMachineOnline(data2),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data2)}</td>
+                          <td>{totalItemsDispends(data2)-totalItemsDispends(data1)}</td>
+                          <td>{totalCollection(data2)}</td>
+                          <td>{totalStockEmpty(data2)}</td>
+                          <td>{totalBurningEnabled(data2)}</td>
+                    </>:null}
+                    {data3.length>0 ? <>
+                          <td>{totalMachineOnline(data3)}</td>
+                          <td>{Percent(totalMachineOnline(data3),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data3)}</td>
+                          <td>{totalItemsDispends(data3)-totalItemsDispends(data2)}</td>
+                          <td>{totalCollection(data3)}</td>
+                          <td>{totalStockEmpty(data3)}</td>
+                          <td>{totalBurningEnabled(data3)}</td>
+                    </>:null}
+                    {data4.length>0 ? <>
+                          <td>{totalMachineOnline(data4)}</td>
+                          <td>{Percent(totalMachineOnline(data4),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data4)}</td>
+                          <td>{totalItemsDispends(data4)-totalItemsDispends(data3)}</td>
+                          <td>{totalCollection(data4)}</td>
+                          <td>{totalStockEmpty(data4)}</td>
+                          <td>{totalBurningEnabled(data4)}</td>
+                    </>:null}
+                    {data5.length>0 ? <>
+                          <td>{totalMachineOnline(data5)}</td>
+                          <td>{Percent(totalMachineOnline(data5),totalMachines(data))}%</td>
+                          <td>{totalItemsDispends(data5)}</td>
+                          <td>{totalItemsDispends(data5)-totalItemsDispends(data4)}</td>
+                          <td>{totalCollection(data5)}</td>
+                          <td>{totalStockEmpty(data5)}</td>
+                          <td>{totalBurningEnabled(data5)}</td>
+                    </>:null}
              </tr>
 
         </tbody>
@@ -268,12 +319,12 @@ export default function HourlyTable({data,data1,data2,data3,data4,data5,checked}
      )
 }
 
-HourlyTable.propTypes = {
+HourlyWardTable.propTypes = {
     data: PropTypes.any,
     data1: PropTypes.any,
     data2: PropTypes.any,
     data3: PropTypes.any,
     data4: PropTypes.any,
     data5: PropTypes.any,
-    checked:PropTypes.any
+   
   };
