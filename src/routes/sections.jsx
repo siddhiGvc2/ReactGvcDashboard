@@ -4,6 +4,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import LoginLogs from 'src/sections/Reports/loginLogs';
+import SSNReport from 'src/sections/Reports/ssnReport';
 import FaultReport from 'src/sections/Reports/faultReport';
 import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
@@ -49,6 +50,7 @@ export default function Router() {
         { path: 'loginLogs', element: <LoginLogs/>},
         { path: 'faultReport', element: <FaultReport/>},
         { path: 'hourlyReport', element: <HourlyReport/>},
+        { path: 'ssnReport', element: <SSNReport/>}
       ],
     },
     {

@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 
-import { ReportData } from "src/_mock/reportData";
+import { ReportData } from "src/_mock/dailyReportData";
 import {zoneData,wardData,beatData,Machines} from 'src/_mock/fildData';
 
 import TableHeader from "./dailyReportComponents/tableHeader";
