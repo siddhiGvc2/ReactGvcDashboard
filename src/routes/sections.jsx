@@ -10,7 +10,9 @@ import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
 import HourlyReport from 'src/sections/Reports/HourlyReport';
 import MachinePage from 'src/sections/Machines/view/user-view';
+import InventoryPage from 'src/sections/Inventory/inventoryPage';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -50,7 +52,9 @@ export default function Router() {
         { path: 'loginLogs', element: <LoginLogs/>},
         { path: 'faultReport', element: <FaultReport/>},
         { path: 'hourlyReport', element: <HourlyReport/>},
-        { path: 'ssnReport', element: <SSNReport/>}
+        { path: 'ssnReport', element: <SSNReport/>},
+        { path: 'inventory', element: <InventoryPage/>
+        }
       ],
     },
     {

@@ -40,7 +40,7 @@ export default function SSNReport(){
     <Card>
         <Container maxWidth='xxl'>
         <Typography variant="h4" sx={{ mb: 5 }}>
-        Technician  Report
+        SSN Report
       </Typography>
     <div className="row mt-2">
                     <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2">

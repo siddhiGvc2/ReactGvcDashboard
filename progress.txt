@@ -1,4 +1,5 @@
 
+08-03-24:Inventory 80% done . File/Folder Name: src/sections/Inventory
 08-03-24: SSN Report comleted.
 08-03-24: Colors with range added in HourlyReport. & HourlyReport completed.
 08-03-24: Beat wise hourly report completed.
