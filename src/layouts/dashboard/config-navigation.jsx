@@ -67,6 +67,11 @@ const navConfig = [
     path: '/ssnReport',
     icon: icon('screwdriver-wrench-solid'),
   },
+  {
+    title: 'Machine Setting',
+    path: '/machineSetting',
+    icon: icon('ic_blog'),
+  },
   
   
   {

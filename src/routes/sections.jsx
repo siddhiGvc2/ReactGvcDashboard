@@ -13,6 +13,7 @@ import MachinePage from 'src/sections/Machines/view/user-view';
 import InventoryPage from 'src/sections/Inventory/inventoryPage';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
 import CustomerPage from 'src/sections/Customers/customerPage';
+import MachineSetting from 'src/sections/Settings/machineSetting';
 
 
 
@@ -55,7 +56,8 @@ export default function Router() {
         { path: 'hourlyReport', element: <HourlyReport/>},
         { path: 'ssnReport', element: <SSNReport/>},
         { path: 'inventory', element: <InventoryPage/>},
-        { path: 'customers', element: <CustomerPage/>}
+        { path: 'customers', element: <CustomerPage/>},
+        { path: 'machineSetting', element: <MachineSetting/>}
       ],
     },
     {
