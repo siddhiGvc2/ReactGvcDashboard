@@ -30,13 +30,15 @@ import Scrollbar from 'src/components/scrollbar';
 import TableNoData from '../table-no-data';
 // import InventoryRow from '../inventory-row';
 import UserTableHead from '../user-table-head';
-import InventoryStockRow from '../inventoryStock-row';
+// import InventoryStockRow from '../customerInfo-row';
+import CustomerDataRow from '../customerData-row';
 // import UserTableRow from '../user-table-row';
 
 import TableEmptyRows from '../table-empty-rows';
 // import LastEntryTableRow from '../last-entry-row';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+
 
 
 
@@ -56,7 +58,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 //  Users ui started here
 
-export default function InventoryStocksView({users}) {
+export default function CustomerDataView({users}) {
   // const[users,setUsers]=useState([]);
   const tblDataRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -164,19 +166,22 @@ export default function InventoryStocksView({users}) {
                  
 
                   { id: 'id', label: 'Sr.No' },
-                  {id:'userName',label:'Username'},
-                  {id:'totalQty',label:'Total Quantity'},
-                  {id:'totalCash',label:'Total Cash'}
-
-                 
-          
-                ]}
+                  {id:'custName',label:'Customer Name'},
+                  {id:'cInfo1',label:'CInfo1'},
+                  {id:'cInfo2',label:'CInfo2'},
+                  {id:'cInfo3',label:'CInfo3'},
+                  {id:'cInfo4',label:'CInfo4'},
+                  {id:'type',label:'Machine Type'},
+                  {id:''}
+                
+                
+                 ]}
               />
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row,i) => (
-                    <InventoryStockRow
+                    <CustomerDataRow
                       sr={page*rowsPerPage+i+1}
                       key={row.id}
                  
@@ -221,6 +226,6 @@ export default function InventoryStocksView({users}) {
 }
 
 
-InventoryStocksView.propTypes = {
+CustomerDataView.propTypes = {
   users:PropTypes.any
 };

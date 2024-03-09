@@ -28,10 +28,10 @@ import Scrollbar from 'src/components/scrollbar';
 // import { UserView } from 'src/sections/user/view';
 
 import TableNoData from '../table-no-data';
-import InventoryRow from '../inventory-row';
+// import InventoryRow from '../customerData-row';
 import UserTableHead from '../user-table-head';
 // import InventoryStockRow from '../inventoryStock-row';
-
+import CustomerInfoRow from '../customerInfo-row';
 
 // import UserTableRow from '../user-table-row';
 
@@ -39,6 +39,7 @@ import TableEmptyRows from '../table-empty-rows';
 // import LastEntryTableRow from '../last-entry-row';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+
 
 
 
@@ -57,7 +58,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 //  Users ui started here
 
-export default function InventoryView({users}) {
+export default function CustomerInfoView({users}) {
   // const[users,setUsers]=useState([]);
   const tblDataRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -163,13 +164,9 @@ export default function InventoryView({users}) {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'id', label: 'Sr.No' },
-                  { id: 'from', label: 'From' },
-                  { id: 'to', label: 'To' },
-                  { id: 'qty', label: 'QTY delivered' },
-                  { id: 'cash', label: 'Cash Delivered' },
-                  { id: 'remark', label: 'Remark' },
-                  { id: 'date&Time', label: 'Date & Time' },
-               
+                  { id: 'custName', label: 'CustomerName' },
+                  { id: 'city', label: 'City' },
+                  {id:''}
                  
           
                 ]}
@@ -178,7 +175,7 @@ export default function InventoryView({users}) {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row,i) => (
-                    <InventoryRow
+                    <CustomerInfoRow
                       sr={page*rowsPerPage+i+1}
                       key={row.id}
                  
@@ -223,6 +220,6 @@ export default function InventoryView({users}) {
 }
 
 
-InventoryView.propTypes = {
+CustomerInfoView.propTypes = {
   users:PropTypes.any
 };

@@ -1,20 +1,15 @@
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
-export const getAllTransactions=async(startDate,endDate)=> {
+export const getCustomerData=async()=> {
   
     try {
-        const obj={
-         
-            startDate,
-            endDate,
-        }
-        console.log(obj);
+       
       const headers = new Headers({
         "Content-type":"application/json",
         'x-token': sessionStorage.getItem('token'),
       });
-      const response = await fetch(`${API}/inventory/getAllTransactions`, { method: 'POST', headers ,body:JSON.stringify(obj) });
+      const response = await fetch(`${API}/customers/getAllCustomerData`, { method: 'GET', headers  });
       const json = await response.json();
       return json;
     } catch (error) {
@@ -25,7 +20,7 @@ export const getAllTransactions=async(startDate,endDate)=> {
   }
 
 
-  export const getAllStock=async()=> {
+  export const getAllCustomerInfo=async()=> {
   
     try {
       
@@ -33,7 +28,7 @@ export const getAllTransactions=async(startDate,endDate)=> {
         "Content-type":"application/json",
         'x-token': sessionStorage.getItem('token'),
       });
-      const response = await fetch(`${API}/inventory/getAllStocks`, { method: 'GET', headers });
+      const response = await fetch(`${API}/customers/getAllCustomerInfo`, { method: 'GET', headers });
       const json = await response.json();
       return json;
     } catch (error) {

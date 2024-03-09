@@ -2,7 +2,7 @@ import $ from 'jquery'
 import 'select2'; 
 
 import moment from "moment";
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useCallback} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
 import Card from '@mui/material/Card';
@@ -13,26 +13,31 @@ import Typography from '@mui/material/Typography';
 
 import { fetchUsers } from 'src/_mock/user';
 import { AllMachines } from 'src/_mock/AllMachines';
-import { getAllStock,getAllTransactions,updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
+import { updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
 
-import InventoryView from "./user/view/inventoryTransactions";
-import InventoryStocksView from "./user/view/inventoryStocks";
+// import InventoryView from "./user/view/inventoryTransactions";
+// import InventoryStocksView from "./user/view/inventoryStocks";
+import { getAllCustomerInfo, getCustomerData } from 'src/_mock/customers';
+import CustomerDataView from './CustomerTables/view/customerData';
+import CustomerInfoView from './CustomerTables/view/customerInfo';
 
 
 
-export default function InventoryPage(){
+
+export default function CustomerPage(){
     // const [selectedOption, setSelectedOption] = useState('Option 1');
     const [data,setData]=useState(null);
     const [stockData,setStockData]=useState(null);
     // const [last,setLast]=useState(null);
-    const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
-    const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
+ 
     const [isChecked, setIsChecked] = useState(true);
     const [inventoryObj,setInventoryObj]=useState({});
     const [stockObj,setStockObj]=useState({});
     
     const [open, setOpen] = useState(null);
     const [open2, setOpen2] = useState(null);
+
+   
 
   
     const LoadUserNameDDL=()=>{
@@ -108,12 +113,14 @@ export default function InventoryPage(){
 
     const handleChange = () => {
       setIsChecked(!isChecked);
+      LoadData();
     };
     
-    const LoadData=()=>{
+
+    const LoadData=useCallback(()=>{
         if(isChecked)
         {
-        getAllTransactions(startDate,endDate).then((res)=>{
+        getCustomerData().then((res)=>{
          
            setData(res.data)
            
@@ -121,12 +128,20 @@ export default function InventoryPage(){
         })
        }
        else{
-        getAllStock().then((res)=>{
+        getAllCustomerInfo().then((res)=>{
             setStockData(res.data)
         })
        }
 
-    }
+    },[isChecked])
+
+   
+      useEffect(() => {
+     
+         LoadData();
+      
+      },[LoadData]);
+    
     
     const updateTransaction=()=>{
         updateInventoryTransactions(inventoryObj);
@@ -142,7 +157,7 @@ export default function InventoryPage(){
     <Card>
         <Container maxWidth='xxl'>
         <Typography variant="h4" sx={{ mb: 5 ,display:'flex',mt:2,alignItems:'center',gap:2}}>
-        Inventory
+         Customers
         <div className="col-xl-3 col-lg-5 col-md-6 col-12 col-12 my-2">
                       
                         <div className="row">
@@ -152,11 +167,11 @@ export default function InventoryPage(){
                                 
                                     checked={isChecked}
                                     onChange={handleChange}
-                                    onlabel="Trasnactions"
-                                    offlabel="Stocks"
+                                    onlabel="Data"
+                                    offlabel="Info"
                                     onstyle='success'
                                     offstyle='info'
-                                    width={180}
+                                    width={140}
                                 />
                             </div>
                         </div>
@@ -166,53 +181,29 @@ export default function InventoryPage(){
                   <div >
                         <p >
                             <button type="button" className="btn btn-warning text-white" onClick={handleOpenMenu} >
-                                Transfer Inventory
+                                Add Customer Data
                             </button>
                         </p>
                     </div>
                     <div >
                         <p >
-                            <button type="button" className="btn btn-primary text-white" onClick={(e)=>setOpen2(e.target)}>Set Stocks
+                            <button type="button" className="btn btn-primary text-white" onClick={(e)=>setOpen2(e.target)}> Add Customer Info
                             </button>
                         </p>
                     </div>
       </Typography>
        
-    <div className="row mt-2">
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2" style={isChecked ? {visibility:'visible'}:{visibility:'hidden'}}>
-                        <h5>Start Date:</h5>
-                        <div className="row">
-                            <div className="col-12 d-flex">
-                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="startDate" min="2023-07-08" onChange={(e)=>setStartDate(e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2" style={isChecked ? {visibility:'visible'}:{visibility:'hidden'}}>
-                        <h5>End Date:</h5>
-                        <div className="row">
-                            <div className="col-12 d-flex">
-                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="endDate" min="2023-07-08" onChange={(e)=>setEndDate(e.target.value)}/>
-                            </div>
-                        </div>
-                    </div>
-                   
+    {/* <div className="row mt-2">
+                  
                    
                  
                     
-                </div>
-                <div  style={{display:'flex',justifyContent:'flex-end'}}>
-                    <div >
-                        <p >
-                            <button type="button" className="btn btn-success text-white" onClick={LoadData}>Load
-                                Report
-                            </button>
-                        </p>
-                    </div>
-                </div>
+                </div> */}
+              
                  <div>
                
-                 { data && isChecked && <InventoryView users={data} />}
-                 { stockData && !isChecked && <InventoryStocksView users={stockData} />}
+                 { data && isChecked && <CustomerDataView users={data} />}
+                 { stockData && !isChecked && <CustomerInfoView users={stockData} />}
                
                 
                 
@@ -230,67 +221,81 @@ export default function InventoryPage(){
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{
-            sx: { width: 640 },
+            sx: {
+              width: 640,
+           
+            },
           }}
        
       >
-    <div className="modal-dialog" role="dialog" style={{minWidth: '30vw;',padding:'20px'}}>
+      <div className="modal-dialog" role="document" style={{padding:'10px'}}>
         <div className="modal-content">
             <div className="modal-header">
-                <h5 className="modal-title">Transfer Inventory</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCloseMenu}>
-                    <span aria-hidden="true" >&times;</span>
+                <h5 className="modal-title">Add Customer Data</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div className="modal-body">
-                <input type="hidden" className="num" value="0" name="id" />
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5>From:</h5>
-                            <input type="text" className="form-control" name="from" readOnly onChange={handleInventoryInputChange}/>
-                            <div className="invalid-feedback"/>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group my-2">
-                        <h5>To:</h5>
-                            <input type="text" className="form-control" id="to" name="to" onChange={handleInventoryInputChange}/>
-                            <div className="invalid-feedback" />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group my-2">
-                        <h5>Qty Delvered:</h5>
-                               <input type="text" className="form-control" name="qtyDelivered" onChange={handleInventoryInputChange} />
-                            <div className="invalid-feedback" />
-                        </div>
-                    </div>
-                      <div className="col-md-6 ">
-                        <div className="form-group my-2">
-                        <h5>Cash Received:</h5>
-                               <input type="text" className="form-control" name="cashReceived" onChange={handleInventoryInputChange} />
+                        <h6>Customer Name:</h6>
+                            <input type="text" className="form-control" name="cust_name" />
                             <div className="invalid-feedback" />
                         </div>
                     </div>
                      <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5>Remark:</h5>
-                                  <input type="text" className="form-control" name="remark" onChange={handleInventoryInputChange} />
+                        <h6>CInfo1:</h6>
+                            <input type="text" className="form-control" name="CInfo1" />
                             <div className="invalid-feedback" />
                         </div>
                     </div>
+                     <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h6>CInfo2:</h6>
+                            <input type="text" className="form-control" name="CInfo2" />
+                            <div className="invalid-feedback" />
+                        </div>
+                    </div>
+                     <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h6>CInfo3:</h6>
+                            <input type="text" className="form-control" name="CInfo3" />
+                            <div className="invalid-feedback" />
+                        </div>
+                    </div>
+                     <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h6>CInfo4:</h6>
+                            <input type="text" className="form-control" name="CInfo4" />
+                            <div className="invalid-feedback" />
+                        </div>
+                    </div>
+                      <div className="col-md-6">
+                        <div className="form-group my-2">
+                        <h6>Select Machine Type:</h6>
+                            <select className="form-control" name="MachineType" disabled>
+                                <option value="Combo">Combo</option>
+                                <option value="Vending">Vending</option>
+                                <option value="Incinerator">Incinerator</option>
+                                <option value="RECD">RECD</option>
+
+                            </select>
+                            <div className="invalid-feedback" />
+                        </div>
+                    </div>
+                  
+                  
                 </div>
-               
-               
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>setOpen(null)}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={updateTransaction}>Submit</button>
+                <button type="button" className="btn btn-primary" >Save changes</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-   
     </Popover>
     <Popover
         open={!!open2}
@@ -303,53 +308,40 @@ export default function InventoryPage(){
           }}
        
       >
-        <div className="modal-dialog" role="document" style={{minWidth: '30vw',padding:'20px'}}>
+        <div className="modal-dialog" role="document" style={{padding:'10px'}}>
         <div className="modal-content">
             <div className="modal-header">
-                <h5 className="modal-title">Set Stock</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={()=>setOpen2(null)}>
+                <h5 className="modal-title">Add Customer Info</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-           
-                <div className="modal-body">
-                <input type="hidden" className="num" value="0" name="id" />
+            <div className="modal-body">
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5>User Name:</h5>
-                            <input type="text" className="form-control" name="userName" onChange={handleStockInputChange} />
-                            <div className="invalid-feedback"/>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group my-2">
-                        <h5>Quantity:</h5>
-                            <input type="text" className="form-control" name="qty"  onChange={handleStockInputChange}/>
+                            <h6>Customer Name :</h6>
+                            <input type="text" className="form-control" name="CustomerName"  />
                             <div className="invalid-feedback" />
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5>Cash:</h5>
-                              <input type="text" className="form-control" name="cash" onChange={handleStockInputChange} />
+                            <h6>City :</h6>
+                            <input type="text" className="form-control" name="City"  />
                             <div className="invalid-feedback" />
                         </div>
                     </div>
                     
+                  
                 </div>
-               
-               
             </div>
-              
-        
             <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal"  onClick={()=>setOpen2(null)}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={updateStock}>Submit</button>
+                <button type="button" className="btn btn-primary" >Save changes</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-   
     </Popover>
     
     </>

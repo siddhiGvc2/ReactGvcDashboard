@@ -12,6 +12,7 @@ import HourlyReport from 'src/sections/Reports/HourlyReport';
 import MachinePage from 'src/sections/Machines/view/user-view';
 import InventoryPage from 'src/sections/Inventory/inventoryPage';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
+import CustomerPage from 'src/sections/Customers/customerPage';
 
 
 
@@ -53,8 +54,8 @@ export default function Router() {
         { path: 'faultReport', element: <FaultReport/>},
         { path: 'hourlyReport', element: <HourlyReport/>},
         { path: 'ssnReport', element: <SSNReport/>},
-        { path: 'inventory', element: <InventoryPage/>
-        }
+        { path: 'inventory', element: <InventoryPage/>},
+        { path: 'customers', element: <CustomerPage/>}
       ],
     },
     {

@@ -33,6 +33,11 @@ const navConfig = [
     icon: icon('file-lines-solid'),
   },
   {
+    title: 'Customers',
+    path: '/customers',
+    icon: icon('file-lines-solid'),
+  },
+  {
     title: 'user',
     path: '/user',
     icon: icon('ic_user'),

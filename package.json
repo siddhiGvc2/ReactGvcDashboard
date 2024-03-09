@@ -52,6 +52,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.16.0",
     "redux": "^5.0.1",
+    "select2": "^4.1.0-rc.0",
     "simplebar-react": "^3.2.4",
     "xlsx": "^0.18.5"
   },

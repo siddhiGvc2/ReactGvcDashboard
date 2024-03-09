@@ -10,14 +10,14 @@ import TableRow from '@mui/material/TableRow';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-// import IconButton from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function InventoryStockRow({
+export default function CustomerInfoRow({
   sr,
   selected,
   name,
@@ -32,9 +32,9 @@ export default function InventoryStockRow({
 }) {
   const [open, setOpen] = useState(null);
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
+  const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+  };
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -59,15 +59,15 @@ export default function InventoryStockRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src="" /> */}
             <Typography variant="subtitle2" noWrap>
-              {row.UserName}
+              {row.CustomerName}
             
             </Typography>
           </Stack>
         </TableCell>
 
       
-       <TableCell>{row.TotalQty}</TableCell>
-       <TableCell>{row.TotalCash}</TableCell>
+       <TableCell>{row.City}</TableCell>
+       
     
       
 
@@ -76,9 +76,9 @@ export default function InventoryStockRow({
         </TableCell> */}
 
         <TableCell align="right">
-          {/* <IconButton onClick={handleOpenMenu}>
+          <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
-          </IconButton> */}
+          </IconButton>
         </TableCell>
       </TableRow>
 
@@ -106,7 +106,7 @@ export default function InventoryStockRow({
   );
 }
 
-InventoryStockRow.propTypes = {
+CustomerInfoRow.propTypes = {
   sr:PropTypes.any,
   city: PropTypes.any,
   zone: PropTypes.any,

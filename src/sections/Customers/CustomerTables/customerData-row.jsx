@@ -1,4 +1,4 @@
-import moment from "moment";
+// import moment from "moment";
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,14 +10,14 @@ import TableRow from '@mui/material/TableRow';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-// import IconButton from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function InventoryRow({
+export default function CustomerDataRow({
   sr,
   selected,
   name,
@@ -32,9 +32,9 @@ export default function InventoryRow({
 }) {
   const [open, setOpen] = useState(null);
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
+  const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+  };
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -59,18 +59,19 @@ export default function InventoryRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src="" /> */}
             <Typography variant="subtitle2" noWrap>
-              {row.From}
+              {row.CustomerName}
             
             </Typography>
           </Stack>
         </TableCell>
 
       
-       <TableCell>{row.To}</TableCell>
-       <TableCell>{row.QtyDelivered}</TableCell>
-       <TableCell>{row.CashReceived}</TableCell>
-       <TableCell>{row.Remark}</TableCell>
-        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell>{row.CInfo1}</TableCell>
+       <TableCell>{row.CInfo2}</TableCell>
+       <TableCell>{row.CInfo3}</TableCell>
+       <TableCell>{row.CInfo4}</TableCell>
+       <TableCell>{row.MachineType}</TableCell>
+      
        
       
 
@@ -79,9 +80,9 @@ export default function InventoryRow({
         </TableCell> */}
 
         <TableCell align="right">
-          {/* <IconButton onClick={handleOpenMenu}>
+          <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
-          </IconButton> */}
+          </IconButton>
         </TableCell>
       </TableRow>
 
@@ -109,7 +110,7 @@ export default function InventoryRow({
   );
 }
 
-InventoryRow.propTypes = {
+CustomerDataRow.propTypes = {
   sr:PropTypes.any,
   city: PropTypes.any,
   zone: PropTypes.any,
