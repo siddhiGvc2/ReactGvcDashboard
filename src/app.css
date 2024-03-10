@@ -12,3 +12,15 @@
     background-color: white; /* Adjust as needed */
     z-index: 1;
    }
+
+   .color-picker {
+    text-align: center;
+}
+
+.selectedColor {
+    margin-top: 20px;
+    width: 70px;
+    height: 70px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+}

@@ -199,7 +199,7 @@ const amountText = amt => {
           sx: { width: 340 ,padding:2},
         }}
       >
-           <b style={{fontSize: '1.20em'}}>{m.uid} {m.machineId}</b>
+           <b style={{fontSize: '1.20em'}}>{m.uid} {m.serial}</b>
          <table className="table" style={{fontSize:'14px'}}>
                             <tbody> 
                                   <tr><th style={{color: '#444'}}>Status</th><td style={{color: '#444'}} >  <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label></td></tr>

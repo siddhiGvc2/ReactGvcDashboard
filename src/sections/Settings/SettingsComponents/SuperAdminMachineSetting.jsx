@@ -6,7 +6,7 @@ export default function SuperAdminMachineSetting(){
 
         <div className="row" id="container">
         <div className="col-lg-12">
-           <div className="card">
+           
               <div>
                 <div>
                   <div>
@@ -210,7 +210,7 @@ export default function SuperAdminMachineSetting(){
                   </div>
                </div>
             </div>
-          </div>
+         
       </div>
   
   </div>

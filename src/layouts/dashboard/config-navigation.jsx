@@ -72,6 +72,11 @@ const navConfig = [
     path: '/machineSetting',
     icon: icon('ic_blog'),
   },
+  {
+    title: 'Color Setting',
+    path: '/colorSetting',
+    icon: icon('ic_blog'),
+  },
   
   
   {

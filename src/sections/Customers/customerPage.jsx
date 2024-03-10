@@ -1,7 +1,6 @@
-import $ from 'jquery'
 import 'select2'; 
-
-import moment from "moment";
+import $ from 'jquery'
+// import moment from "moment";
 import { useState, useEffect, useCallback} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
@@ -10,14 +9,14 @@ import { Container } from "@mui/material";
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
-
 import { fetchUsers } from 'src/_mock/user';
 import { AllMachines } from 'src/_mock/AllMachines';
-import { updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
+// import { updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
 
 // import InventoryView from "./user/view/inventoryTransactions";
 // import InventoryStocksView from "./user/view/inventoryStocks";
-import { getAllCustomerInfo, getCustomerData } from 'src/_mock/customers';
+import {getCustomerData, getAllCustomerInfo } from 'src/_mock/customers';
+
 import CustomerDataView from './CustomerTables/view/customerData';
 import CustomerInfoView from './CustomerTables/view/customerInfo';
 
@@ -31,8 +30,8 @@ export default function CustomerPage(){
     // const [last,setLast]=useState(null);
  
     const [isChecked, setIsChecked] = useState(true);
-    const [inventoryObj,setInventoryObj]=useState({});
-    const [stockObj,setStockObj]=useState({});
+    // const [inventoryObj,setInventoryObj]=useState({});
+    // const [stockObj,setStockObj]=useState({});
     
     const [open, setOpen] = useState(null);
     const [open2, setOpen2] = useState(null);
@@ -95,21 +94,21 @@ export default function CustomerPage(){
       };
   
     
-    const handleStockInputChange = (e) => {
-        const { name, value } = e.target;
-        setStockObj((prevStockObj) => ({
-          ...prevStockObj,
-          [name]: value,
-        }));
-      };
+    // const handleStockInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setStockObj((prevStockObj) => ({
+    //       ...prevStockObj,
+    //       [name]: value,
+    //     }));
+    //   };
    
-      const handleInventoryInputChange = (e) => {
-        const { name, value } = e.target;
-        setInventoryObj((prevInventoryObj) => ({
-          ...prevInventoryObj,
-          [name]: value,
-        }));
-      };
+    //   const handleInventoryInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setInventoryObj((prevInventoryObj) => ({
+    //       ...prevInventoryObj,
+    //       [name]: value,
+    //     }));
+    //   };
 
     const handleChange = () => {
       setIsChecked(!isChecked);
@@ -143,14 +142,14 @@ export default function CustomerPage(){
       },[LoadData]);
     
     
-    const updateTransaction=()=>{
-        updateInventoryTransactions(inventoryObj);
+    // const updateTransaction=()=>{
+    //     updateInventoryTransactions(inventoryObj);
 
-    }
+    // }
 
-    const updateStock=()=>{
-        updateInventoryStocks(stockObj)
-    }
+    // const updateStock=()=>{
+    //     updateInventoryStocks(stockObj)
+    // }
   
 
     return<>

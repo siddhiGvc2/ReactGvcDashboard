@@ -9,11 +9,13 @@ import FaultReport from 'src/sections/Reports/faultReport';
 import { ProductsView } from 'src/sections/MachineData/view';
 import DailyReports from 'src/sections/Reports/dailyReports';
 import HourlyReport from 'src/sections/Reports/HourlyReport';
+import ColorSetting from 'src/sections/Settings/colorSetting';
 import MachinePage from 'src/sections/Machines/view/user-view';
-import InventoryPage from 'src/sections/Inventory/inventoryPage';
-import MachineMapView from 'src/sections/MachineMap/view/products-view';
 import CustomerPage from 'src/sections/Customers/customerPage';
+import InventoryPage from 'src/sections/Inventory/inventoryPage';
 import MachineSetting from 'src/sections/Settings/machineSetting';
+import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -57,7 +59,9 @@ export default function Router() {
         { path: 'ssnReport', element: <SSNReport/>},
         { path: 'inventory', element: <InventoryPage/>},
         { path: 'customers', element: <CustomerPage/>},
-        { path: 'machineSetting', element: <MachineSetting/>}
+        { path: 'machineSetting', element: <MachineSetting/>},
+        { path: 'colorSetting', element: <ColorSetting/>
+        }
       ],
     },
     {

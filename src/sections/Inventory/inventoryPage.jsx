@@ -1,15 +1,13 @@
-import $ from 'jquery'
 import 'select2'; 
-
+import $ from 'jquery'
 import moment from "moment";
-import { useState, useEffect} from 'react';
+import { useState} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
 import Card from '@mui/material/Card';
 import { Container } from "@mui/material";
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-
 
 import { fetchUsers } from 'src/_mock/user';
 import { AllMachines } from 'src/_mock/AllMachines';
