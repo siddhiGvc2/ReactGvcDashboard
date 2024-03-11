@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useState,useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
+import Popover from '@mui/material/Popover';
 // import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
+import {List} from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
+
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from 'src/routes/hooks';
@@ -15,13 +18,16 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
+// import { account } from 'src/_mock/account';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
+import SideBar from './SideBar';
 import { NAV } from './config-layout';
-import navConfig from './config-navigation';
+// import navConfig from './config-navigation';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -41,37 +47,38 @@ export default function Nav({ openNav, onCloseNav }) {
 
 
   // account ui
-  const renderAccount = (
-    <Box
-      sx={{
-        my: 3,
-        mx: 2.5,
-        py: 2,
-        px: 2.5,
-        display: 'flex',
-        borderRadius: 1.5,
-        alignItems: 'center',
-        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
-      }}
-    >
-      <Avatar src={account.photoURL} alt="photoURL" />
+  // const renderAccount = (
+  //   <Box
+  //     sx={{
+  //       my: 3,
+  //       mx: 2.5,
+  //       py: 2,
+  //       px: 2.5,
+  //       display: 'flex',
+  //       borderRadius: 1.5,
+  //       alignItems: 'center',
+  //       bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
+  //     }}
+  //   >
+  //     <Avatar src={account.photoURL} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+  //     <Box sx={{ ml: 2 }}>
+  //       <Typography variant="subtitle2">{account.displayName}</Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
-        </Typography>
-      </Box>
-    </Box>
-  );
+  //       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+  //         {account.role}
+  //       </Typography>
+  //     </Box>
+  //   </Box>
+  // );
  
   // menu ui
+
+ 
+
   const renderMenu = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
-      ))}
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 ,mt:3}}>
+      <SideBar/>
     </Stack>
   );
 
@@ -80,7 +87,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderContent = (
     <>
     <Box sx={{width:'100%',height:'90px',backgroundColor:'white',paddingTop:'5px'}}>
-    <Logo sx={{ mt: 3, ml: 4 ,backgroundColor:'white',width:'150px',display:'flex',alignItems:'center',marginBottom:'10px'}} />
+    <Logo sx={{ mt: 2, ml: 4 ,backgroundColor:'white',width:'150px',display:'flex',alignItems:'center',marginBottom:'10px'}} />
     </Box>
    
     <Scrollbar
@@ -97,10 +104,10 @@ export default function Nav({ openNav, onCloseNav }) {
       }}
     >
      
-
-      {renderAccount}
-
-      {renderMenu}
+ 
+      {/* {renderAccount} */}
+       {renderMenu}
+      {/* <SideBar/> */}
 
       <Box sx={{ flexGrow: 1 }} />
 
@@ -153,39 +160,90 @@ Nav.propTypes = {
 
 
 // menuItems list ui
+
+
+
 function NavItem({ item }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const pathname = usePathname();
 
-  const active = item.path === pathname;
+const active = item && item.path&& item.path === pathname || false;
+
+  const handleClick = (event) => {
+    
+      setAnchorEl(event.currentTarget);
+   
+   
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const renderSubMenu = (submenu) => (
+    <Popover
+    anchorEl={anchorEl}
+    open={open}
+    onClose={handleClose}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'left',
+    }}
+  >
+    <List component="ul" disablePadding>
+      {submenu.map((subitem) => (
+        <NavItem key={subitem.title} onClick={handleClose}>
+          {subitem.title}
+        </NavItem>
+      ))}
+    </List>
+  </Popover>
+  );
 
   return (
     <ListItemButton
-      component={RouterLink}
-      href={item.path}
-      sx={{
-        minHeight: 44,
-        borderRadius: 0.75,
-        typography: 'body2',
-        color: 'grey',
-        textTransform: 'capitalize',
-        fontWeight: 'fontWeightMedium',
-        ...(active && {
-          color: 'white',
-          fontWeight: 'fontWeightSemiBold',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
-          '&:hover': {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
-            color:'white'
-          },
-        }),
-      }}
-    >
-      <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
-        {item.icon}
-      </Box>
+    onClick={handleClick}
+    component={RouterLink}
+    // href={item.path}
+    sx={{
+      minHeight: 44,
+      borderRadius: 0.75,
+      typography: 'body2',
+      color: 'grey',
+      textTransform: 'capitalize',
+      fontWeight: 'fontWeightMedium',
+      ...(active && {
+        color: 'white',
+        fontWeight: 'fontWeightSemiBold',
+        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+        '&:hover': {
+          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+          color:'white'
+        },
+      }),
+    }}
+  >
+    <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+      {item.icon}
+    </Box>
 
-      <Box component="span">{item.title} </Box>
-    </ListItemButton>
+    <Box component="span">{item.title} </Box>
+  
+   
+
+ 
+
+    { item.submenu && renderSubMenu(item.submenu)}
+
+   
+
+   
+
+  </ListItemButton>
   );
 }
 

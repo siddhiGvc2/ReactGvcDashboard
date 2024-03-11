@@ -33,10 +33,8 @@ export const getAllData = async () => {
     }
   };
 
-
-  setInterval(()=>{
-       getAllData();
-  },5000)
+ 
+ 
   
 
 export const zoneData=async(city)=> {

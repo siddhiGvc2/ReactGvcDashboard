@@ -24,3 +24,267 @@
     border: 1px solid #ccc;
     border-radius: 50%;
 }
+
+
+.quixnav a{
+    color:#BDBDC7;
+    text-decoration: none;
+}
+
+.quixnav ul{
+    list-style-type: none;
+}
+.quixnav li a i{
+   
+      margin-right: 20px;
+}
+
+
+
+
+.nav-header {
+    background-color: white;
+}
+
+.brand-logo img {
+    max-width: 100%;
+    height: 4em;
+}
+
+#main-wrapper.show .logo-lg {
+    display: initial;
+}
+
+#main-wrapper.show.menu-toggle .logo-lg {
+    display: none;
+}
+
+#main-wrapper.show .quixnav {
+    display: initial;
+
+     /* Set the initial width */
+}
+
+#main-wrapper.show.menu-toggle .quixnav {
+    display: none;
+    width: 0; /* You can set width to 0 or adjust as needed */
+}
+
+
+
+#main-wrapper.show .content-body {
+    margin-left: 240px;
+}
+
+#main-wrapper.show.menu-toggle .content-body {
+    margin-left:0;
+}
+
+@media (max-width:1101px){
+    #main-wrapper.show .quixnav {
+        display: initial;
+       
+        
+         /* Set the initial width */
+    }
+    
+    #main-wrapper.show.menu-toggle .quixnav {
+        display: none;
+        width: 0; /* You can set width to 0 or adjust as needed */
+    }
+
+    #main-wrapper.show .content-body {
+        margin-left:20%;
+    }
+    
+    #main-wrapper.show.menu-toggle .content-body {
+        margin-left:0;
+    }
+  
+}
+
+
+@media (min-width:1100px){
+    #main-wrapper.show .quixnav {
+        display: initial;
+        width:230px;
+        
+         /* Set the initial width */
+    }
+    
+    #main-wrapper.show.menu-toggle .quixnav {
+        display: none;
+        width: 0; /* You can set width to 0 or adjust as needed */
+    }
+
+    #main-wrapper.show .content-body {
+        margin-left: 235px;
+    }
+    
+    #main-wrapper.show.menu-toggle .content-body {
+        margin-left:0;
+    }
+  
+}
+
+
+
+  @media (max-width: 480px) {
+   
+    
+
+    #main-wrapper.show .content-body {
+        margin-left: 0;
+    }
+    
+    #main-wrapper.show.menu-toggle .content-body {
+        margin-left:0;
+    }
+
+    #main-wrapper.show .quixnav {
+        display: initial;
+        
+         /* Set the initial width */
+    }
+    
+    #main-wrapper.show.menu-toggle .quixnav {
+        display: none;
+        width: 0; /* You can set width to 0 or adjust as needed */
+    }
+     
+
+  } 
+
+  @media (max-width: 375px) {
+    #main-wrapper.show .content-body {
+        margin-left: 0;
+    }
+    
+    #main-wrapper.show.menu-toggle .content-body {
+        margin-left:0;
+    }
+   
+     
+   
+      }
+
+
+#main-wrapper.show .logo-sm {
+    display: none;
+}
+
+#main-wrapper.show.menu-toggle .logo-sm {
+    display: initial;
+}
+
+.multiselect-native-select .btn-group{
+    width: 100%;
+    margin-top: 1em;
+}
+
+.multiselect-native-select .btn-group button{
+    text-align: left !important;
+}
+
+.stat-widget-top{
+    padding: 0.75rem !important;
+}
+
+.stat-widget-top .stat-icon i {
+    font-size: 20px;
+    width: 55px;
+    text-align: center;
+}
+
+.stat-widget-top .stat-text {
+    font-size: 11px;
+}
+
+#tblMachines tbody td, #tblMachines_wrapper tbody td {
+    padding: 7.5px 9px !important;
+    color: #444;
+}
+
+.wide-qtip {
+    min-width: 30em !important;
+}
+
+.wide-qtip .qtip-content{
+    min-width: 30em !important;
+}
+
+.w-3{
+    width: 3em !important;
+}
+
+.w-5{
+    width: 5em !important;
+}
+.w-7{
+    width: 7em !important;
+}
+
+.elp {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.multiselect-native-select{
+    display: contents !important;
+}
+.multiselect-native-select .btn-group{
+    padding: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-left: 0.5em !important;
+    padding-right: 0.5em !important;
+}
+.sm-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sm-scroll:hover::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sm-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sm-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2em;
+}
+
+    .sm-scroll::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+.sm-scroll:hover::-webkit-scrollbar-thumb {
+    border-radius: 4em;
+}
+
+.sm-scroll-h::-webkit-scrollbar {
+    height: 4px;
+}
+
+.sm-scroll-h:hover::-webkit-scrollbar {
+    height: 8px;
+}
+
+.sm-scroll-h::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sm-scroll-h::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2em;
+}
+
+    .sm-scroll-h::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+.sm-scroll-h:hover::-webkit-scrollbar-thumb {
+    border-radius: 4em;
+}

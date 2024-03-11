@@ -28,6 +28,7 @@ export default function FaultReport(){
     // };
     
     const LoadData=()=>{
+        setData([]);
         FaultReportData(startDate,endDate).then((res)=>{
            
             let filteredData;
@@ -67,7 +68,7 @@ export default function FaultReport(){
     return(
     <Card>
         <Container maxWidth='xxl'>
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5 ,mt:2}}>
         Technician  Report
       </Typography>
     <div className="row mt-2">

@@ -28,6 +28,8 @@ export default function LoginLogs(){
     };
     
     const LoadData=()=>{
+        setData([]);
+        setLast([]);
         LogInfo(startDate,endDate).then((res)=>{
             if(!isChecked)
             {
@@ -78,13 +80,15 @@ export default function LoginLogs(){
            
         })
 
+ 
+
     }
 
 
     return(
     <Card>
         <Container maxWidth='xxl'>
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5,mt:2 }}>
         Login Logs
       </Typography>
     <div className="row mt-2">
@@ -136,9 +140,9 @@ export default function LoginLogs(){
                 </div>
                  <div>
                
-                 {isChecked? data && <UserView  users={data} />: ''}
+                 {isChecked && data && <UserView  users={data} />}
                 
-                 {!isChecked ? last && <LastEntry users={last}/>:''}
+                 {!isChecked && last && <LastEntry users={last}/>}
                  </div>
                
                 </Container>

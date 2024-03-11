@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 // ----------------------------------------------------------------------
 
 const SvgColor = forwardRef(({ src, sx, ...other }, ref) => (
+  
   <Box
     component="span"
     className="svg-color"
@@ -21,6 +22,8 @@ const SvgColor = forwardRef(({ src, sx, ...other }, ref) => (
     }}
     {...other}
   />
+ 
+  
 ));
 
 SvgColor.propTypes = {

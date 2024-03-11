@@ -9,12 +9,16 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 // import { products } from 'src/_mock/products';
+import { getAllData } from "src/_mock/fildData";
+
 import { UserView } from 'src/sections/machineDataTable/view';
 
 import MachineCard from '../machine-card';
 import { store } from "../../../Redux/store";
 import FieldSelection from "../fieldSelection"
 import StatusSelection from '../statusSelection';
+// import { getAllCustomerInfo } from "src/_mock/customers";
+
 // import { useState } from 'react';
 // import UserTableToolbar from 'src/sections/user/user-table-toolbar';
 
@@ -40,6 +44,19 @@ export default function ProductsView() {
     setData(store.getState().data);
    
   });
+
+  useEffect(() => {
+    getAllData();
+  
+    const interval=setInterval(()=>{
+     getAllData();
+    },5000)
+
+    return ()=>{
+      clearInterval(interval)
+    }
+  },[]);
+
 
 
   useEffect(()=>{

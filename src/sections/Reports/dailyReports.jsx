@@ -159,6 +159,7 @@ export default function DailyReports(){
 
            
            const LoadReport=()=>{
+            setReportData([]);
             ReportData(cityName,zoneName,wardName,beatName,machineName,startDate,endDate).then((res)=>{
                 setReportData(res);
             })

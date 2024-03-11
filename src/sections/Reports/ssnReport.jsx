@@ -28,6 +28,7 @@ export default function SSNReport(){
     // };
     
     const LoadData=()=>{
+        setData([]);
         SSNInfo(startDate,endDate).then((res)=>{
            
            setData(res);
@@ -39,7 +40,7 @@ export default function SSNReport(){
     return(
     <Card>
         <Container maxWidth='xxl'>
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5 ,mt:2}}>
         SSN Report
       </Typography>
     <div className="row mt-2">

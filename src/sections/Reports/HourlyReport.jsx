@@ -56,30 +56,43 @@ export default function HourlyReport(){
         const date = start.toISOString();
     
         GetHourlyData(date,"18:00").then((res)=>{
-             setData(res);
+           
+            
+             GetHourlyData(startDate,"10:00").then((res1)=>{
+              
+                
+                 GetHourlyData(startDate,"12:00").then((res2)=>{
+                   
+                   
+                     GetHourlyData(startDate,"14:00").then((res3)=>{
+                         console.log(res3)
+                        
+                         GetHourlyData(startDate,"16:00").then((res4)=>{
+                           
+                             
+                               GetHourlyData(startDate,"18:00").then((res5)=>{
+                                   setData(res);
+                                   setData1(res1);
+                                   setData2(res2);
+                                   setData3(res3);
+                                   setData4(res4);
+                                   setData5(res5);
+                                
+                            })
+                            
+                        })
+                        
+                    })
+                
+                })
+             })
         })
 
-        GetHourlyData(startDate,"10:00").then((res)=>{
-             setData1(res);
-         })
-        GetHourlyData(startDate,"12:00").then((res)=>{
-             setData2(res);
-        
-        })
-        GetHourlyData(startDate,"14:00").then((res)=>{
-             setData3(res);
-            
-        })
-        GetHourlyData(startDate,"16:00").then((res)=>{
-           
-               setData4(res);
-            
-        })
-        GetHourlyData(startDate,"18:00").then((res)=>{
-         
-               setData5(res);
-            
-        })
+       
+       
+      
+       
+       
 
     }
     
@@ -92,7 +105,7 @@ export default function HourlyReport(){
         Hourly Report
       </Typography>
     <div className="row mt-2">
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2">
+                    <div className="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2">
                         <h5>Select Date:</h5>
                         <div className="row">
                             <div className="col-12 d-flex">

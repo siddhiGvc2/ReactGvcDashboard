@@ -51,9 +51,13 @@ export default function AppView() {
    
     // setPathName(1);
     LoadData();
-    setInterval(()=>{
+    const interval=setInterval(()=>{
       LoadData();
     },5000)
+
+    return ()=>{
+      clearInterval(interval)
+    }
   },[]);
 
   
@@ -105,7 +109,7 @@ export default function AppView() {
     <Container maxWidth="xxl" >
       
 
-      <Grid container spacing={3} onClick={()=> setPathName(1)}>
+      <Grid container spacing={3} >
         {/* total Machines */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
