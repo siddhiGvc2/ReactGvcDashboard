@@ -1,8 +1,164 @@
+import $ from 'jquery'
+import React, {useState, useEffect } from "react"
+
+// import { Card, Container } from "@mui/material";
+import Stack from '@mui/material/Stack';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+
+import {GET,SET} from "src/_mock/machineSetting"
+
+const MaxDailyCount=import.meta.env.VITE_REACT_APP_MAXIMUM_DAILY_COUNT;
+const MaxTotalCount=import.meta.env.VITE_REACT_APP_MAXIMUM_TOTAL_COUNT;
+const Alert = React.forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  ));
+const MachineNumber=import.meta.VITE_REACT_APP_MACHINE_NUMBER;
 
 
 
 export default function UserMachineSetting(){
-    return(
+    const [showAlert, setShowAlert] = useState(false);
+    const [message,setMessage]=useState("");
+    const [type,setType]=useState("");
+    const showAlertMessage = () => {
+        setShowAlert(true);
+    
+        // You can optionally set a timeout to hide the alert after a few seconds
+        setTimeout(() => {
+        setShowAlert(false);
+        }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
+    };
+
+    useEffect(()=>{
+        // const userInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+        const machineNumber = MachineNumber;
+        
+        // Assuming $('[name="machineID"]').val() is the value of an input field with name "machineID"
+        const inputFieldValue = $('[name="machineID"]').val();
+        $('.ad').css({
+            'display': machineNumber !== inputFieldValue ? 'none' : 'block'
+        });
+            $('.na').css({
+            'visibility': machineNumber !== inputFieldValue ? 'hidden' : 'visible'
+        });
+          $('.us').css({
+            'display': machineNumber !== inputFieldValue ? 'block' : 'none'
+        });
+           $('.ba').css({
+           'display': machineNumber !== inputFieldValue ? 'none' : 'block'
+        });
+    },[])
+
+    const Get=()=>{
+
+        if(!$('[name="machineID"]').val())
+        {
+          
+           showAlertMessage();
+           setType("warning");
+           setMessage("Please Enter Serial Number")  
+        }
+        else{
+            $('[name="price"]').val("??");
+            $('[name="modelName"]').val("??");
+            $('[name="model"]').val("??");
+            $('[name="minTempA"]').val("??");
+            $('[name="minTempB"]').val("??");
+            $('[name="maxTempA"]').val("??");
+            $('[name="maxTempB"]').val("??");
+            $('[name="maxDoorCount"]').val("??");
+            $('[name="maxBurningTime"]').val("??");
+            $('[name="alarmTime"]').val("??");
+
+            GET($('[name="machineID"]').val()).then((r)=>{
+                console.log(r);
+                if(r==="MachineOff")
+                {
+                    showAlertMessage();
+                    setType("error");
+                    setMessage("Machine is off")
+                  $('[name="price"]').val("");
+                 $('[name="modelName"]').val("");
+                 $('[name="model"]').val("");
+                 $('[name="minTempA"]').val("");
+                 $('[name="minTempB"]').val("");
+                 $('[name="maxTempA"]').val("");
+                 $('[name="maxTempB"]').val("");
+                 $('[name="maxDoorCount"]').val("");
+                 $('[name="maxBurningTime"]').val("");
+                 $('[name="alarmTime"]').val("");
+                }
+                else{
+                
+                  showAlertMessage();
+                  setType("success");
+                  setMessage("Fetched Succesfully")   
+                 $('[name="price"]').text(r.ProductPrice);
+                 $('[name="minTempA"]').text(r.minA);
+                 $('[name="minTempB"]').text(r.minB);
+                 $('[name="maxTempA"]').text(r.maxA);
+                 $('[name="maxTempB"]').text(r.maxB);
+                 $('[name="maxDoorCount"]').text(r.maxDoorCount);
+                 $('[name="maxBurningTime"]').text(r.maxProcessTime);
+                 $('[name="alarmTime"]').text(r.alarmTime);
+ 
+                }
+               
+
+            })
+            .catch((err)=>{
+                showAlertMessage();
+                setType("error");
+                setMessage("Error:Occured")  
+
+            })
+
+        }
+       
+
+    }
+
+
+    const Set=()=>{
+        if(!$('[name="machineID"]').val())
+        {
+            showAlertMessage();
+            setType("warning");
+            setMessage("Please Enter Serial Number")    
+        }
+        else if(localStorage.getItem("dailyCount")===MaxDailyCount || localStorage.getItem("totalCount")===MaxTotalCount)
+        {
+            showAlertMessage();
+            setType("error");
+            setMessage("SetLimit Exceeded")  
+        }
+        else{
+           SET($('[name="machineID"]').val(), $('[name="newSerialNumber"]').val(),sessionStorage.getItem('name'))
+           .then((r)=>{
+            showAlertMessage();
+            setType("success");
+            setMessage("Saved Successfully") 
+           })
+           .catch((err)=>{
+            showAlertMessage();
+            setType("error");
+            setMessage("Error: Occured") 
+           })
+        }
+
+    }
+   
+    return<>
+    <Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
+
+     </Stack>
         <div className="row" id="container">
         <div className="col-lg-12">
            <div className="card">
@@ -22,13 +178,13 @@ export default function UserMachineSetting(){
                                           </div>
                                           <div className="col-md-2 col-lg-2">
                                               <div className="form-group my-2 ">
-                                              <button type="button" className="btn btn-success text-white" >GET</button>
+                                              <button type="button" className="btn btn-success text-white" onClick={Get}>GET</button>
                                               </div>
                                           
                                               
                                           </div>
                                           </div>
-                                   <div className="row col-lg-6"  style={{display:'flex',visibility:'hidden'}}>
+                                   <div className="row col-lg-6"  style={{display:'flex'}}>
                                           
                                           <div className="col-md-3 col-lg-4 mr-2 ml-0">
                                               <div className="form-group my-2">
@@ -40,7 +196,7 @@ export default function UserMachineSetting(){
                                           </div>
                                               <div className="col-md-2 col-lg-2">
                                                   <div className="form-group my-2 ">
-                                                  <button type="button" className="btn btn-primary text-white" >SET</button>
+                                                  <button type="button" className="btn btn-primary text-white" onClick={Set}>SET</button>
                                               </div>
                                           </div>
                                    </div>
@@ -199,5 +355,5 @@ export default function UserMachineSetting(){
       </div>
   
   </div>
-    )
+    </>
 }

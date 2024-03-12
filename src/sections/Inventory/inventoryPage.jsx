@@ -109,6 +109,8 @@ export default function InventoryPage(){
     };
     
     const LoadData=()=>{
+        setData([]);
+        setStockData([]);
         if(isChecked)
         {
         getAllTransactions(startDate,endDate).then((res)=>{

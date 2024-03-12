@@ -35,9 +35,13 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-       <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
+      {
+        lgUp && (
+          <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
+            <Iconify icon="eva:menu-2-fill" />
+          </IconButton>
+      )}
+      
 
       {/* <Searchbar /> */}
 
@@ -67,7 +71,7 @@ export default function Header({ onOpenNav }) {
           width: `calc(100% - ${NAV.WIDTH + 1}px)`,
           height: HEADER.H_DESKTOP,
         }),
-        width: `calc(100% - ${NAV.WIDTH + 1}px)`,
+       
        
       }}
     >

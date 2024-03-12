@@ -161,8 +161,10 @@ export default function LoginView() {
         })
           .then((res) => res.json()) // Return the result here
           .then((json) => {
-            sessionStorage.setItem("isAdmin",json.data.user.isAdmin)
-            sessionStorage.setItem('name', json.data.user.name);
+            window.sessionStorage.setItem("userInfo",JSON.stringify(json.data.user))
+            window.sessionStorage.setItem("clientName",json.data.user.clientName)
+            window.sessionStorage.setItem("isAdmin",json.data.user.isAdmin)
+            window.sessionStorage.setItem('name', json.data.user.name);
             window.sessionStorage.setItem('token', json.data.token);
             showAlertMessage();
             setType("success");

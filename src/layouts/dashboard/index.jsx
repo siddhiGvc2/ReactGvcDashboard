@@ -21,21 +21,28 @@ export default function DashboardLayout({ children }) {
 
  
 
-    useEffect(()=>{
-      if(GEOLOCATION)
-      {
+  useEffect(() => {
+    let interval1;
+    let interval2;
+    if (GEOLOCATION) {
       getLatLon();
-        setInterval(()=>{
-          getLatLon();
-        },5000)
-     
+      interval1 = setInterval(() => {
+        getLatLon();
+      }, 5000);
+  
+      sendLattLon();
+      interval2 = setInterval(() => {
         sendLattLon();
-         setInterval(()=>{
-          sendLattLon();
-         },Time)
-        }
-    },[])
-
+      }, Time);
+  
+      return () => {
+        clearInterval(interval2);
+        clearInterval(interval1);
+      };
+    }
+    return () => {};
+  }, []); // Include GEOLOCATION in the dependency array
+  
 
 
   

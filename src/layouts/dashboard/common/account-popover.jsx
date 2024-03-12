@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { account } from 'src/_mock/account';
+// import { account } from 'src/_mock/account';
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +43,13 @@ export default function AccountPopover() {
     setOpen(null);
   }; 
 
+  // removing user credientials after logout
   const LogoOut=()=>{
-    sessionStorage.removeItem("token");
-    localStorage.removeItem('name');
+    window.sessionStorage.removeItem("userInfo");
+    window.sessionStorage.removeItem("token");
+    window.sessionStorage.removeItem("clientName")
+    window.sessionStorage.removeItem("isAdmin")
+    window.sessionStorage.removeItem('name');
     router.push("/")
     
 
@@ -53,6 +57,9 @@ export default function AccountPopover() {
 
   return (
     <>
+       <Typography variant="subtitle2" sx={{color:'black'}} noWrap>
+            {sessionStorage.getItem("clientName")!=='null' ? sessionStorage.getItem("clientName"):''}
+          </Typography>
       <IconButton
         onClick={handleOpen}
         sx={{
@@ -65,6 +72,7 @@ export default function AccountPopover() {
           // }),
         }}
       >
+         
         {/* <Avatar
           src={account.photoURL}
           alt={account.displayName}
@@ -76,8 +84,9 @@ export default function AccountPopover() {
         >
           {account.displayName.charAt(0).toUpperCase()}
         </Avatar> */}
-        <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+          
+          <Typography variant="subtitle2" noWrap>
+            {sessionStorage.getItem("name")}
           </Typography>
         
       </IconButton>

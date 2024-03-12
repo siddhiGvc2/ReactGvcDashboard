@@ -159,8 +159,9 @@ export default function DailyReports(){
 
            
            const LoadReport=()=>{
-            setReportData([]);
+            // setReportData([]);
             ReportData(cityName,zoneName,wardName,beatName,machineName,startDate,endDate).then((res)=>{
+                console.log("Report Data", res);
                 setReportData(res);
             })
            }
@@ -463,7 +464,7 @@ export default function DailyReports(){
                 
                
            {/* report teble ui */}
-            {reportData && <TableHeader data={reportData} zones={zones.filter(item => !zoneName.includes(item))} wards={wards.filter(item => !wardName.includes(item))} beats={beats.filter(item => !beatName.includes(item))} startDate={startDate} endDate={endDate} checked={isChecked}/>}
+            {reportData &&<TableHeader data={reportData} zones={zones.filter(item => !zoneName.includes(item))} wards={wards.filter(item => !wardName.includes(item))} beats={beats.filter(item => !beatName.includes(item))} startDate={startDate} endDate={endDate} checked={isChecked}/>}
               
 
 

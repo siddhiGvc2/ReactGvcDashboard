@@ -117,6 +117,8 @@ export default function CustomerPage(){
     
 
     const LoadData=useCallback(()=>{
+        setData([]);
+        setStockData([]);
         if(isChecked)
         {
         getCustomerData().then((res)=>{

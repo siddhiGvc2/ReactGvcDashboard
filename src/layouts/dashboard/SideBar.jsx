@@ -1,10 +1,68 @@
 // import ListItemButton from '@mui/material/ListItemButton';
+// import { accordionActionsClasses } from "@mui/material";
+import $ from "jquery";
+import { useEffect } from "react";
+
+import { account } from 'src/_mock/account';
+
 
 // import { usePathname } from 'src/routes/hooks';
 // import { RouterLink } from 'src/routes/components';
 
 
+
+
 export default function SideBar(){
+
+    useEffect(()=>{
+
+        const clientName=window.sessionStorage.getItem("clientName") || '';
+        // const isAdmin= window.sessionStorage.getItem("isAdmin")===true;
+        const displayName=window.sessionStorage.getItem("name") || "Siddhi";
+
+        if(displayName!=="Demo")
+        {
+            // console.log("isAdmin :",window.sessionStorage.getItem("isAdmin"));
+        if (window.sessionStorage.getItem("isAdmin")==='false') {
+ 
+            $('.metismenu .ra').remove(); 
+            
+
+        }
+          else if (window.sessionStorage.getItem("isAdmin")==='true'){
+            if(clientName)
+            {
+               $('.superAdmin').text(account.clientName)  
+            }
+            else{
+                $('.metismenu .da').remove(); 
+            }
+           
+          } 
+        }
+       
+         else if(displayName==="Demo")
+          {
+             $('.metismenu .us').remove(); 
+               $('.metismenu .set').remove(); 
+          }
+
+
+    },[])
+
+    const handleKeyPress = (event) => {
+        // Check if the 'Enter' key is pressed
+        if (event.key === 'Enter') {
+          OpenLocationMap();
+        }
+      };
+
+
+    const OpenLocationMap=()=>{
+        window.open(`https://maps.google.com?q=${sessionStorage.getItem("Lattitude")},${sessionStorage.getItem("Longitude")}`);
+    }
+
+
     return(
         <div className="quixnav">
         <div className="quixnav-scroll">
@@ -39,7 +97,7 @@ export default function SideBar(){
                     </a>
                 </li>
                  <li  className="mt-3">
-                    <a className="ra us" href="/users" >
+                    <a className="ra us" href="/user" >
                     <i className="fa-solid fa-users-line"/><span className="nav-text">Users</span>
                     </a>
                 </li>
@@ -48,14 +106,14 @@ export default function SideBar(){
                         <i className="fa-solid fa-hand-holding-dollar" /><span className="nav-text">Inventory</span>
                     </a>
                 </li>
-                 <li  className="mt-3">
+                 {/* <li  className="mt-3">
                     <a className="ra set " href="/machineSetting">
-                        <i className="fa-solid fa-gear" /><span className="nav-text">Setting</span>
+                        <i className="fa-solid fa-gear" /><span className="nav-text">Machine Setting</span>
                     </a>
-                </li>
+                </li> */}
                  <li className="mt-3">
                     <a className="da" href="/machineSetting">
-                        <i className="fa-solid fa-gear" /><span className="nav-text">Setting</span>
+                        <i className="fa-solid fa-gear" /><span className="nav-text">Machine Setting</span>
                     </a>
                 </li>
                   <li  className="mt-3">
@@ -64,8 +122,12 @@ export default function SideBar(){
                     </a>
                 </li>
                   <li  className="mt-3">
-                    <a style={{cursor: 'pointer'}} id="locationLink">
-                        <i className="fa-solid fa-globe" /><span className="nav-text" id="location">Location</span>
+                    <a style={{cursor: 'pointer',color:'#BDBDC7'}} id="locationLink" onClick={OpenLocationMap}
+                     onKeyPress={handleKeyPress}
+                     role="button"
+                     tabIndex={0}
+                    >
+                        <i className="fa-solid fa-globe" /><span className="nav-text" >{`${sessionStorage.getItem("Lattitude")},${sessionStorage.getItem("Longitude")}`}</span>
                     </a>
                 </li>
                  <li className="nav-item dropdown mt-3">
@@ -75,12 +137,12 @@ export default function SideBar(){
                     <div className="dropdown-menu row direction-col" aria-labelledby="navbarDropdown" >
                         <ul>
                             <li className="mt-3">
-                          <a className="mt-2" href="/dailyReport" style={{color:'#343957'}}>
+                          <a className="mt-2" href="/dailyReports" style={{color:'#343957'}}>
                           <i className="fa-regular fa-file-lines"/><span className="nav-text" > Daily Reports</span>
                            </a>
                            </li>
                            <li  className="mt-3">
-                         <a className="ra mt-2" href="/loginlogs"  style={{color:'#343957'}}>
+                         <a className="ra mt-2" href="/loginLogs"  style={{color:'#343957'}}>
                         <i className="fa-solid fa-arrow-right-to-bracket" /><span className="nav-text">Login Logs</span>
                         </a>
                         </li>
@@ -105,7 +167,7 @@ export default function SideBar(){
                     </a>
                     </li>
                     <li  className="mt-3">
-                     <a href="/technicianReport"  style={{color:'#343957'}}>
+                     <a href="/faultReport"  style={{color:'#343957'}}>
                         <i className="fa-solid fa-wrench" /><span className="nav-text">Technician Report</span>
                     </a>
                     </li>

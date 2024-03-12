@@ -1,4 +1,8 @@
 
+11-09-24: setting api called.
+11-09-24: some api calling bugs solved.
+11-09-24: admin/user authentication added to sidepanel.
+11-09-24: sidepanel ui changed.
 09-03-24: color setting completed.
 09-03-24: color setting 50% done.
 09-03-24 : Setting ui completed of Admin and users. API call remaining .
