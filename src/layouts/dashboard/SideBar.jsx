@@ -152,12 +152,12 @@ export default function SideBar(){
                     </a>
                     </li>
                       <li  className="mt-3">
-                     <a className="ra" href="/lockLog"  style={{color:'#343957'}} >
+                     <a className="ra" href="/lockLogs"  style={{color:'#343957'}} >
                         <i className="fa-solid fa-road-lock" /><span className="nav-text">Lock Logs</span>
                     </a>
                     </li>
                       <li  className="mt-3">
-                     <a className="ra" href="/paytmLog"  style={{color:'#343957'}}>
+                     <a className="ra" href="/paytmTransactions"  style={{color:'#343957'}}>
                         <i className="fa-solid fa-credit-card" /><span className="nav-text">Paytm Transactions</span>
                     </a>
                     </li>

@@ -1,23 +1,44 @@
 import 'select2'; 
-import $ from 'jquery'
+// import $ from 'jquery'
 import moment from "moment";
-import { useState} from 'react';
+import React,{ useState} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
 import { Container } from "@mui/material";
-import Popover from '@mui/material/Popover';
+import MuiAlert from '@mui/material/Alert';
+// import Popover from '@mui/material/Popover';
+import Snackbar from '@mui/material/Snackbar';
 import Typography from '@mui/material/Typography';
 
-import { fetchUsers } from 'src/_mock/user';
-import { AllMachines } from 'src/_mock/AllMachines';
+// import { fetchUsers } from 'src/_mock/user';
+// import { AllMachines } from 'src/_mock/AllMachines';
 import { getAllStock,getAllTransactions,updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
 
 import InventoryView from "./user/view/inventoryTransactions";
 import InventoryStocksView from "./user/view/inventoryStocks";
 
 
-
+const Alert = React.forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  ));
+  
+  const style = {
+    position: 'absolute' ,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid white',
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
 export default function InventoryPage(){
     // const [selectedOption, setSelectedOption] = useState('Option 1');
     const [data,setData]=useState(null);
@@ -29,63 +50,105 @@ export default function InventoryPage(){
     const [inventoryObj,setInventoryObj]=useState({});
     const [stockObj,setStockObj]=useState({});
     
-    const [open, setOpen] = useState(null);
-    const [open2, setOpen2] = useState(null);
+   
 
-  
-    const LoadUserNameDDL=()=>{
-      
-        console.log("select2function started");
-        // Use Promise.all() to make simultaneous requests to both APIs
-        Promise.all([fetchUsers(), AllMachines()])
-          .then(([response1, response2]) => {
-            console.log(response1);
-            console.log(response2);
-            const data1 = response1;
-            const data2 = response2;
-    
-            // Combine data from both APIs (if needed)
-            const combinedData = [...data1, ...data2];
-    
-            // Populate the Select2 dropdown
-            $('#to').select2({
-              data: combinedData.map(item => ({
-                id: item.name || item.machineId,
-                text: item.name || item.machineId,
-                ...item,
-              })),
-              maximumInputLength: 2,
-              templateResult: formatEntry,
-              templateSelection: formatSelection,
-            });
-          })
-          .catch(error => {
-            console.error('Error loading data:', error);
-          });
-    
-        return () => {
-          // Cleanup Select2 when the component unmounts
-          $('#to').select2('destroy');
-        };
-      // Empty dependency array means this effect runs once after the initial render
-     }
-      // Helper functions for customizing Select2 appearance
+    const [openModal1, setOpenModal1] = useState(false);
+    const [openModal2, setOpenModal2] = useState(false);
 
-      const formatEntry = entry =>entry.text || entry.name || entry.machineId;
-      
+    const [showAlert, setShowAlert] = useState(false);
+    const [message,setMessage]=useState("");
+    const [type,setType]=useState("");
+    const showAlertMessage = () => {
+        setShowAlert(true);
     
-      const formatSelection = selection =>  selection.name || selection.machineId;
-    
-
-    const handleCloseMenu = () => {
-      setOpen(null);
-      
+        // You can optionally set a timeout to hide the alert after a few seconds
+        setTimeout(() => {
+        setShowAlert(false);
+        }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
     };
-    const handleOpenMenu = (event) => {
-        
-        setOpen(event.currentTarget);
-        LoadUserNameDDL();
+
+
+    const handleModalOpen1 = () => {
+   
+ 
+        setOpenModal1(true);
+        // setTimeout(()=>{
+             
+        //   $('#mdlPwd [name="name"]').val(row.name);
+        //   $('#mdlPwd [name="email"]').val(row.email);
+        // },200)
       };
+      const handleModalClose1 = () => {
+        setOpenModal1(false);
+      };
+
+      const handleModalOpen2 = () => {
+   
+ 
+        setOpenModal2(true);
+        // setTimeout(()=>{
+             
+        //   $('#mdlPwd [name="name"]').val(row.name);
+        //   $('#mdlPwd [name="email"]').val(row.email);
+        // },200)
+      };
+      const handleModalClose2 = () => {
+        setOpenModal2(false);
+      };
+
+    // const LoadUserNameDDL=()=>{
+      
+    //     console.log("select2function started");
+    //     // Use Promise.all() to make simultaneous requests to both APIs
+    //     Promise.all([fetchUsers(), AllMachines()])
+    //       .then(([response1, response2]) => {
+    //         console.log(response1);
+    //         console.log(response2);
+    //         const data1 = response1;
+    //         const data2 = response2;
+    
+    //         // Combine data from both APIs (if needed)
+    //         const combinedData = [...data1, ...data2];
+    
+    //         // Populate the Select2 dropdown
+    //         $('#to').select2({
+    //           data: combinedData.map(item => ({
+    //             id: item.name || item.machineId,
+    //             text: item.name || item.machineId,
+    //             ...item,
+    //           })),
+    //           maximumInputLength: 2,
+    //           templateResult: formatEntry,
+    //           templateSelection: formatSelection,
+    //         });
+    //       })
+    //       .catch(error => {
+    //         console.error('Error loading data:', error);
+    //       });
+    
+    //     return () => {
+    //       // Cleanup Select2 when the component unmounts
+    //       $('#to').select2('destroy');
+    //     };
+    //   // Empty dependency array means this effect runs once after the initial render
+    //  }
+    //   // Helper functions for customizing Select2 appearance
+
+    //   const formatEntry = entry =>entry.text || entry.name || entry.machineId;
+      
+    
+    //   const formatSelection = selection =>  selection.name || selection.machineId;
+    
+
+    // const handleCloseMenu = () => {
+    //   setOpen(null);
+      
+    // };
+    // const handleOpenMenu = (event) => {
+        
+    //     setOpen(event.currentTarget);
+    //     LoadUserNameDDL();
+    //   };
   
     
     const handleStockInputChange = (e) => {
@@ -129,16 +192,35 @@ export default function InventoryPage(){
     }
     
     const updateTransaction=()=>{
-        updateInventoryTransactions(inventoryObj);
+        updateInventoryTransactions(inventoryObj).then((r)=>{
+            showAlertMessage(true);
+            setType("success");
+            setMessage("Saved Succesfully");
+            handleModalClose1()
+        });
 
     }
 
     const updateStock=()=>{
-        updateInventoryStocks(stockObj)
+        updateInventoryStocks(stockObj).then((r)=>{
+            showAlertMessage(true);
+            setType("success");
+            setMessage("Saved Succesfully");
+            handleModalClose2()
+        })
     }
   
 
     return<>
+     <Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
+
+     </Stack>
     <Card>
         <Container maxWidth='xxl'>
         <Typography variant="h4" sx={{ mb: 5 ,display:'flex',mt:2,alignItems:'center',gap:2}}>
@@ -165,14 +247,14 @@ export default function InventoryPage(){
       <Typography sx={{display:'flex',mt:2,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
                   <div >
                         <p >
-                            <button type="button" className="btn btn-warning text-white" onClick={handleOpenMenu} >
+                            <button type="button" className="btn btn-warning text-white" onClick={handleModalOpen1} >
                                 Transfer Inventory
                             </button>
                         </p>
                     </div>
                     <div >
                         <p >
-                            <button type="button" className="btn btn-primary text-white" onClick={(e)=>setOpen2(e.target)}>Set Stocks
+                            <button type="button" className="btn btn-primary text-white" onClick={handleModalOpen2}>Set Stocks
                             </button>
                         </p>
                     </div>
@@ -223,22 +305,20 @@ export default function InventoryPage(){
    
 
     </Card>
-        <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-            sx: { width: 640 },
-          }}
-       
+    
+        <Modal
+        open={openModal1}
+        onClose={handleModalClose1}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
       >
-    <div className="modal-dialog" role="dialog" style={{minWidth: '30vw;',padding:'20px'}}>
+        
+           <Box sx={{ ...style, width: 600 }}>
+    <div className="modal-dialog" role="dialog">
         <div className="modal-content">
             <div className="modal-header">
                 <h5 className="modal-title">Transfer Inventory</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCloseMenu}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleModalClose1}>
                     <span aria-hidden="true" >&times;</span>
                 </button>
             </div>
@@ -285,29 +365,27 @@ export default function InventoryPage(){
                
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>setOpen(null)}>Close</button>
+                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={handleModalClose1}>Close</button>
                 <button type="button" className="btn btn-primary" onClick={updateTransaction}>Submit</button>
             </div>
         </div>
     </div>
-   
-    </Popover>
-    <Popover
-        open={!!open2}
-        anchorEl={open2}
-        onClose={()=>setOpen2(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-            sx: { width: 640 },
-          }}
-       
+   </Box>
+</Modal>
+
+<Modal
+        open={openModal2}
+        onClose={handleModalClose2}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
       >
-        <div className="modal-dialog" role="document" style={{minWidth: '30vw',padding:'20px'}}>
+        
+           <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document" >
         <div className="modal-content">
             <div className="modal-header">
                 <h5 className="modal-title">Set Stock</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={()=>setOpen2(null)}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={handleModalClose2}>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -344,13 +422,14 @@ export default function InventoryPage(){
               
         
             <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal"  onClick={()=>setOpen2(null)}>Close</button>
+                <button type="button" className="btn btn-default" data-dismiss="modal"  onClick={handleModalClose2}>Close</button>
                 <button type="button" className="btn btn-primary" onClick={updateStock}>Submit</button>
             </div>
         </div>
     </div>
    
-    </Popover>
+    </Box>
+    </Modal>
     
     </>
 }

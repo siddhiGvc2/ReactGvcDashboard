@@ -3,6 +3,8 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import SvLogs from 'src/sections/Reports/svLogs';
+import LockLogs from 'src/sections/Reports/lockLogs';
 import LoginLogs from 'src/sections/Reports/loginLogs';
 import SSNReport from 'src/sections/Reports/ssnReport';
 import FaultReport from 'src/sections/Reports/faultReport';
@@ -14,7 +16,9 @@ import MachinePage from 'src/sections/Machines/view/user-view';
 import CustomerPage from 'src/sections/Customers/customerPage';
 import InventoryPage from 'src/sections/Inventory/inventoryPage';
 import MachineSetting from 'src/sections/Settings/machineSetting';
+import PaytmTransactions from 'src/sections/Reports/paytmTransactions';
 import MachineMapView from 'src/sections/MachineMap/view/products-view';
+
 
 
 
@@ -60,8 +64,10 @@ export default function Router() {
         { path: 'inventory', element: <InventoryPage/>},
         { path: 'customers', element: <CustomerPage/>},
         { path: 'machineSetting', element: <MachineSetting/>},
-        { path: 'colorSetting', element: <ColorSetting/>
-        }
+        { path: 'colorSetting', element: <ColorSetting/>},
+        { path: 'paytmTransactions', element: <PaytmTransactions/>},
+        { path: 'svLogs', element: <SvLogs/>},
+        { path: 'lockLogs', element: <LockLogs/>}
       ],
     },
     {

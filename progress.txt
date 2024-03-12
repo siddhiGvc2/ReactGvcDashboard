@@ -1,5 +1,8 @@
-
-
+12-03-24:sv logs completed.
+12-03-24: lock logs completed.
+12-03-24:paytm logs completed.
+12-03-24: customers add edit delete functions added.
+12-03-24: popup added to all forms.
 12-03-24: technician form added in machine data page.
 12-03-24: user add and delete complted.
 11-03-24: setting api called.

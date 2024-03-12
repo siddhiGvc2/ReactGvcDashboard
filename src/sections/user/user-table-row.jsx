@@ -141,6 +141,8 @@ export default function UserTableRow({
 
   const DeleteUser=()=>{
     console.log(row);
+    alert("Are you sure you want to delete?");
+   
        deleteUser(row.id).then((res)=>{
         showAlertMessage();
         setType("success");
@@ -148,6 +150,8 @@ export default function UserTableRow({
          
           fetchUsers();
        })
+    
+   
   }
 
   return (
