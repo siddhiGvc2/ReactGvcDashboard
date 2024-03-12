@@ -39,7 +39,65 @@ const API =import.meta.env.VITE_REACT_APP_API;
   }
 }
 
+// function deleteUser(ctrl) {
+//   var rd = getRowContent(ctrl);
+//   if (!confirm('Are you sure you want to delete this entry?')) return;
+//   $.get(`${apiUrl}/admin/user/delete?id=${rd.id}`).then(r => {
+//       if (r.success) {
+//           toastr.success('Deleted Successfully');
+//           sr = 1;
+//           $('#tblUser').DataTable().ajax.reload();
+//       }
+//       else
+//       {
+//            $.get(`${zestApi}/admin/user/delete?id=${rd.id}`).then(r => {
+//       if (r.success) {
+//           toastr.success('Deleted Successfully');
+//           sr = 1;
+//           $('#tblUser').DataTable().ajax.reload();
+//       }
+   
+//   })
+
+//       }
+//   })
+// }
 
 
+export const deleteUser=async(id)=>{
+
+  console.log(id);
+  try {
+    const headers = new Headers({
+      'x-token': sessionStorage.getItem('token'),
+    });
+    const response = await fetch(`${API}/api/admin/user/delete?id=${id}`,{ method: 'GET', headers });
+    const users = await response.json();
+    return users.data.users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
+
+}
+
+
+export const setPassword=async(obj)=>{
+
+  
+  try {
+    const headers = new Headers({
+      "Content-type":'application/json',
+      'x-token': sessionStorage.getItem('token'),
+    });
+    const response = await fetch(`${API}/api/admin/user/changePassword`,{ method: 'POST', headers ,body:JSON.stringify(obj)});
+    const users = await response.json();
+    return users.data.users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
+
+}
 
 

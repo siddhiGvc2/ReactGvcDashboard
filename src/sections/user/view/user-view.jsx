@@ -444,9 +444,10 @@ export default function UserPage() {
                       zone={row.zone}
                       ward={row.ward}
                       beat={row.beat}
+                      row={row}
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      handleClick={(event) => handleClick(event, row.id)}
                     />
                   ))}
 

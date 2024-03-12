@@ -23,3 +23,23 @@ export const FaultReportData=async(startDate,endDate)=> {
       return [];
     }
   }
+
+
+  export const SaveFaultReport=async(obj)=> {
+  
+    try {
+       
+      
+      const headers = new Headers({
+        "Content-type":"application/json",
+        'x-token': sessionStorage.getItem('token'),
+      });
+      const response = await fetch(`${API}/add/saveFR`, { method: 'POST', headers ,body:JSON.stringify(obj) });
+      const json = await response.json();
+      return json.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+  
+      return [];
+    }
+  }
