@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import React, { useState,useEffect } from 'react';
+import Select from 'react-select';
+import React, { useState,useEffect,} from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -49,7 +50,8 @@ const style = {
 
 export default function MachinePage() {
   const[machines,setMachines]=useState([]);
-  
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [options,setOptions]=useState([]);
   
   
   const [page, setPage] = useState(0);
@@ -107,12 +109,43 @@ export default function MachinePage() {
     
       setMachines(res);
     })
+    LoadMachineNameDDL();
   },[])
+
+
+  const LoadMachineNameDDL = () => {
+    console.log("select2function started");
+  
+    // Use Promise.all() to fetch data from AllMachines() API
+    AllMachines()
+      .then(response => {
+        console.log(response);
+        const data = response;
+  
+        // Transform data into the format expected by Select2
+        const formattedData = data.map(option => ({
+          value: option.serial,
+          label: option.serial
+        }));
+  
+        // Set the options for the dropdown
+        setOptions(formattedData);
+  
+        // Cleanup Select2 when the component unmounts
+        return () => {
+          $('#to').select2('destroy');
+        };
+      })
+      .catch(error => {
+        console.error('Error loading data:', error);
+      });
+  };
+  
 
  
   const SubmitForm=()=>{
    const obj={
-    machine: $('[name="machine"]').val(),
+    machine: selectedOption[0].value,
     uid: $('[name="uid"]').val(),
     city: $('[name="city"]').val(),
     installedOn: $('[name="installedOn"]').val(),
@@ -193,6 +226,10 @@ export default function MachinePage() {
     setSelected(newSelected);
   };
 
+
+  const handleSelectChange = (elem) => {
+    setSelectedOption(elem);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -349,7 +386,15 @@ export default function MachinePage() {
                     <div className="col-md-6">
                         <div className="form-group my-2">
                             <h6>Machine No. (PCB No.):</h6>
-                            <input type="text" className="form-control" name="machine" />
+                            <Select
+                                name="machine"
+                                value={selectedOption}
+                                onChange={handleSelectChange}
+                                options={options}
+                                isSearchable // Equivalent to isSearchable={true}
+                                placeholder="Select option..."
+                            />
+                            {/* <input type="text" className="form-control" name="machine" /> */}
                             <div className="invalid-feedback"/>
                         </div>
                     </div>

@@ -1,7 +1,8 @@
 import 'select2'; 
-// import $ from 'jquery'
+import $ from 'jquery'
 import moment from "moment";
-import React,{ useState} from 'react';
+import Select from 'react-select';
+import React,{ useState, useEffect} from 'react';
 import SwitchButton from 'bootstrap-switch-button-react';
 
 import Box from '@mui/material/Box';
@@ -14,8 +15,8 @@ import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Typography from '@mui/material/Typography';
 
-// import { fetchUsers } from 'src/_mock/user';
-// import { AllMachines } from 'src/_mock/AllMachines';
+import { fetchUsers } from 'src/_mock/user';
+import { AllMachines } from 'src/_mock/AllMachines';
 import { getAllStock,getAllTransactions,updateInventoryStocks,updateInventoryTransactions} from "src/_mock/inventory";
 
 import InventoryView from "./user/view/inventoryTransactions";
@@ -40,15 +41,17 @@ const Alert = React.forwardRef((props, ref) => (
     pb: 3,
   };
 export default function InventoryPage(){
-    // const [selectedOption, setSelectedOption] = useState('Option 1');
+    const [selectedOption, setSelectedOption] = useState([]);
+    const [selectedOption1, setSelectedOption1] = useState([]);
+    const [options,setOptions]=useState([]);
     const [data,setData]=useState(null);
     const [stockData,setStockData]=useState(null);
     // const [last,setLast]=useState(null);
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
     const [isChecked, setIsChecked] = useState(true);
-    const [inventoryObj,setInventoryObj]=useState({});
-    const [stockObj,setStockObj]=useState({});
+    // const [inventoryObj,setInventoryObj]=useState({});
+    // const [stockObj,setStockObj]=useState({});
     
    
 
@@ -68,15 +71,18 @@ export default function InventoryPage(){
     };
 
 
+    useEffect(()=>{
+          LoadUserNameDDL();
+    },[])
+
     const handleModalOpen1 = () => {
    
  
         setOpenModal1(true);
         // setTimeout(()=>{
              
-        //   $('#mdlPwd [name="name"]').val(row.name);
-        //   $('#mdlPwd [name="email"]').val(row.email);
-        // },200)
+        //     LoadUserNameDDL();
+        // },50)
       };
       const handleModalClose1 = () => {
         setOpenModal1(false);
@@ -86,85 +92,90 @@ export default function InventoryPage(){
    
  
         setOpenModal2(true);
+       
         // setTimeout(()=>{
              
-        //   $('#mdlPwd [name="name"]').val(row.name);
-        //   $('#mdlPwd [name="email"]').val(row.email);
-        // },200)
+        //     LoadUserNameDDL();
+        // },50)
       };
       const handleModalClose2 = () => {
         setOpenModal2(false);
       };
 
-    // const LoadUserNameDDL=()=>{
+    const LoadUserNameDDL=()=>{
       
-    //     console.log("select2function started");
-    //     // Use Promise.all() to make simultaneous requests to both APIs
-    //     Promise.all([fetchUsers(), AllMachines()])
-    //       .then(([response1, response2]) => {
-    //         console.log(response1);
-    //         console.log(response2);
-    //         const data1 = response1;
-    //         const data2 = response2;
+        console.log("select2function started");
+        // Use Promise.all() to make simultaneous requests to both APIs
+        Promise.all([fetchUsers(), AllMachines()])
+          .then(([response1, response2]) => {
+            console.log(response1);
+            console.log(response2);
+            const data1 = response1;
+            const data2 = response2;
     
-    //         // Combine data from both APIs (if needed)
-    //         const combinedData = [...data1, ...data2];
+            // Combine data from both APIs (if needed)
+            const combinedData = [...data1, ...data2];
+
+            const filteredData = combinedData.map(option => ({
+                value: option.name || option.serial,
+                label: option.name || option.serial
+              }));
+            setOptions(filteredData)
+
+            // Populate the Select2 dropdown
+            // $('#to').select2({
+            //   data: combinedData.map(item => ({
+            //     id: item.name || item.machineId,
+            //     text: item.name || item.machineId,
+            //     ...item,
+            //   })),
+            //   maximumInputLength: 2,
+            //   templateResult: formatEntry,
+            //   templateSelection: formatSelection,
+            // });
+
+          })
+          .catch(error => {
+            console.error('Error loading data:', error);
+          });
     
-    //         // Populate the Select2 dropdown
-    //         $('#to').select2({
-    //           data: combinedData.map(item => ({
-    //             id: item.name || item.machineId,
-    //             text: item.name || item.machineId,
-    //             ...item,
-    //           })),
-    //           maximumInputLength: 2,
-    //           templateResult: formatEntry,
-    //           templateSelection: formatSelection,
-    //         });
-    //       })
-    //       .catch(error => {
-    //         console.error('Error loading data:', error);
-    //       });
-    
-    //     return () => {
-    //       // Cleanup Select2 when the component unmounts
-    //       $('#to').select2('destroy');
-    //     };
-    //   // Empty dependency array means this effect runs once after the initial render
-    //  }
-    //   // Helper functions for customizing Select2 appearance
+        return () => {
+          // Cleanup Select2 when the component unmounts
+          $('#to').select2('destroy');
+        };
+      // Empty dependency array means this effect runs once after the initial render
+     }
+      // Helper functions for customizing Select2 appearance
 
     //   const formatEntry = entry =>entry.text || entry.name || entry.machineId;
       
     
     //   const formatSelection = selection =>  selection.name || selection.machineId;
+
+      const handleSelectChange = (elem) => {
+        setSelectedOption(elem);
+      };
+
+      const handleSelectChange1 = (elem) => {
+        setSelectedOption1(elem);
+      };
     
 
-    // const handleCloseMenu = () => {
-    //   setOpen(null);
-      
-    // };
-    // const handleOpenMenu = (event) => {
-        
-    //     setOpen(event.currentTarget);
-    //     LoadUserNameDDL();
-    //   };
-  
     
     const handleStockInputChange = (e) => {
-        const { name, value } = e.target;
-        setStockObj((prevStockObj) => ({
-          ...prevStockObj,
-          [name]: value,
-        }));
+        // const { name, value } = e.target;
+        // setStockObj((prevStockObj) => ({
+        //   ...prevStockObj,
+        //   [name]: value,
+        // }));
       };
    
       const handleInventoryInputChange = (e) => {
-        const { name, value } = e.target;
-        setInventoryObj((prevInventoryObj) => ({
-          ...prevInventoryObj,
-          [name]: value,
-        }));
+        // const { name, value } = e.target;
+        // setInventoryObj((prevInventoryObj) => ({
+        //   ...prevInventoryObj,
+        //   [name]: value,
+        // }));
       };
 
     const handleChange = () => {
@@ -192,7 +203,15 @@ export default function InventoryPage(){
     }
     
     const updateTransaction=()=>{
-        updateInventoryTransactions(inventoryObj).then((r)=>{
+        const obj={
+            from: selectedOption1[0].value,
+            to: $('#mdlInventory [name="to"]').val(),
+            qtyDelivered: $('#mdlInventory [name="qtyDelivered"]').val(),
+            cashReceived: $('#mdlInventory [name="cashReceived"]').val(),
+            remark: $('#mdlInventory [name="remark"]').val(),
+
+        }
+        updateInventoryTransactions(obj).then((r)=>{
             showAlertMessage(true);
             setType("success");
             setMessage("Saved Succesfully");
@@ -202,7 +221,13 @@ export default function InventoryPage(){
     }
 
     const updateStock=()=>{
-        updateInventoryStocks(stockObj).then((r)=>{
+        const obj={
+            userName: selectedOption[0].value,
+            qty: $('#mdlStock [name="qty"]').val(),
+            cash: $('#mdlStock [name="cash"]').val(),
+          
+        }
+        updateInventoryStocks(obj).then((r)=>{
             showAlertMessage(true);
             setType("success");
             setMessage("Saved Succesfully");
@@ -314,7 +339,7 @@ export default function InventoryPage(){
       >
         
            <Box sx={{ ...style, width: 600 }}>
-    <div className="modal-dialog" role="dialog">
+    <div className="modal-dialog" role="dialog" id="mdlInventory">
         <div className="modal-content">
             <div className="modal-header">
                 <h5 className="modal-title">Transfer Inventory</h5>
@@ -328,7 +353,15 @@ export default function InventoryPage(){
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5>From:</h5>
-                            <input type="text" className="form-control" name="from" readOnly onChange={handleInventoryInputChange}/>
+                        <Select
+                                name="from"
+                                value={selectedOption1}
+                                onChange={handleSelectChange1}
+                                options={options}
+                                isSearchable // Equivalent to isSearchable={true}
+                                placeholder="Select option..."
+                            />
+                            {/* <input type="text" className="form-control" name="from" readOnly onChange={handleInventoryInputChange}/> */}
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
@@ -381,7 +414,7 @@ export default function InventoryPage(){
       >
         
            <Box sx={{ ...style, width: 500 }}>
-        <div className="modal-dialog" role="document" >
+        <div className="modal-dialog" role="document" id="mdlStock">
         <div className="modal-content">
             <div className="modal-header">
                 <h5 className="modal-title">Set Stock</h5>
@@ -396,7 +429,15 @@ export default function InventoryPage(){
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5>User Name:</h5>
-                            <input type="text" className="form-control" name="userName" onChange={handleStockInputChange} />
+                        <Select
+                                name="userName"
+                                value={selectedOption}
+                                onChange={handleSelectChange}
+                                options={options}
+                                isSearchable // Equivalent to isSearchable={true}
+                                placeholder="Select option..."
+                            />
+                            {/* <input type="select" className="form-control" name="userName" onChange={handleStockInputChange} /> */}
                             <div className="invalid-feedback"/>
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 // import rtl from "jss-rtl";
 import moment from "moment";
+
 // import $ from 'jquery';
 
 import * as XLSX from 'xlsx';
@@ -7,7 +8,9 @@ import * as XLSX from 'xlsx';
 
 // import { create } from "jss";
 import PropTypes from 'prop-types';
-import {useRef, useEffect} from 'react';
+import React,{useRef,useState, useEffect,  useCallback} from 'react';
+
+// import NumDayRows from "./numDayRows";
 
 // import { StylesProvider,jssPreset } from "@mui/system";
 
@@ -18,8 +21,10 @@ import {useRef, useEffect} from 'react';
 const sr=1;
 export default function TableHeader({data,zones,wards,beats,startDate,endDate,checked}){
     const tblDataRef = useRef(null);
+    const [numbDaysArray,setNumDaysArray]=useState([]);
     useEffect(()=>{
-      console.log(data)
+      console.log(data);
+     
     },[data])
      
     const printData=()=> {
@@ -42,12 +47,14 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
         XLSX.writeFile(wb, 'report.xlsx');
       };
 
-    const start=()=>moment(startDate).format('DD-MMM-YYYY');
-    const end=()=>moment(endDate).format('DD-MMM-YYYY');
+    const start = useCallback(() => moment(startDate), [startDate]);
+    const end = useCallback(() => moment(endDate), [endDate]);
     const sum = m=> m.summary[moment(startDate).format('DD-MMM-YYYY')];
     const tot = (k,m) => Object.values(m.summary).length ? Object.values(m.summary).map(q => parseInt(q[k],10)).reduce((a, b) => a + b) : 0;
     const avg = (k, m) => parseInt(Object.values(m.summary).length ? Object.values(m.summary).map(q => parseInt(q[k], 10)).reduce((a, b) => a + b) / Object.values(m.summary).length : 0, 10);
-    const numDays = checked ? moment(end).diff(moment(start), 'day') + 1 : 0;
+    const numDays = useCallback(() =>
+    checked ? moment(end()).diff(start(), 'day') + 1 : 0
+  , [start, end, checked]);
     const gt = k => data.machines.flatMap(m => Object.values(m.summary)).length ? data.machines.flatMap(m => Object.values(m.summary)).map(q => parseInt(q[k] ,10)).reduce((a, b) => a + b) : 0;
     const gta = (k, i = 1) => (data.machines.flatMap(m => Object.values(m.summary)).length ? data.machines.flatMap(m => Object.values(m.summary)).map(q => parseInt(q[k],10)).reduce((a, b) => a + b) / ((checked ? numDays : 1) * (sr - 1)) : 0).toFixed(i);
     const perc = (a, b) => ((a * 100) / b > 100 ? 100 : (a * 100) / b).toFixed(1);
@@ -65,7 +72,25 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
           return `${day ? `${day}+ day` : ''}${hour ? `${hour} h` : ''}${ot}m`;
 
         };
+
+     
+           const setArray=useCallback(() =>{
+            const Length=numDays();
+            for(let i=0;i<Length;i+=1)
+            {
+                numbDaysArray.push(i+1);
+            }
+    
+            setNumDaysArray(numbDaysArray)
+            console.log(numbDaysArray);
+        },[numbDaysArray,numDays])
+
+        useEffect(()=>{
+          setNumDaysArray([])
+            setArray();
+        },[setArray])
       
+     
    
      return (
         <div className="col-12" id="divData">
@@ -149,35 +174,57 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
             </tr>
         </thead>
         <tbody>
-            {
-             data.machines.map((m,i)=>
-                <tr className="data">
-                    <td rowSpan={checked ? moment(moment(endDate)).diff(moment(moment(startDate)), 'day') + 1 : 0 + 1} className="text-center">{i+1}</td>
-                    <td rowSpan={checked ? moment(moment(endDate)).diff(moment(moment(startDate)), 'day') + 1 : 0 + 1}>{m.uid}<br /><small className="text-muted">{m.serial}</small></td>
-                    <td rowSpan={checked ? moment(moment(endDate)).diff(moment(moment(startDate)), 'day') + 1 : 0 + 1} style={{ whiteSpace: 'nowrap' }} >Zone: {m.zone}<br />Ward: {m.ward}<br />Beat: {m.beat}</td>
-                    <td rowSpan={checked ? moment(moment(endDate)).diff(moment(moment(startDate)), 'day') + 1 : 0 + 1} style={{maxWidth: '10em'}}>{m.address}</td>
-                    <td rowSpan={checked ? moment(moment(endDate)).diff(moment(moment(startDate)), 'day') + 1 : 0 + 1} >{m.data2}</td>
-            
-                    {checked ?
-                        <>
-                            <td style={{ whiteSpace: 'nowrap' }}>{moment(startDate).format('DD-MMM-YYYY')}</td>
-                            <td>{sum(m).vend}</td>
-                            <td>&#8377;&nbsp;{sum(m).cash}</td>
-                            <td style={{ whiteSpace: 'nowrap' }}>{dayString(sum(m).onTime)}</td>
-                            <td>{sum(m).burn}</td>
-                            <td>{sum(m).burn * 8}</td>
-                        </>
-                        : null
-                        }
-                                    
+          
+             {data && numbDaysArray && data.machines.map((m, i) => (
+                 <React.Fragment key={i}>
+                 {/* First row */}
+                 <tr className="data">
+                   <td rowSpan={checked ? numDays()+1:1} className="text-center" style={{ verticalAlign: 'center' }}>{i + 1}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.uid}<br /><small className="text-muted">{m.serial}</small></td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center', whiteSpace: 'nowrap' }} >Zone: {m.zone}<br />Ward: {m.ward}<br />Beat: {m.beat}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ maxWidth: '10em', verticalAlign: 'center' }}>{m.address}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.data2}</td>
+                   {checked && checked ? <>
+                       <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{moment(startDate).format('DD-MMM-YYYY')}</td>
+                       <td>{sum(m).vend}</td>
+                       <td>&#8377;&nbsp;{sum(m).cash}</td>
+                       <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{dayString(sum(m).onTime)}</td>
+                       <td>{sum(m).burn}</td>
+                       <td>{sum(m).burn * 8}</td>
+                     </>:
+                      <> <td  style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
+                       <td>{tot('vend', m)}</td>
+                       <td>&#8377;&nbsp;{tot('cash', m)}</td>
+                       <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>{dayString(tot('onTime', m))}<br /><small className="text-muted">{dayString(avg('onTime', m))} / day</small></b></td>
+                       <td>{tot('burn', m)}</td>
+                       <td>{tot('burn', m) * 8}</td></>
+                   }
                    
-                    <td style={{ whiteSpace: 'nowrap' }}><b>Total</b></td> <td >{tot('vend',m)}</td> <td>&#8377;&nbsp;{tot('cash',m)}</td> <td style={{ whiteSpace: 'nowrap' }}><b>{dayString(tot('onTime',m))}<br/><small className="text-muted">{dayString(avg('onTime',m))} / day</small></b></td> <td>{tot('burn',m)}</td> <td>{tot('burn',m) * 8}</td>
-                    
-                 
-                </tr>
-              
-             )
-            }
+                 </tr>
+                  {
+                    checked ? numbDaysArray.map((elem,j)=>(
+                     <tr className="data" key={j} ><td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{moment(start()).add(i, 'day').format('DD-MMM-YYYY')}</td><td >{sum(m).vend}</td><td>&#8377;&nbsp;{sum(m).cash}</td><td >{dayString(sum(m).onTime)}</td><td>{sum(m).burn}</td><td>{sum(m).burn * 8}</td></tr>
+                    )):null
+                  }
+                 {/* Last two rows */}
+                  {checked && <tr>
+                  
+                     
+                      
+                       <td  style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
+                       <td>{tot('vend', m)}</td>
+                       <td>&#8377;&nbsp;{tot('cash', m)}</td>
+                       <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>{dayString(tot('onTime', m))}<br /><small className="text-muted">{dayString(avg('onTime', m))} / day</small></b></td>
+                       <td>{tot('burn', m)}</td>
+                       <td>{tot('burn', m) * 8}</td>
+                     
+                  
+                 </tr>
+                  }
+               </React.Fragment>
+             ))}
+          
+            
 
          <tr className="data">
                  <td colSpan="5" className="text-center"><b>Total</b></td>

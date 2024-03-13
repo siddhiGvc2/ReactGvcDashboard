@@ -1,7 +1,7 @@
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
-export const ReportData=async(city,zone,ward,beat,serial,startDate,endDate)=> {
+export const ReportData=async(city,zone,ward,beat,serialNumbers,startDate,endDate)=> {
   
     try {
         const obj={
@@ -9,7 +9,7 @@ export const ReportData=async(city,zone,ward,beat,serial,startDate,endDate)=> {
             zone:zone.join(),
             ward:ward.join(),
             beat:beat.join(),
-            serial:serial.join(),
+            serial:serialNumbers.join(),
             startDate,
             endDate,
         }

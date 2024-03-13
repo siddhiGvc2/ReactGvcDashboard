@@ -96,6 +96,10 @@ export default function DailyReports(){
       
         Machines(cityName,zoneName,wardName,beatName).then((res)=>{
           
+            // const formattedData = res.map(option => ({
+            //     value: option.serial,
+            //     label: option.serial
+            //   }));
             setMachineName(res);
         })
     
@@ -160,11 +164,15 @@ export default function DailyReports(){
            
            const LoadReport=()=>{
             // setReportData([]);
-            ReportData(cityName,zoneName,wardName,beatName,machineName,startDate,endDate).then((res)=>{
+            console.log(machineName);
+            const serialNumbers = machineName.map(option => option.value);
+            console.log("Serials",serialNumbers);
+            ReportData(cityName,zoneName,wardName,beatName,serialNumbers,startDate,endDate).then((res)=>{
                 console.log("Report Data", res);
                 setReportData(res);
             })
            }
+           
            
 
 
@@ -391,7 +399,7 @@ export default function DailyReports(){
                                         
                                                 {
                                                machines.map((elem) => (
-                                                    <MenuItem value={elem.value} key={elem.key}>
+                                                    <MenuItem value={elem}>
                                                     <Checkbox checked={machineName.indexOf(elem) > -1} />
                                                     {elem.label}
                                                     </MenuItem>
@@ -464,7 +472,17 @@ export default function DailyReports(){
                 
                
            {/* report teble ui */}
-            {reportData &&<TableHeader data={reportData} zones={zones.filter(item => !zoneName.includes(item))} wards={wards.filter(item => !wardName.includes(item))} beats={beats.filter(item => !beatName.includes(item))} startDate={startDate} endDate={endDate} checked={isChecked}/>}
+           {reportData && (
+  <TableHeader
+    data={reportData}
+    zones={zones.filter(item => !zoneName.includes(item))}
+    wards={wards.filter(item => !wardName.includes(item))}
+    beats={beats.filter(item => !beatName.includes(item))}
+    startDate={startDate}
+    endDate={endDate}
+    checked={isChecked}
+  />
+)}
               
 
 
