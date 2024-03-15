@@ -126,7 +126,7 @@ export default function SideBar(){
                            <li className="mt-2">
                              <NavItem  color='#343957' path="/dailyReports" icon={ <i className="fa-regular fa-file-lines"/>} title='Daily Reports'/>
                            </li>
-                           <li  className="mt-2">
+                           <li  className="ra mt-2">
                             <NavItem color='#343957' path="/loginLogs" icon={ <i className="fa-solid fa-arrow-right-to-bracket" />} title='Login Logs'/>
                             </li>
                             <li className="ra mt-2">
@@ -144,7 +144,7 @@ export default function SideBar(){
                             <li className="mt-2">
                              <NavItem  color='#343957' path="/faultReport" icon={ <i className="fa-solid fa-wrench" />} title='Technician Report'/>
                              </li>
-                             <li className="mt-2">
+                             <li className="ra mt-2">
                              <NavItem  color='#343957' path="/ssnReport" icon={ <i className="fa-solid fa-list-ol"/>} title='SSN Report'/>
                              </li>
                     </ul>
