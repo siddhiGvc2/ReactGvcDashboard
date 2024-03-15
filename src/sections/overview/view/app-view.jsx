@@ -31,33 +31,55 @@ import AppWidgetSummary from '../app-widget-summary';
 
 // started function of dashboard ui here
 export default function AppView() {
-  
+  // const [cities,setCities]=useState([]);
   const [pathName,setPathName]=useState({data:[],dataAll:[]});
  
 
   // calling for api data
   const LoadData=()=>{
-    fetchData().then((res)=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+    console.log(UserInfo);
+   
+                                    
+   
+      
+         const Cities=(UserInfo.city).split(',') || [''];
+         if(Cities[0]==="null")
+         {
+          Cities[0]=" "
+         }
+         console.log(Cities);
+    // const city=JSON.parse(sessionStorage.getItem("userCity"));
+    fetchData(Cities).then((res)=>{
       setPathName(res);
     
     });
+  
    
-  }
+  };
+
+  useEffect(()=>{
+   
+      
+        // setCities(Cities)
+        // sessionStorage.setItem("userCity",JSON.stringify(Cities))
+      
+  },[])
 
   // calling loadData every 5 seconds
   useEffect(() => {
- 
-   
-   
-    // setPathName(1);
+   // setPathName(1);
     LoadData();
+  
     const interval=setInterval(()=>{
-      LoadData();
+       LoadData();
+     
     },5000)
 
-    return ()=>{
-      clearInterval(interval)
-    }
+    return(()=>{
+      clearInterval(interval);
+    })
+   
   },[]);
 
   

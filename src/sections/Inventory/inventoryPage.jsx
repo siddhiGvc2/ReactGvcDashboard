@@ -203,8 +203,9 @@ export default function InventoryPage(){
     }
     
     const updateTransaction=()=>{
+  
         const obj={
-            from: selectedOption1[0].value,
+            from: selectedOption1.value,
             to: $('#mdlInventory [name="to"]').val(),
             qtyDelivered: $('#mdlInventory [name="qtyDelivered"]').val(),
             cashReceived: $('#mdlInventory [name="cashReceived"]').val(),
@@ -221,8 +222,9 @@ export default function InventoryPage(){
     }
 
     const updateStock=()=>{
+      
         const obj={
-            userName: selectedOption[0].value,
+            userName: selectedOption.value,
             qty: $('#mdlStock [name="qty"]').val(),
             cash: $('#mdlStock [name="cash"]').val(),
           
@@ -269,7 +271,7 @@ export default function InventoryPage(){
                         </div>
                     </div>
       </Typography>
-      <Typography sx={{display:'flex',mt:2,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
+      <Typography sx={{display:'flex',mt:0,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
                   <div >
                         <p >
                             <button type="button" className="btn btn-warning text-white" onClick={handleModalOpen1} >
@@ -285,7 +287,7 @@ export default function InventoryPage(){
                     </div>
       </Typography>
        
-    <div className="row mt-2">
+    <div className="row mt-0">
                     <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2" style={isChecked ? {visibility:'visible'}:{visibility:'hidden'}}>
                         <h5>Start Date:</h5>
                         <div className="row">

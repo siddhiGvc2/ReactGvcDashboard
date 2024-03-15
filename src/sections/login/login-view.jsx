@@ -134,7 +134,7 @@ export default function LoginView() {
         .catch((err)=>{
           showAlertMessage();
           setType("error");
-          setMessage("Error : Occured")
+          setMessage(`${err}`)
         })
         }
 
@@ -179,11 +179,11 @@ export default function LoginView() {
              }
           })
           .catch((error) => {
+          
             showAlertMessage();
             setType("error");
-            setMessage("Entered Email/Password is Incorrect")
-            console.error('Error:', error);
-            // Handle the error, e.g., display an error message to the user
+            setMessage(`${error}`)
+           
           });
         }
         else{

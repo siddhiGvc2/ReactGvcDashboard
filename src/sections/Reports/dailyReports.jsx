@@ -95,11 +95,7 @@ export default function DailyReports(){
       useEffect(()=>{
       
         Machines(cityName,zoneName,wardName,beatName).then((res)=>{
-          
-            // const formattedData = res.map(option => ({
-            //     value: option.serial,
-            //     label: option.serial
-            //   }));
+            console.log(res);
             setMachineName(res);
         })
     
@@ -399,8 +395,8 @@ export default function DailyReports(){
                                         
                                                 {
                                                machines.map((elem) => (
-                                                    <MenuItem value={elem}>
-                                                    <Checkbox checked={machineName.indexOf(elem) > -1} />
+                                                    <MenuItem value={elem.value} key={elem.label}>
+                                                    <Checkbox checked={machineName.indexOf(elem.value) > -1} />
                                                     {elem.label}
                                                     </MenuItem>
                                                 ))

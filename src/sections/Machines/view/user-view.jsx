@@ -145,7 +145,7 @@ export default function MachinePage() {
  
   const SubmitForm=()=>{
    const obj={
-    machine: selectedOption[0].value,
+    machine: selectedOption.value,
     uid: $('[name="uid"]').val(),
     city: $('[name="city"]').val(),
     installedOn: $('[name="installedOn"]').val(),

@@ -185,7 +185,7 @@ export default function UserTableRow({
         <TableCell>{email}</TableCell>
      
         <TableCell>
-          <Label color={(role === '0' && 'error') || 'success'}>{role ? 'Admin' : 'User'}</Label>
+          <Label color={(!role && 'warning') || 'success'}>{role ? 'Admin' : 'User'}</Label>
         </TableCell>
         <TableCell>{city}</TableCell>
         <TableCell>{zone}</TableCell>

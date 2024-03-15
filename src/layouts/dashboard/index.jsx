@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 
 import { getLatLon, sendLattLon } from 'src/_mock/loginLogsData';
 
-import Nav from './nav';
+import {Nav} from './nav';
 import Main from './main';
 import Header from './header';
 
@@ -40,7 +40,10 @@ export default function DashboardLayout({ children }) {
         clearInterval(interval1);
       };
     }
-    return () => {};
+    return () => {
+      clearInterval(interval2);
+      clearInterval(interval1);
+    };
   }, []); // Include GEOLOCATION in the dependency array
   
 

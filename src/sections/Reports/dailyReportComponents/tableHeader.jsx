@@ -175,7 +175,7 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
         </thead>
         <tbody>
           
-             {data && numbDaysArray && data.machines.map((m, i) => (
+             {numbDaysArray && numbDaysArray && data.machines.map((m, i) => (
                  <React.Fragment key={i}>
                  {/* First row */}
                  <tr className="data">
@@ -202,9 +202,9 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
                    
                  </tr>
                   {
-                    checked ? numbDaysArray.map((elem,j)=>(
+                     numbDaysArray.map((elem,j)=>(
                      <tr className="data" key={j} ><td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{moment(start()).add(i, 'day').format('DD-MMM-YYYY')}</td><td >{sum(m).vend}</td><td>&#8377;&nbsp;{sum(m).cash}</td><td >{dayString(sum(m).onTime)}</td><td>{sum(m).burn}</td><td>{sum(m).burn * 8}</td></tr>
-                    )):null
+                    ))
                   }
                  {/* Last two rows */}
                   {checked && <tr>

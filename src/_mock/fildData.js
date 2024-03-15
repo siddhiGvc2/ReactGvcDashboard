@@ -1,5 +1,8 @@
+import { useRouter } from 'src/routes/hooks';
+
 import { store } from "../Redux/store";
 import { saveData } from "../Redux/action";
+
 
 const API = import.meta.env.VITE_REACT_APP_API;
 
@@ -28,6 +31,7 @@ export const getAllData = async () => {
       // Return the data or another value if needed
       return json.data;
     } catch (error) {
+    
       console.error('Error fetching data:', error);
       return [];
     }
@@ -48,6 +52,7 @@ export const zoneData=async(city)=> {
       const json = await response.json();
       return json.data;
     } catch (error) {
+     
       console.error('Error fetching data:', error);
   
       return [];
@@ -64,6 +69,7 @@ export const zoneData=async(city)=> {
       const json = await response.json();
       return json.data;
     } catch (error) {
+    
       console.error('Error fetching data:', error);
   
       return [];
@@ -82,7 +88,7 @@ export const zoneData=async(city)=> {
       return json.data;
     } catch (error) {
       console.error('Error fetching data:', error);
-  
+    
       return [];
     }
   }
@@ -99,9 +105,27 @@ export const zoneData=async(city)=> {
       return json.data;
     } catch (error) {
       console.error('Error fetching data:', error);
-  
+    
       return [];
     }
   }
 
+
   
+  export const useDataFetching = () => {
+    const router = useRouter();
+  
+    const fetchDataWithRouter = async () => {
+      try {
+        const data = await getAllData();
+        // Process the data or update the state as needed
+        console.log('Data:', data);
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+        router.push('/');
+      }
+    };
+  
+    return { fetchDataWithRouter };
+  };

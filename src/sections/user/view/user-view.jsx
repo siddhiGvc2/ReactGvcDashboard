@@ -438,7 +438,7 @@ export default function UserPage() {
                       sr={page*rowsPerPage+i+1}
                       key={row.id}
                       name={row.name}
-                      role={row.role}
+                      role={row.isAdmin}
                       email={row.email}
                       city={row.city}
                       zone={row.zone}

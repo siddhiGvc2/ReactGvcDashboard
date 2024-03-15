@@ -10,7 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 import {zoneData,wardData,beatData,getAllData } from 'src/_mock/fildData';
 
 function FieldSelection({ sx, ...other }) {
-  const [cities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+  const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
   const [zones,setZones]=useState([]);
   const [wards,setWards]=useState([]);
   const [beats,setBeats]=useState([]);
@@ -21,10 +21,28 @@ function FieldSelection({ sx, ...other }) {
   const [beatName,setBeatsName]=useState([]);
  
   // Other state variables for stock status, burn status, door status, etc.
+
+
+  useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+    console.log(UserInfo);
+    if (!UserInfo.isAdmin) {
+                                      
+      if (UserInfo.city)
+        //  console.log("user cities:" + typeof(window.appuser.city));
+      console.log(UserInfo.city);
+         const Cities=(UserInfo.city).split(',')
+        setCitiesName(Cities);
+        setCities(Cities)
+       
+  }
+
+  },[])
  
  
  useEffect(()=>{
   sessionStorage.setItem("cities",JSON.stringify(cityName));
+
   zoneData(cityName).then((res)=>{
     // console.log(res);
     setZones(res);

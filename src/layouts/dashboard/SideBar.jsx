@@ -2,10 +2,21 @@
 // import { accordionActionsClasses } from "@mui/material";
 import $ from "jquery";
 import { useEffect } from "react";
+import PropTypes from 'prop-types';
+
+import Box from '@mui/material/Box';
+import { alpha } from '@mui/material/styles';
+
+import { usePathname } from 'src/routes/hooks';
 
 import { account } from 'src/_mock/account';
 
+// import Typography from '@mui/material/Typography';
 
+
+import ListItemButton from '@mui/material/ListItemButton';
+
+import { RouterLink } from 'src/routes/components';
 // import { usePathname } from 'src/routes/hooks';
 // import { RouterLink } from 'src/routes/components';
 
@@ -26,7 +37,7 @@ export default function SideBar(){
         if (window.sessionStorage.getItem("isAdmin")==='false') {
  
             $('.metismenu .ra').remove(); 
-            
+          
 
         }
           else if (window.sessionStorage.getItem("isAdmin")==='true'){
@@ -39,6 +50,8 @@ export default function SideBar(){
             }
            
           } 
+
+          $('.metismenu .da').remove(); 
         }
        
          else if(displayName==="Demo")
@@ -68,114 +81,72 @@ export default function SideBar(){
         <div className="quixnav-scroll">
             <ul className="metismenu" id="menu" >
               
-                <li className="mt-2">
-                    <a className="" href="/dashboard">
-                    <i className="fa-solid fa-chart-line" /><span className="nav-text">Dashboard</span>
-                    </a>
+               <li className="mt-2">
+                     <NavItem path="/dashboard" icon={ <i className="fa-solid fa-chart-line" />} title='Dashboard'/>
                 </li>
-                
 
-                <li className="ra mt-3">
-                    <a className="" href="/machines">
-                    <i className="fa-solid fa-fan" /><span className="nav-text">Machines</span>
-                    </a>
-                </li>
-                <li className="ra mt-3">
-                    <a className="" href="/customers">
-                        <i className="fa-solid fa-people-group"/><span className="nav-text">Customers</span>
-                    </a>
-                </li>
-                <li  className="mt-3">
-                    <a className="" href="/machineData">
-                    <i className="fa-solid fa-database"/><span className="nav-text">Machine Data</span>
-                    </a>
-                </li>
-              <li  className="mt-3">
-                  
-                    <a className="" href="/machineMap" >
-                       <i className="fa-solid fa-location-dot"/><span className="nav-text">Machine Map</span>
-                    </a>
-                </li>
-                 <li  className="mt-3">
-                    <a className="ra us" href="/user" >
-                    <i className="fa-solid fa-users-line"/><span className="nav-text">Users</span>
-                    </a>
-                </li>
-                  <li  className="mt-3">
-                    <a href="/inventory">
-                        <i className="fa-solid fa-hand-holding-dollar" /><span className="nav-text">Inventory</span>
-                    </a>
-                </li>
-                 {/* <li  className="mt-3">
-                    <a className="ra set " href="/machineSetting">
-                        <i className="fa-solid fa-gear" /><span className="nav-text">Machine Setting</span>
-                    </a>
-                </li> */}
-                 <li className="mt-3">
-                    <a className="da" href="/machineSetting">
-                        <i className="fa-solid fa-gear" /><span className="nav-text">Machine Setting</span>
-                    </a>
-                </li>
-                  <li  className="mt-3">
-                    <a className="ra" href="/colorSetting">
-                        <i className="fa-solid fa-palette" /><span className="nav-text">Color Setting</span>
-                    </a>
-                </li>
-                  <li  className="mt-3">
-                    <a style={{cursor: 'pointer',color:'#BDBDC7'}} id="locationLink" onClick={OpenLocationMap}
-                     onKeyPress={handleKeyPress}
-                     role="button"
-                     tabIndex={0}
-                    >
-                        <i className="fa-solid fa-globe" /><span className="nav-text" >{`${sessionStorage.getItem("Lattitude")},${sessionStorage.getItem("Longitude")}`}</span>
-                    </a>
-                </li>
-                 <li className="nav-item dropdown mt-3">
+                <li  className="ra mt-2">
+                      <NavItem path="/machines" icon={ <i className="fa-solid fa-fan" />} title='Machines'/>
+                 </li>
+                 <li className="ra mt-2">
+                       <NavItem  path="/customers" icon={ <i className="fa-solid fa-people-group"/>} title='Customers'/>
+                  </li>
+                  <li className=" mt-2"> 
+                        <NavItem  path="/machineData" icon={ <i className="fa-solid fa-database"/>} title='Machine Data'/>
+                  </li>
+                  <li className=" mt-2">
+                     <NavItem  path="/machineMap" icon={ <i className="fa-solid fa-location-dot"/>} title='Machine Map'/>
+                 </li>
+                 <li className="ra mt-2">
+                     <NavItem  path="/user" icon={ <i className="fa-solid fa-users-line"/>} title='Users'/>
+                 </li>
+                 <li className="mt-2">
+                     <NavItem  path="/inventory" icon={ <i className="fa-solid fa-hand-holding-dollar" />} title='Inventory'/>
+                  </li>
+                  <li className="ra mt-2">
+                      <NavItem  path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
+                  </li>
+                  <li className="da mt-2">
+                   <NavItem  path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
+                   </li>
+                   <li className="ra mt-2">
+                  <NavItem  path="/colorSetting" icon={ <i className="fa-solid fa-palette" />} title='Color Setting'/>
+                  </li>
+                  <li>
+                  <a className="mt-3" role="button" tabIndex={0} onClick={OpenLocationMap}   onKeyPress={handleKeyPress}>
+                  <NavItem  icon={ <i className="fa-solid fa-globe" />} title={`${sessionStorage.getItem("Lattitude")},${sessionStorage.getItem("Longitude")}`}/>
+                  </a>
+                  </li>
+                 <li className="nav-item dropdown mt-2">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Reports
                     </a>
                     <div className="dropdown-menu row direction-col" aria-labelledby="navbarDropdown" >
                         <ul>
-                            <li className="mt-3">
-                          <a className="mt-2" href="/dailyReports" style={{color:'#343957'}}>
-                          <i className="fa-regular fa-file-lines"/><span className="nav-text" > Daily Reports</span>
-                           </a>
+                           <li className="mt-2">
+                             <NavItem  color='#343957' path="/dailyReports" icon={ <i className="fa-regular fa-file-lines"/>} title='Daily Reports'/>
                            </li>
-                           <li  className="mt-3">
-                         <a className="ra mt-2" href="/loginLogs"  style={{color:'#343957'}}>
-                        <i className="fa-solid fa-arrow-right-to-bracket" /><span className="nav-text">Login Logs</span>
-                        </a>
-                        </li>
-                        <li  className="mt-3">
-                      <a className="ra" href="/svLogs"  style={{color:'#343957'}} >
-                        <i className="fa-solid fa-chart-simple"/><span className="nav-text">SV Logs</span>
-                    </a>
-                    </li>
-                      <li  className="mt-3">
-                     <a className="ra" href="/lockLogs"  style={{color:'#343957'}} >
-                        <i className="fa-solid fa-road-lock" /><span className="nav-text">Lock Logs</span>
-                    </a>
-                    </li>
-                      <li  className="mt-3">
-                     <a className="ra" href="/paytmTransactions"  style={{color:'#343957'}}>
-                        <i className="fa-solid fa-credit-card" /><span className="nav-text">Paytm Transactions</span>
-                    </a>
-                    </li>
-                     <li  className="mt-3">
-                      <a className="ra" href="/hourlyReport"  style={{color:'#343957'}}>
-                        <i className="fa-solid fa-clock" /><span className="nav-text">Hourly Report</span>
-                    </a>
-                    </li>
-                    <li  className="mt-3">
-                     <a href="/faultReport"  style={{color:'#343957'}}>
-                        <i className="fa-solid fa-wrench" /><span className="nav-text">Technician Report</span>
-                    </a>
-                    </li>
-                     <li  className="mt-3">
-                     <a href="/ssnReport"  style={{color:'#343957'}}>
-                        <i className="fa-solid fa-list-ol"/><span className="nav-text">SSN Report</span>
-                    </a>
-                    </li>
+                           <li  className="mt-2">
+                            <NavItem color='#343957' path="/loginLogs" icon={ <i className="fa-solid fa-arrow-right-to-bracket" />} title='Login Logs'/>
+                            </li>
+                            <li className="ra mt-2">
+                             <NavItem  color='#343957' path="/svLogs" icon={   <i className="fa-solid fa-chart-simple"/>} title='SV Logs'/>
+                             </li>
+                             <li className="ra mt-2">
+                           <NavItem  color='#343957' path="/lockLogs" icon={ <i className="fa-solid fa-road-lock" />} title='Lock Logs'/>
+                           </li>
+                           <li className="ra mt-2">
+                             <NavItem  color='#343957' path="/paytmTransactions" icon={  <i className="fa-solid fa-credit-card" />} title='Paytm Transactions'/>
+                             </li>
+                             <li className="ra mt-2">
+                            <NavItem  color='#343957' path="/hourlyReport" icon={ <i className="fa-solid fa-clock" />} title='Hourly Report'/>
+                            </li>
+                            <li className="mt-2">
+                             <NavItem  color='#343957' path="/faultReport" icon={ <i className="fa-solid fa-wrench" />} title='Technician Report'/>
+                             </li>
+                             <li className="mt-2">
+                             <NavItem  color='#343957' path="/ssnReport" icon={ <i className="fa-solid fa-list-ol"/>} title='SSN Report'/>
+                             </li>
                     </ul>
                     </div>
                 </li>
@@ -185,3 +156,64 @@ export default function SideBar(){
    
     )
 }
+
+
+
+
+function NavItem({path,icon,title,color }) {
+
+ 
+    const pathname = usePathname();
+  
+  const active = path && path === pathname || false;
+  const Color= color || null
+   
+    return (
+      <ListItemButton
+   
+      component={RouterLink}
+      href={path}
+      sx={{
+        minHeight: 44,
+        borderRadius: 0.75,
+        typography: 'body2',
+        color: 'grey',
+        textTransform: 'capitalize',
+        fontWeight: 'fontWeightMedium',
+        ...(active && {
+          color: 'white',
+          fontWeight: 'fontWeightSemiBold',
+          bgcolor: (theme) => alpha(theme.palette.primary.dark, 0.16),
+          '&:hover': {
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            color:'white'
+          },
+        }),
+      }}
+    >
+      <Box component="span" sx={{ width: 24, height: 24, mr: 2,color:Color }}>
+        {icon}
+      </Box>
+  
+      <Box component="span" style={{ color: Color}}>{title}</Box>
+    
+     
+  
+   
+  
+    
+  
+     
+  
+     
+  
+    </ListItemButton>
+    );
+  }
+  
+  NavItem.propTypes = {
+    path: PropTypes.any,
+    icon:PropTypes.any,
+    title:PropTypes.any,
+    color:PropTypes.any
+  };

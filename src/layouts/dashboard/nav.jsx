@@ -1,20 +1,16 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useState,useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import Popover from '@mui/material/Popover';
+// import Popover from '@mui/material/Popover';
 // import Button from '@mui/material/Button';
 // import Avatar from '@mui/material/Avatar';
-import {List} from '@mui/material';
-import { alpha } from '@mui/material/styles';
-// import Typography from '@mui/material/Typography';
+// import {List} from '@mui/material';
 
-import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -33,7 +29,7 @@ import { NAV } from './config-layout';
 
 // started side panel ui here
 
-export default function Nav({ openNav, onCloseNav }) {
+export  function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
@@ -77,7 +73,7 @@ export default function Nav({ openNav, onCloseNav }) {
  
 
   const renderMenu = (
-    <Stack component="nav"  sx={{ mt:3}}>
+    <Stack component="nav"  sx={{ mt:1}}>
       <SideBar/>
     </Stack>
   );
@@ -162,91 +158,4 @@ Nav.propTypes = {
 // menuItems list ui
 
 
-
-function NavItem({ item }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const pathname = usePathname();
-
-const active = item && item.path&& item.path === pathname || false;
-
-  const handleClick = (event) => {
-    
-      setAnchorEl(event.currentTarget);
-   
-   
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const renderSubMenu = (submenu) => (
-    <Popover
-    anchorEl={anchorEl}
-    open={open}
-    onClose={handleClose}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'left',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'left',
-    }}
-  >
-    <List component="ul" disablePadding>
-      {submenu.map((subitem) => (
-        <NavItem key={subitem.title} onClick={handleClose}>
-          {subitem.title}
-        </NavItem>
-      ))}
-    </List>
-  </Popover>
-  );
-
-  return (
-    <ListItemButton
-    onClick={handleClick}
-    component={RouterLink}
-    // href={item.path}
-    sx={{
-      minHeight: 44,
-      borderRadius: 0.75,
-      typography: 'body2',
-      color: 'grey',
-      textTransform: 'capitalize',
-      fontWeight: 'fontWeightMedium',
-      ...(active && {
-        color: 'white',
-        fontWeight: 'fontWeightSemiBold',
-        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
-        '&:hover': {
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
-          color:'white'
-        },
-      }),
-    }}
-  >
-    <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
-      {item.icon}
-    </Box>
-
-    <Box component="span">{item.title} </Box>
-  
-   
-
  
-
-    { item.submenu && renderSubMenu(item.submenu)}
-
-   
-
-   
-
-  </ListItemButton>
-  );
-}
-
-NavItem.propTypes = {
-  item: PropTypes.object,
-};
