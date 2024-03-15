@@ -520,7 +520,7 @@ export default function UserPage() {
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
-                      <div className="col-md-6 clientName">
+                      <div className="col-md-6 clientName" style={{ display: isAdmin === 1 ? 'block' : 'none' }}>
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Cient Name</h5>
                                <input type="text" className="form-control" name="clientName" id="clientName" onChange={(e)=>setClientName(e.target.value)}/>
