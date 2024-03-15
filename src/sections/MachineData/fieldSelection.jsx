@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import PropTypes from 'prop-types';
 import React, {  useState, useEffect} from 'react';
 
@@ -33,15 +34,18 @@ function FieldSelection({ sx, ...other }) {
       console.log(UserInfo.city);
          const Cities=(UserInfo.city).split(',')
         setCitiesName(Cities);
-        setCities(Cities)
+        setCities(Cities);
+        sessionStorage.setItem("cities",JSON.stringify(Cities));
+        $('#city').remove();
+
        
   }
+
 
   },[])
  
  
  useEffect(()=>{
-  sessionStorage.setItem("cities",JSON.stringify(cityName));
 
   zoneData(cityName).then((res)=>{
     // console.log(res);
@@ -185,7 +189,7 @@ useEffect(()=>{
     >
       <Stack spacing={0.5}>
         {/* Machine Status Dropdown */}
-        <div className="mt-2 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1" id="city">
           <h5 className="text-primary d-inline">City</h5>
           <div className="row">
             <div className="col-12 d-flex">
