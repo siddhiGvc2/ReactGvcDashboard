@@ -1,4 +1,4 @@
-
+16-03-24: add user window displayed in Modal
 16-03-24: checkin checkout added. File/Folder : src/layouts/common/account-popover.jsx
 12-03-24:sv logs completed.
 12-03-24: lock logs completed.

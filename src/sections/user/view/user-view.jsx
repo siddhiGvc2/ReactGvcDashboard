@@ -1,13 +1,15 @@
 // import $ from 'jquery';
 import React, { useState,useEffect } from 'react';
 
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
+import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import MuiAlert from '@mui/material/Alert';
-import Popover from '@mui/material/Popover';
+// import Popover from '@mui/material/Popover';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
@@ -40,12 +42,26 @@ const Alert = React.forwardRef((props, ref) => (
   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 ));
 
+const style = {
+  position: 'absolute' ,
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid white',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
 
 //  Users ui started here
 
 export default function UserPage() {
   const[users,setUsers]=useState([]);
+  const [openModal, setOpenModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
   const [type,setType]=useState("")
@@ -77,7 +93,7 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [open, setOpen] = useState(null);
+  // const [open, setOpen] = useState(null);
 
 
 
@@ -89,13 +105,28 @@ export default function UserPage() {
     })
   },[])
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  // const handleOpenMenu = (event) => {
+  //   setOpen(event.currentTarget);
+  // };
+
+  // const handleCloseMenu = () => {
+  //   setOpen(null);
+  // };
+
+
+  const handleModalOpen = () => {
+   
+ 
+    setOpenModal(true);
+    // setTimeout(()=>{
+    //   $('[name="machine"]').val(machineId);
+    //   $('[name="userName"]').val(sessionStorage.getItem("name"));
+    // },200)
+  };
+  const handleModalClose = () => {
+    setOpenModal(false);
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
   
   const showAlertMessage = () => {
     setShowAlert(true);
@@ -353,7 +384,7 @@ export default function UserPage() {
           showAlertMessage();
           setType("success");
           setMessage("Saved Succesfully");
-          handleCloseMenu();
+          handleModalClose();
           fetchUsers().then((res)=>{
     
             setUsers(res);
@@ -385,7 +416,7 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button variant="contained" color="inherit"  onClick={handleOpenMenu} startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button variant="contained" color="inherit"  onClick={handleModalOpen} startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
         </Button>
       </Stack>
@@ -475,20 +506,18 @@ export default function UserPage() {
     </Container>
 
     {/* Add user model ui */}
-    <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: { width: 840,padding:5},
-        }}
+    <Modal
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
       >
+        
+           <Box sx={{ ...style, width: 700 }}>
      
             <div className="modal-header">
                 <h5 className="modal-title">User</h5>
-                <button type="button" className="btn btn-md btn-default close"  aria-label="Close" onClick={handleCloseMenu}>
+                <button type="button" className="btn btn-md btn-default close"  aria-label="Close" onClick={handleModalClose}>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -731,12 +760,13 @@ export default function UserPage() {
                 </div>
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={handleCloseMenu}>Close</button>
+                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={handleModalClose}>Close</button>
                 <button type="button" className="btn btn-primary" onClick={SaveUser}>Save changes</button>
             </div>
     
 
       
-      </Popover>
+      </Box>
+    </Modal>
   </>
 }
