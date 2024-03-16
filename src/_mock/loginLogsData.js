@@ -65,7 +65,7 @@ export const LogInfo=async(startDate,endDate)=> {
   }
   }
 
-  export const sendLattLon=async()=>{
+  export const sendLattLon=async(remark,machine)=>{
             
 
     const ip=await getIpAddress();
@@ -77,7 +77,8 @@ export const LogInfo=async(startDate,endDate)=> {
     long:sessionStorage.getItem("Longitude"),
     userName:sessionStorage.getItem('name'),
     deviceModel:ip,
-    Remark:"Login"
+    Remark:remark,
+    MachineNumber:machine
     }
 
   

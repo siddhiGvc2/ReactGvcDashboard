@@ -103,6 +103,13 @@ export default function SideBar(){
                  <li className="mt-2">
                      <NavItem  path="/inventory" icon={ <i className="fa-solid fa-hand-holding-dollar" />} title='Inventory'/>
                   </li>
+                  {/* <li className="nav-item dropdown mt-2">
+                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reports
+                    </a>
+                    <div className="dropdown-menu row direction-col" aria-labelledby="navbarDropdown" >
+                      </div>
+                  </li> */}
                   <li className="ra mt-2">
                       <NavItem  path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
                   </li>

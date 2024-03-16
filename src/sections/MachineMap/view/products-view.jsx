@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
+// import { getAllData } from "src/_mock/fildData";
 // import { products } from 'src/_mock/products';
 // import { UserView } from 'src/sections/machineDataTable/view';
 import Map from "../map";
@@ -49,6 +50,8 @@ export default function MachineMapView() {
    
   });
 
+  
+
 
   useEffect(()=>{
       setTimeout(()=>{
@@ -70,7 +73,7 @@ export default function MachineMapView() {
     //  console.log(location)
      setCenter(centers);
      setLocations(location)
-      },2000)
+      },1000)
   },[data])
 
 

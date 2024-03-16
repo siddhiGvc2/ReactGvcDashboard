@@ -3,6 +3,8 @@ import { useState , useEffect} from 'react';
 
 import Box from '@mui/material/Box';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { getLatLon, sendLattLon } from 'src/_mock/loginLogsData';
 
 import {Nav} from './nav';
@@ -18,33 +20,44 @@ const GEOLOCATION=import.meta.env.VITE_REACT_APP_GEOLOCATION;
 const Time=import.meta.env.VITE_REACT_APP_LOCATION_TRACKING_TIME;
 export default function DashboardLayout({ children }) {
   const [openNav, setOpenNav] = useState(false);
-
+  const router=useRouter();
  
 
   useEffect(() => {
     let interval1;
     let interval2;
-    if (GEOLOCATION) {
-      getLatLon();
-      interval1 = setInterval(() => {
-        getLatLon();
-      }, 5000);
-  
-      sendLattLon();
-      interval2 = setInterval(() => {
-        sendLattLon();
-      }, Time);
-  
-      return () => {
-        clearInterval(interval2);
-        clearInterval(interval1);
-      };
+    if(!sessionStorage.getItem("token"))
+    {
+      router.push("/");
     }
+    else  if (GEOLOCATION){
+     
+   
+        getLatLon();
+        interval1 = setInterval(() => {
+          getLatLon();
+        }, 5000);
+    
+        sendLattLon();
+        interval2 = setInterval(() => {
+          sendLattLon("Login");
+        }, Time);
+    
+        return () => {
+          clearInterval(interval2);
+          clearInterval(interval1);
+        };
+      
+
+    }
+
+
+   
     return () => {
       clearInterval(interval2);
       clearInterval(interval1);
     };
-  }, []); // Include GEOLOCATION in the dependency array
+  }, [router]); // Include GEOLOCATION in the dependency array
   
 
 

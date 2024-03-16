@@ -40,11 +40,18 @@ function FieldSelection({ sx, ...other }) {
   
   });
 
-  getAllData();
-
+ 
+  
    
 
  },[cityName,zoneName,wardName,beatName])
+
+
+ useEffect(()=>{
+  getAllData();
+ },[beats])
+
+ 
   
 
   useEffect(()=>{
