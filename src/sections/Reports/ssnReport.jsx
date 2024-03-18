@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { SSNInfo } from "src/_mock/ssnReportData";
 
-import SSNReportView from "./LoginLogs/view/sssReport";
+import SSNReportView from "./ReportListTables/view/sssReport";
 
 
 export default function SSNReport(){

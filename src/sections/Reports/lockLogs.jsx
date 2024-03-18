@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { LockLogsData } from "src/_mock/lockLogs";
 
-import LockLogView from "./LoginLogs/view/lockLogReport";
+import LockLogView from "./ReportListTables/view/lockLogReport";
 
 
 export default function LockLogs(){

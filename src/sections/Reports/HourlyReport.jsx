@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import { GetHourlyData } from "src/_mock/hourlyReport";
 
-// import FaultReportView from "./LoginLogs/view/faultReport";
+// import FaultReportView from "./ReportListTables/view/faultReport";
 import HourlyWardTable from "./HourlyReport/hourlyWardReportTable";
 import HourlyZoneTable from "./HourlyReport/hourlyZoneReportTable";
 

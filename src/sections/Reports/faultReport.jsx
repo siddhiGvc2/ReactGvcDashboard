@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { FaultReportData } from "src/_mock/faultReportData";
 
-import FaultReportView from "./LoginLogs/view/faultReport";
+import FaultReportView from "./ReportListTables/view/faultReport";
 
 
 export default function FaultReport(){

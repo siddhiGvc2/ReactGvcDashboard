@@ -6,10 +6,12 @@ import Card from '@mui/material/Card';
 import { Container } from "@mui/material";
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from "src/routes/hooks";
+
 import { LogInfo } from "src/_mock/loginLogsData";
 
-import { UserView } from "./LoginLogs/view";
-import LastEntry from "./LoginLogs/view/lastEntry";
+import { UserView } from "./ReportListTables/view";
+import LastEntry from "./ReportListTables/view/lastEntry";
 
 
 
@@ -21,11 +23,19 @@ export default function LoginLogs(){
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
     const [isChecked, setIsChecked] = useState(true);
 
-   
+   const router=useRouter();
 
     const handleChange = () => {
       setIsChecked(!isChecked);
     };
+
+    const SelfMap=()=>{
+        router.push("/selfMap")
+    }
+
+    const ViewMap=()=>{
+        router.push("/viewMap")
+    }
     
     const LoadData=()=>{
         setData([]);
@@ -88,8 +98,25 @@ export default function LoginLogs(){
     return(
     <Card>
         <Container maxWidth='xxl'>
-        <Typography variant="h4" sx={{ mb: 5,mt:2 }}>
+        <Typography variant="h4" sx={{ mb: 5,mt:2 ,display:'flex',justifyContent:'space-between'}}>
         Login Logs
+        <Typography sx={{display:'flex',mt:0,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
+                  <div >
+                        <p >
+                        <button type="button" className="btn btn-primary text-white" onClick={SelfMap}>Self Map 
+                                    <i className="fa-solid fa-globe"  />
+                                </button>
+                        </p>
+                    </div>
+                    <div >
+                        <p >
+                        <button type="button" className="btn btn-primary text-white" onClick={ViewMap}>View On Map 
+                                    <i className="fa-solid fa-globe " />
+                                </button>
+                        </p>
+                    </div>
+      </Typography>
+                   
       </Typography>
     <div className="row mt-2">
                     <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2">

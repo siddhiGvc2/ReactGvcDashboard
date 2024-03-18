@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { SvLogsData } from "src/_mock/svLogs";
 
-import SvLogReportView from "./LoginLogs/view/svLogReport";
+import SvLogReportView from "./ReportListTables/view/svLogReport";
 
 
 export default function SvLogs(){

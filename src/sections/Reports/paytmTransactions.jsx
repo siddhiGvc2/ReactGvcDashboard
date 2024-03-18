@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { PaytmLogData } from "src/_mock/paytmLog";
 
-import PaytmLogView from "./LoginLogs/view/paytmLog";
+import PaytmLogView from "./ReportListTables/view/paytmLog";
 
 
 export default function PaytmTransactions(){
