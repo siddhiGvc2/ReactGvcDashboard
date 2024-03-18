@@ -10,6 +10,8 @@ import * as XLSX from 'xlsx';
 import PropTypes from 'prop-types';
 import React,{useRef,useState, useEffect,  useCallback} from 'react';
 
+import {GetClentNameDetails} from 'src/_mock/customers';
+
 // import NumDayRows from "./numDayRows";
 
 // import { StylesProvider,jssPreset } from "@mui/system";
@@ -20,12 +22,34 @@ import React,{useRef,useState, useEffect,  useCallback} from 'react';
 
 const sr=1;
 export default function TableHeader({data,zones,wards,beats,startDate,endDate,checked}){
+    const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
     const tblDataRef = useRef(null);
     const [numbDaysArray,setNumDaysArray]=useState([]);
     useEffect(()=>{
-      console.log(data);
-     
-    },[data])
+        const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+      
+      
+      if(UserInfo.clientName)
+      {
+        const obj={
+          clientName:UserInfo.clientName
+        }
+        
+         GetClentNameDetails(obj).then((r)=>{
+             console.log(r);
+              setCInfo([]);
+              const CInfos=[];
+               CInfos.push(r.data[0].CInfo1);
+               CInfos.push(r.data[0].CInfo2);
+               CInfos.push(r.data[0].CInfo3);
+               CInfos.push(r.data[0].CInfo4);
+    
+               setCInfo(CInfos)
+         })
+      }
+    
+    
+      },[])
      
     const printData=()=> {
         const printContents = tblDataRef.current.outerHTML;
@@ -115,19 +139,19 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
                 <td colSpan="3"/>
             </tr>
             <tr>
-                <th colSpan="2" className="CInfo2">ZONE</th>
+                <th colSpan="2" className="CInfo2">{cInfo[1]}</th>
                 <td colSpan="3" className="list zone">{zones.length>0 ? zones.join():'ALL'}</td>
                 <th colSpan="2">No. of Machines</th>
                <td colSpan="4" className="count zone">{data.counts.zone}</td>
             </tr>
             <tr>
-                <th colSpan="2" className="CInfo3">WARD</th>
+                <th colSpan="2" className="CInfo3">{cInfo[2]}</th>
                 <td colSpan="3" className="list ward">{wards.length>0 ? wards.join():'ALL'}</td>
                 <th colSpan="2">No. of Machines</th>
                 <td colSpan="4" className="count ward">{data.counts.ward}</td>
             </tr>
             <tr>
-                <th colSpan="2" className="CInfo4">BEAT</th>
+                <th colSpan="2" className="CInfo4">{cInfo[3]}</th>
                 <td colSpan="3" className="list beat">{beats.length>0 ? beats.join():'ALL'}</td>
                 <th colSpan="2">No. of Machines</th>
                 <td colSpan="4" className="count beat">{data.counts.beat}</td>
@@ -181,7 +205,7 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
                  <tr className="data">
                    <td rowSpan={checked ? numDays()+1:1} className="text-center" style={{ verticalAlign: 'center' }}>{i + 1}</td>
                    <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.uid}<br /><small className="text-muted">{m.serial}</small></td>
-                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center', whiteSpace: 'nowrap' }} >Zone: {m.zone}<br />Ward: {m.ward}<br />Beat: {m.beat}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center', whiteSpace: 'nowrap' }} >{cInfo[1]}: {m.zone}<br />{cInfo[2]}: {m.ward}<br />{cInfo[3]}: {m.beat}</td>
                    <td rowSpan={checked ? numDays()+1:1} style={{ maxWidth: '10em', verticalAlign: 'center' }}>{m.address}</td>
                    <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.data2}</td>
                    {checked && checked ? <>

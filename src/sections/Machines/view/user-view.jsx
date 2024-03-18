@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
+import { GetClentNameDetails} from 'src/_mock/customers';
 import { mapping,AllMachines} from 'src/_mock/AllMachines';
 
 import Scrollbar from 'src/components/scrollbar';
@@ -25,7 +26,6 @@ import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
-
 
 
 const Alert = React.forwardRef((props, ref) => (
@@ -52,7 +52,7 @@ export default function MachinePage() {
   const[machines,setMachines]=useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
   const [options,setOptions]=useState([]);
-  
+  const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
   
   const [page, setPage] = useState(0);
 
@@ -104,11 +104,33 @@ export default function MachinePage() {
 
 // getting data from api and store in Machines state
   useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+  
     // getting data from fecthData function
     AllMachines().then((res)=>{
     
       setMachines(res);
     })
+    if(UserInfo.clientName)
+  {
+    const obj={
+      clientName:UserInfo.clientName
+    }
+    
+
+     GetClentNameDetails(obj).then((r)=>{
+         console.log(r);
+          setCInfo([]);
+          const CInfos=[];
+           CInfos.push(r.data[0].CInfo1);
+           CInfos.push(r.data[0].CInfo2);
+           CInfos.push(r.data[0].CInfo3);
+           CInfos.push(r.data[0].CInfo4);
+
+           setCInfo(CInfos)
+     })
+  }
+
     LoadMachineNameDDL();
   },[])
 
@@ -314,9 +336,9 @@ export default function MachinePage() {
                   { id: 'id', label: 'Sr.No' },
                   { id: 'name', label: 'Serial'},
                   { id: 'email', label: 'Uid' },
-                  { id: 'zone', label: 'Zone' },
-                  { id: 'ward', label: 'Ward' },
-                  { id: 'beat', label: 'Beat' },
+                  { id: 'zone', label: `${cInfo[1]}` },
+                  { id: 'ward', label: `${cInfo[2]}` },
+                  { id: 'beat', label: `${cInfo[3]}` },
                   // { id: 'ward', label: 'Verified', align: 'center' },
                   // { id: 'city', label: 'Status' },
                   { id: '' },

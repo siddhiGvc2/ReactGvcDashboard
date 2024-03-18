@@ -9,23 +9,26 @@ import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 
 import {zoneData,wardData,beatData,getAllData } from 'src/_mock/fildData';
+import { GetClentInfoDetails,GetClentNameDetails} from 'src/_mock/customers';
 
 function FieldSelection({ sx, ...other }) {
   const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
   const [zones,setZones]=useState([]);
   const [wards,setWards]=useState([]);
   const [beats,setBeats]=useState([]);
-
+  const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
   const [cityName, setCitiesName] = useState(['Mumbai']);
   const [zoneName,setZonesName]=useState([]);
   const [wardName,setWardsName]=useState([]);
   const [beatName,setBeatsName]=useState([]);
+  // const [machineType,setMachineType]=useState([]);
  
   // Other state variables for stock status, burn status, door status, etc.
 
 
   useEffect(()=>{
     const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+  
     console.log(UserInfo);
     if (!UserInfo.isAdmin) {
                                       
@@ -39,6 +42,35 @@ function FieldSelection({ sx, ...other }) {
         $('#city').remove();
 
        
+  }
+  if(UserInfo.clientName)
+  {
+    const obj={
+      clientName:UserInfo.clientName
+    }
+     GetClentInfoDetails(obj).then((r)=>{
+        //  console.log(r);
+         setCities([]);
+         setCitiesName([]);
+         const cityArray=[];
+           r.data.map((elem)=>
+            cityArray.push(elem.City)
+           )
+           setCities(cityArray);
+           setCitiesName(cityArray)
+     })
+
+     GetClentNameDetails(obj).then((r)=>{
+         console.log(r);
+          setCInfo([]);
+          const CInfos=[];
+           CInfos.push(r.data[0].CInfo1);
+           CInfos.push(r.data[0].CInfo2);
+           CInfos.push(r.data[0].CInfo3);
+           CInfos.push(r.data[0].CInfo4);
+
+           setCInfo(CInfos)
+     })
   }
 
 
@@ -190,7 +222,7 @@ useEffect(()=>{
       <Stack spacing={0.5}>
         {/* Machine Status Dropdown */}
         <div className="mt-2 pb-2 border-bottom-1" id="city">
-          <h5 className="text-primary d-inline">City</h5>
+          <h5 className="text-primary d-inline">{cInfo[0]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
             <button type='button' className="btn btn-sm btn-success text-white my-auto" onClick={selectAllCities} ><i
@@ -214,22 +246,17 @@ useEffect(()=>{
                   return `${selected.length} Selected`
               }}
               >
-                 <MenuItem value="Mumbai">
-                  <Checkbox checked={cityName.indexOf('Mumbai') > -1} />
-                  Mumbai
-                </MenuItem>
-                <MenuItem value="Delhi">
-                  <Checkbox checked={cityName.indexOf('Delhi') > -1} />
-                  Delhi
-                </MenuItem>
-                <MenuItem value="SS-UK">
-                  <Checkbox checked={cityName.indexOf('SS-UK') > -1} />
-                  SS-UK
-                </MenuItem>
-                <MenuItem value="DoE-HAR">
-                  <Checkbox checked={cityName.indexOf('DoE-HAR') > -1} />
-                  DoE-HAR
-                </MenuItem>
+                
+                {
+                  cities.map((elem)=>
+                     <MenuItem value={elem}>
+                    <Checkbox checked={cityName.indexOf(elem) > -1} />
+                    {elem}
+                  </MenuItem>
+
+                  )
+                }
+             
               </Select>
               <button type='button' className="btn btn-sm btn-danger text-white my-auto" onClick={selectNoneCities}><i
                                     className="fa fa-times"/></button>
@@ -237,7 +264,7 @@ useEffect(()=>{
           </div>
         </div>
         <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Zone</h5>
+          <h5 className="text-primary d-inline">{cInfo[1]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
             <button type='button' className="btn btn-sm btn-success text-white my-auto" onClick={selectAllZones}><i
@@ -280,7 +307,7 @@ useEffect(()=>{
           </div>
         </div>
         <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Ward</h5>
+          <h5 className="text-primary d-inline">{cInfo[2]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
             <button type='button' className="btn btn-sm btn-success text-white my-auto" onClick={selectAllWards}><i
@@ -322,7 +349,7 @@ useEffect(()=>{
           </div>
         </div>
         <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Beat</h5>
+          <h5 className="text-primary d-inline">{cInfo[3]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
             <button type='button' className="btn btn-sm btn-success text-white my-auto"onClick={selectAllBeats} ><i

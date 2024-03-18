@@ -17,11 +17,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // import AppTasks from '../app-tasks';
 // import AppNewsUpdate from '../app-news-update';
+// import { GetClentNameDetails } from "src/_mock/customers";
+
 import {fetchData} from "../../../_mock/machineData";
 // import AppOrderTimeline from '../app-order-timeline';
 import AppCurrentVisits from '../app-current-visits';
 // import AppWebsiteVisits from '../app-website-visits';
 import AppWidgetSummary from '../app-widget-summary';
+
 // import AppTrafficBySite from '../app-traffic-by-site';
 // import AppCurrentSubject from '../app-current-subject';
 // import AppConversionRates from '../app-conversion-rates';
@@ -30,9 +33,12 @@ import AppWidgetSummary from '../app-widget-summary';
 
 
 // started function of dashboard ui here
+
+const userInfo=JSON.parse(sessionStorage.getItem("userInfo")) || [] ;
 export default function AppView() {
   // const [cities,setCities]=useState([]);
   const [pathName,setPathName]=useState({data:[],dataAll:[]});
+  // const [setMachineType]=useState('');
  
 
   // calling for api data
@@ -58,19 +64,13 @@ export default function AppView() {
    
   };
 
-  useEffect(()=>{
-   
-      
-        // setCities(Cities)
-        // sessionStorage.setItem("userCity",JSON.stringify(Cities))
-      
-  },[])
+ 
 
   // calling loadData every 5 seconds
   useEffect(() => {
-   // setPathName(1);
-    LoadData();
   
+    LoadData();
+    
     const interval=setInterval(()=>{
        LoadData();
      
@@ -79,6 +79,9 @@ export default function AppView() {
     return(()=>{
       clearInterval(interval);
     })
+  
+
+ 
    
   },[]);
 
@@ -153,7 +156,7 @@ export default function AppView() {
         {/* total collection */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Total Collections"
+            title={userInfo.clientName ? "Defective Sensor" :"Total Collections"}
             total={pathName.data.length ?amountText(pathName.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
             color="info"
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
@@ -162,7 +165,7 @@ export default function AppView() {
            {/* item dispensed */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Item Despensed"
+            title={userInfo.clientName ? "Tempered" :"Item Dispnesed"}
             total={pathName.data.length ?(pathName.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
             color="error"
             icon={<img alt="icon" src="/assets/icons/items.png" />}

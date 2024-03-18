@@ -20,6 +20,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { fetchUsers } from 'src/_mock/user';
+import { GetClentNameDetails} from 'src/_mock/customers';
 import {zoneData,wardData,beatData} from 'src/_mock/fildData';
 
 import Iconify from 'src/components/iconify';
@@ -68,6 +69,8 @@ export default function UserPage() {
   const [name,setName]=useState('');
   const [email,setEmail]=useState('');
   const [isAdmin,setIsAdmin]=useState('');
+
+  const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
  
   const [password,setPassword]=useState('');
   const [password2,setPassword2]=useState('');
@@ -96,14 +99,42 @@ export default function UserPage() {
   // const [open, setOpen] = useState(null);
 
 
-
   useEffect(()=>{
-    // getting data from fecthData function
-    fetchUsers().then((res)=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+  
+  
+    if(UserInfo.clientName)
+  {
+    const obj={
+      clientName:UserInfo.clientName
+    }
     
-      setUsers(res);
-    })
+
+     GetClentNameDetails(obj).then((r)=>{
+         console.log(r);
+          setCInfo([]);
+          const CInfos=[];
+           CInfos.push(r.data[0].CInfo1);
+           CInfos.push(r.data[0].CInfo2);
+           CInfos.push(r.data[0].CInfo3);
+           CInfos.push(r.data[0].CInfo4);
+
+           setCInfo(CInfos)
+     })
+  }
+   // getting data from fecthData function
+  fetchUsers().then((res)=>{
+    
+    setUsers(res);
+  })
+    
   },[])
+
+
+  // useEffect(()=>{
+  //   // getting data from fecthData function
+   
+  // },[])
 
   // const handleOpenMenu = (event) => {
   //   setOpen(event.currentTarget);
@@ -452,10 +483,10 @@ export default function UserPage() {
                   { id: 'name', label: 'Name' },
                   { id: 'email', label: 'UserName' },
                   { id: 'role', label: 'Role' },
-                  { id: 'city', label: 'City' },
-                  { id: 'zone', label: 'Zone' },
-                  { id: 'ward', label: 'Ward' },
-                  { id: 'beat', label: 'Beat' },
+                  { id: 'city', label: `${cInfo[0]}` },
+                  { id: 'zone', label: `${cInfo[1]}` },
+                  { id: 'ward', label: `${cInfo[2]}` },
+                  { id: 'beat', label: `${cInfo[3]}` },
                   // { id: 'ward', label: 'Verified', align: 'center' },
                   // { id: 'city', label: 'Status' },
                   { id: '' },

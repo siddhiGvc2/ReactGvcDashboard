@@ -1,4 +1,5 @@
 // import 'bootstrap-switch-button/dist/bootstrap3/bootstrap-switch-button.min.css';
+import $ from "jquery";
 import moment from "moment";
 import { useState, useEffect} from 'react';
 // import * as XLSX from 'xlsx';
@@ -13,6 +14,7 @@ import Container from '@mui/material/Container';
 
 import { ReportData } from "src/_mock/dailyReportData";
 import {zoneData,wardData,beatData,Machines} from 'src/_mock/fildData';
+import { GetClentInfoDetails,GetClentNameDetails} from 'src/_mock/customers';
 
 import TableHeader from "./dailyReportComponents/tableHeader";
 
@@ -25,7 +27,8 @@ export default function DailyReports(){
     const [reportData,setReportData]=useState(null);
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
-    const [cities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+    const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+    const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
     const [zones,setZones]=useState([]);
     const [wards,setWards]=useState([]);
     const [beats,setBeats]=useState([]);
@@ -42,6 +45,55 @@ export default function DailyReports(){
     setIsChecked(!isChecked);
   };
   
+  useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+  
+    console.log(UserInfo);
+    if (!UserInfo.isAdmin) {
+                                      
+      if (UserInfo.city)
+        //  console.log("user cities:" + typeof(window.appuser.city));
+      console.log(UserInfo.city);
+         const Cities=(UserInfo.city).split(',')
+        setCitiesName(Cities);
+        setCities(Cities);
+        sessionStorage.setItem("cities",JSON.stringify(Cities));
+        $('#city').remove();
+
+       
+  }
+  if(UserInfo.clientName)
+  {
+    const obj={
+      clientName:UserInfo.clientName
+    }
+     GetClentInfoDetails(obj).then((r)=>{
+        //  console.log(r);
+         setCities([]);
+         setCitiesName([]);
+         const cityArray=[];
+           r.data.map((elem)=>
+            cityArray.push(elem.City)
+           )
+           setCities(cityArray);
+           setCitiesName(cityArray)
+     })
+
+     GetClentNameDetails(obj).then((r)=>{
+         console.log(r);
+          setCInfo([]);
+          const CInfos=[];
+           CInfos.push(r.data[0].CInfo1);
+           CInfos.push(r.data[0].CInfo2);
+           CInfos.push(r.data[0].CInfo3);
+           CInfos.push(r.data[0].CInfo4);
+
+           setCInfo(CInfos)
+     })
+  }
+
+
+  },[])
 
  
 
@@ -181,7 +233,7 @@ export default function DailyReports(){
                 {/* City selection ui */}
                     <div className=" col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">City:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[0]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type='button' className="btn btn-sm btn-success text-white my-auto"
@@ -204,23 +256,17 @@ export default function DailyReports(){
                                             }
                                             return `${items.length} Selected`
                                         }}
-                                        >
-                                            <MenuItem value="Mumbai">
-                                            <Checkbox checked={cityName.indexOf('Mumbai') > -1} />
-                                            Mumbai
+                                        > 
+                                           {
+                                            cities.map((elem)=>
+                                                <MenuItem value={elem}>
+                                                <Checkbox checked={cityName.indexOf(elem) > -1} />
+                                                {elem}
                                             </MenuItem>
-                                            <MenuItem value="Delhi">
-                                            <Checkbox checked={cityName.indexOf('Delhi') > -1} />
-                                            Delhi
-                                            </MenuItem>
-                                            <MenuItem value="SS-UK">
-                                            <Checkbox checked={cityName.indexOf('SS-UK') > -1} />
-                                            SS-UK
-                                            </MenuItem>
-                                            <MenuItem value="DoE-HAR">
-                                            <Checkbox checked={cityName.indexOf('DoE-HAR') > -1} />
-                                            DoE-HAR
-                                            </MenuItem>
+
+                                            )
+                                            }
+                                                                        
                                         </Select>
                                     <button type='button' className="btn btn-sm btn-danger text-white my-auto"
                                        onClick={selectNoneCities} ><i className="fa fa-times"/></button>
@@ -231,7 +277,7 @@ export default function DailyReports(){
                     {/* Zone selection Ui */}
                     <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2 ">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">Zone:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[1]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type='button' className="btn btn-sm btn-success text-white my-auto"
@@ -277,7 +323,7 @@ export default function DailyReports(){
                                                 {/* Ward selection ui */}
                                                 <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                                                     <div className="form-group my-2">
-                                                    <h5 className="text-primary d-inline">Ward:</h5>
+                                                    <h5 className="text-primary d-inline">{cInfo[2]}:</h5>
                                                         <div className="row">
                                                             <div className="col-12 d-flex">
                                                                 <button type="button" className="btn btn-sm btn-success text-white my-auto"
@@ -322,7 +368,7 @@ export default function DailyReports(){
                     {/* Beat selection ui */}
                     <div className="col-xl-3 col-lg-3 col-md-6 col-12 my-2">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">Beat:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[3]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type="button" className="btn btn-sm btn-success text-white my-auto"

@@ -152,7 +152,7 @@ export default function SideBar(){
                                 <li className="ra mt-1">
                                   <NavItem color='#343957' path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
                                 </li>
-                                <li className="da mt-1">
+                                <li className=" mt-1">
                                 <NavItem color='#343957'  path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
                                 </li>
                                 <li className="ra mt-1">

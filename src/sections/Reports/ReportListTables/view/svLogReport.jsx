@@ -1,7 +1,7 @@
 // import $ from 'jquery';
 import * as XLSX from 'xlsx';
 import PropTypes from 'prop-types';
-import React, { useRef,useState } from 'react';
+import React, { useRef,useState,useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 // import Stack from '@mui/material/Stack';
@@ -23,6 +23,8 @@ import TablePagination from '@mui/material/TablePagination';
 // import {zoneData,wardData,beatData} from 'src/_mock/fildData';
 
 // import Iconify from 'src/components/iconify';
+import {GetClentNameDetails} from 'src/_mock/customers';
+
 import Scrollbar from 'src/components/scrollbar';
 
 // import { UserView } from 'src/sections/user/view';
@@ -68,7 +70,33 @@ export default function SvLogReportView({users}) {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
 
+  useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+  
+  
+  if(UserInfo.clientName)
+  {
+    const obj={
+      clientName:UserInfo.clientName
+    }
+    
+     GetClentNameDetails(obj).then((r)=>{
+         console.log(r);
+          setCInfo([]);
+          const CInfos=[];
+           CInfos.push(r.data[0].CInfo1);
+           CInfos.push(r.data[0].CInfo2);
+           CInfos.push(r.data[0].CInfo3);
+           CInfos.push(r.data[0].CInfo4);
+
+           setCInfo(CInfos)
+     })
+  }
+
+
+  },[])
   
 
   const printData=()=> {
@@ -163,9 +191,9 @@ export default function SvLogReportView({users}) {
                   { id: 'email', label: 'UserName' },
                   { id: 'qty', label: 'Quantity' },
                   { id: 'burnCycles', label: 'Burn Cycles' },
-                  { id: 'zones', label: 'Zones' },
-                  { id: 'wards', label: 'Wards' },
-                  { id: 'beats', label: 'Beats' },
+                  { id: 'zones', label: `${cInfo[1]}` },
+                  { id: 'wards', label: `${cInfo[2]}` },
+                  { id: 'beats', label: `${cInfo[3]}` },
                   { id: 'DateTime', label: 'Date & Time' },
                  
           

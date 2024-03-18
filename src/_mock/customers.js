@@ -141,12 +141,46 @@ export const getCustomerData=async()=> {
       });
       const response = await fetch(`${API}/customers/updateCustomerData?id=${id}`,{ method: 'POST', headers ,body:JSON.stringify(obj)});
       const users = await response.json();
-      return users.data.users;
+      return users;
     } catch (error) {
       console.error('Error fetching users:', error);
       return [];
     }
   
+  }
+
+  export const GetClentNameDetails=async(obj)=>{
+
+     
+    try {
+      const headers = new Headers({
+        "Content-type":'application/json',
+        'x-token': sessionStorage.getItem('token'),
+      });
+      const response = await fetch(`${API}/customers/getCustomerDataByName`,{ method: 'POST', headers ,body:JSON.stringify(obj)});
+      const users = await response.json();
+      return users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
+  export const GetClentInfoDetails=async(obj)=>{
+
+     
+    try {
+      const headers = new Headers({
+        "Content-type":'application/json',
+        'x-token': sessionStorage.getItem('token'),
+      });
+      const response = await fetch(`${API}/customers/getCustomerInfoByName`,{ method: 'POST', headers ,body:JSON.stringify(obj)});
+      const users = await response.json();
+      return users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
   }
   
   
