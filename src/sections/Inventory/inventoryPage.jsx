@@ -271,7 +271,7 @@ export default function InventoryPage(){
                         </div>
                     </div>
       </Typography>
-      <Typography sx={{display:'flex',mt:0,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
+    <Typography sx={{display:'flex',mt:0,alignItems:'center',gap:2,justifyContent:'flex-end'}}>
                   <div >
                         <p >
                             <button type="button" className="btn btn-warning text-white" onClick={handleModalOpen1} >

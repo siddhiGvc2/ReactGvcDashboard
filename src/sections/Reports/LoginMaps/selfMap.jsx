@@ -26,7 +26,7 @@ export default function SelfMap(){
 const [setRunningFlag]=useState(false);
 const [setRunningPause]=useState(false);
 
-
+//   LoadMap function starting from here
 const LoadMap=useCallback((center, locations ,LastCheckIn, LastLogOut ,LastLogIn, LastCheckOut)=>{
     console.log(LastCheckOut);
   
@@ -549,14 +549,14 @@ const LoadData=useCallback((time)=>{
      
      }
 
-    //  function LoadOnChangeTime(){
-    //     sessionStorage.setItem("time", $('[name="timeInput"]').val())
+     function LoadOnChangeTime(){
+        sessionStorage.setItem("time", $('[name="timeInput"]').val())
         
-    //   }
+      }
 
 
 
-    //   LoadMap function starting from here
+    
     
      
       
@@ -582,7 +582,7 @@ const LoadData=useCallback((time)=>{
                         <h5>Select Time:</h5>
                         <div className="row">
                             <div className="col-12 d-flex">
-                                <input type="time" className="form-control" name="timeInput"  min="09:00" max="18:00" onInput="LoadOnChangeTime()" />
+                                <input type="time" className="form-control" name="timeInput"  min="09:00" max="18:00" onInput={LoadOnChangeTime} />
                             </div>
                         </div>
                     </div>
