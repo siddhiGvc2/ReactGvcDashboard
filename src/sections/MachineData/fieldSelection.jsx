@@ -29,17 +29,17 @@ function FieldSelection({ sx, ...other }) {
   useEffect(()=>{
     const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
   
-    console.log(UserInfo);
+    // console.log(UserInfo);
     if (!UserInfo.isAdmin) {
                                       
-      if (UserInfo.city)
-        //  console.log("user cities:" + typeof(window.appuser.city));
-      console.log(UserInfo.city);
-         const Cities=(UserInfo.city).split(',')
+      if (UserInfo.city){
+        
+       const Cities=(UserInfo.city).split(',')
         setCitiesName(Cities);
         setCities(Cities);
         sessionStorage.setItem("cities",JSON.stringify(Cities));
         $('#city').remove();
+      }
 
        
   }
@@ -61,7 +61,24 @@ function FieldSelection({ sx, ...other }) {
      })
 
      GetClentNameDetails(obj).then((r)=>{
-         console.log(r);
+        //  console.log(r);
+         const Data=r.data;
+         $('.CInfo1').text(Data[0].CInfo1);
+         if(Data[0].CInfo1===''){
+            $('.City').remove();
+         }
+         $('.CInfo2').text(Data[0].CInfo2);
+          if(Data[0].CInfo2===''){
+            $('.Zone').remove();
+         }
+         $('.CInfo3').text(Data[0].CInfo3);
+          if(Data[0].CInfo3===''){
+            $('.Ward').remove();
+         }
+         $('.CInfo4').text(Data[0].CInfo4);
+          if(Data[0].CInfo4===''){
+            $('.Beat').remove();
+         }
           setCInfo([]);
           const CInfos=[];
            CInfos.push(r.data[0].CInfo1);

@@ -44,6 +44,7 @@ export default function SideBar(){
             if(clientName)
             {
                $('.superAdmin').text(account.clientName)  
+               $('.metismenu .da').remove(); 
             }
             else{
                 $('.metismenu .da').remove(); 
@@ -51,7 +52,7 @@ export default function SideBar(){
            
           } 
 
-          $('.metismenu .da').remove(); 
+         
         }
        
          else if(displayName==="Demo")
@@ -152,7 +153,7 @@ export default function SideBar(){
                                 <li className="ra mt-1">
                                   <NavItem color='#343957' path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
                                 </li>
-                                <li className=" mt-1">
+                                <li className="da mt-1">
                                 <NavItem color='#343957'  path="/machineSetting" icon={   <i className="fa-solid fa-gear" />} title='Machine Setting'/>
                                 </li>
                                 <li className="ra mt-1">

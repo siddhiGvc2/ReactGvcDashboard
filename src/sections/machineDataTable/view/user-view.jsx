@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import $ from 'jquery';
+import {useState, useEffect} from 'react';
 
 import Card from '@mui/material/Card';
 // import Stack from '@mui/material/Stack';
@@ -11,9 +12,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 // import { users } from 'src/_mock/user';
+import {GetClentNameDetails} from 'src/_mock/customers';
+
 import Scrollbar from 'src/components/scrollbar';
 
 // import { emptyRows} from '../utils';
+
 import { store } from "../../../Redux/store";
 // import Iconify from 'src/components/iconify';
 
@@ -39,11 +43,52 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [data,setData]=useState([])
+
+  const [machineType,setMachineType]=useState('');
  
   store.subscribe(() => {
     setData(store.getState().data.data);
    
   });
+
+  useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+    const Obj={
+     clientName:UserInfo.clientName
+    }
+   GetClentNameDetails(Obj).then((r)=>{
+     // const MachineType=r.data[0].MachineType
+     const [{ MachineType }] = r.data;
+     const Data=r.data;
+     $('.CInfo1').text(Data[0].CInfo1);
+     if(Data[0].CInfo1===''){
+        $('.City').remove();
+     }
+     $('.CInfo2').text(Data[0].CInfo2);
+      if(Data[0].CInfo2===''){
+        $('.Zone').remove();
+     }
+     $('.CInfo3').text(Data[0].CInfo3);
+      if(Data[0].CInfo3===''){
+        $('.Ward').remove();
+     }
+     $('.CInfo4').text(Data[0].CInfo4);
+      if(Data[0].CInfo4===''){
+        $('.Beat').remove();
+     }
+     if(MachineType==="Incinerator")
+     {
+       $('.vending').remove();
+     }
+     else if(MachineType==="Vending")
+     {
+       $('.incinerator').remove();
+     }
+     setMachineType(MachineType);
+
+   })
+
+  },[])
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -124,16 +169,24 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'sr', label: 'Sr.No' },
-                  { id: 'machine', label: 'Machine' },
+                  { id: 'machine', label: `${machineType==="RECD" ? "Machine Details":"Machine" }` },
                   { id: 'status', label: 'Status' },
-                  { id: 'stockStatus', label: 'Stock Status' },
-                  { id: 'burnStatus', label: 'Burning Status' },
-                  { id: 'doorStatus', label: 'Door Status' },
+                  ...(machineType !== "Incinerator"
+                  ? [{ id: 'stockStatus',  label: `${machineType==="RECD" ? "Temperature":"Stock Status" }`}]
+                  : []),
+                  ...(machineType !== "Vending"
+                  ? [  { id: 'burnStatus', label: `${machineType==="RECD" ? "Pressure":"Burning Status" }` }]
+                  : []),
+                
+                  { id: 'doorStatus', label: `${machineType==="RECD" ? "Diffrential":"Door Status" }`},
+                  ...(machineType === "RECD"
+                  ? [  { id: 'burnStatus', label: `${machineType==="RECD" ? "Temper":"Burning Status" }` }]
+                  : []),
                   { id: 'info', label: 'Info' },
                 
                   // { id: 'ward', label: 'Verified', align: 'center' },
                   // { id: 'city', label: 'Status' },
-                  { id: '' },
+                  // { id: '' },
                 ]}
               />
               <TableBody>
@@ -161,6 +214,7 @@ export default function UserPage() {
                       lastStatus={row.last_status}
                       rssi={row.rssi}
                       m={row}
+                      MachineType={machineType}
 
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}

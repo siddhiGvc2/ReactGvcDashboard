@@ -65,6 +65,7 @@ export default function UserTableRow({
   lastStatus,
   rssi,
   handleClick,
+  MachineType
 }) {
   const [open, setOpen] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -238,11 +239,64 @@ const amountText = amt => {
         </TableCell>
 
         <TableCell>
-          <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label>
+           <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label>
         </TableCell>
-        <TableCell>{stockStatus(m.spiral_a_status, online(m))}</TableCell>
-        <TableCell>{ burnStatus(m.burn_status, online(m))}</TableCell>
-        <TableCell>{lockStatus(parseInt(m.last_status ,10),m.serial)}</TableCell>
+
+        {MachineType!=="RECD" && <TableCell>{stockStatus(m.spiral_a_status, online(m))}</TableCell>}
+        {MachineType === "RECD" && (
+              <TableCell>
+                  {(() => {
+                      if ((m.spiral_a_status === 2 || m.spiral_a_status === 3 || m.spiral_a_status === 6 || m.spiral_a_status === 7) && online(m)) {
+                          return <span className="badge py-1 px-3 badge-pill badge-danger">Error</span>;
+                      }
+                      if (online(m)) {
+                          return <span>A:{m.doorCurrent}/B:{m.qtyCurrent}</span>;
+                      }
+                      return null;
+                  })()}
+              </TableCell>
+          )}
+           {MachineType!=="RECD" && <TableCell>{burnStatus(m.burn_status, online(m))}</TableCell>}
+           {MachineType === "RECD" && (
+              <TableCell>
+                  {(() => {
+                      if ((m.spiral_a_status>3 && m.spiral_a_status<8) && online(m)) {
+                          return <span className="badge py-1 px-3 badge-pill badge-danger">Error</span>;
+                      }
+                      if (online(m)) {
+                          return <span>{m.burnCycleCurrent}</span>;
+                      }
+                      return null;
+                  })()}
+              </TableCell>
+          )}
+           {MachineType!=="RECD" && <TableCell>{lockStatus(parseInt(m.last_status ,10),m.serial)}</TableCell>}
+           {MachineType === "RECD" && (
+              <TableCell>
+                  {(() => {
+                      if ((m.spiral_a_status>3 && m.spiral_a_status<8) && online(m)) {
+                          return <span className="badge py-1 px-3 badge-pill badge-danger">Error</span>;
+                      }
+                      if (online(m)) {
+                          return <span>{m.rssi}</span>;
+                      }
+                      return null;
+                  })()}
+              </TableCell>
+          )}
+            {MachineType === "RECD" && (
+              <TableCell>
+                  {(() => {
+                      if ((m.spiral_a_status===1 || m.spiral_a_status===3 || m.spiral_a_status===5 || m.spiral_a_status===7) && online(m)) {
+                          return <span className="badge py-1 px-3 badge-pill badge-danger">Error</span>;
+                      }
+                      if (online(m)) {
+                          return <span className="badge py-1 px-3 badge-pill badge-success">Ok</span>;
+                      }
+                      return null;
+                  })()}
+              </TableCell>
+          )}
      
         <TableCell>
       <button
@@ -287,11 +341,11 @@ const amountText = amt => {
                                   <tr><th style={{color: '#444'}}>Status</th><td style={{color: '#444'}} >  <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label></td></tr>
                                 <tr><th style={{color: '#444'}}>IMSI</th><td style={{color: '#444'}}>{m.sim_number}</td></tr>
                                 <tr><th style={{color: '#444'}}>RSSI</th><td style={{color: '#444'}}>{m.rssi}</td></tr>
-                                <tr><th style={{color: '#444'}}>Collection</th><td style={{color: '#444'}}>&#8377;&nbsp;{m.cashCurrent} <span className="text-muted">[ &#8377;&nbsp;{amountText(m.cashLife + m.cashCurrent)} ]</span></td></tr>
-                                <tr><th style={{color: '#444'}}>Items Dispensed</th><td style={{color: '#444'}}>{m.qtyCurrent} <span className="text-muted">[ {amountText(m.qtyLife + m.qtyCurrent)} ]</span></td></tr>
+                                {MachineType!=="Incinerator" ?<tr><th style={{color: '#444'}}>Collection</th><td style={{color: '#444'}}>&#8377;&nbsp;{m.cashCurrent} <span className="text-muted">[ &#8377;&nbsp;{amountText(m.cashLife + m.cashCurrent)} ]</span></td></tr>:""}
+                                {MachineType!=="Incinerator" ?<tr><th style={{color: '#444'}}>Items Dispensed</th><td style={{color: '#444'}}>{m.qtyCurrent} <span className="text-muted">[ {amountText(m.qtyLife + m.qtyCurrent)} ]</span></td></tr>:""}
                                 
-                                <tr id="itemsBurntRow" ><th style={{color: '#444'}}>Items Burnt</th><td style={{color: '#444'}} >{m.doorCurrent} <span className="text-muted ">[ {amountText(m.doorLife + m.doorCurrent)} ]</span></td></tr>
-                                <tr id="burningCyclesRow"><th style={{color: '#444'}}>Burning Cycles</th><td style={{color: '#444'}}>{m.burnCycleCurrent} <span className="text-muted ">[ {amountText(m.burnCycleLife + m.burnCycleCurrent)} ]</span></td></tr>
+                                {MachineType!=="Vending" ?<tr id="itemsBurntRow" ><th style={{color: '#444'}}>Items Burnt</th><td style={{color: '#444'}} >{m.doorCurrent} <span className="text-muted ">[ {amountText(m.doorLife + m.doorCurrent)} ]</span></td></tr>:""}
+                                 {MachineType!=="Vending" ?<tr id="burningCyclesRow"><th style={{color: '#444'}}>Burning Cycles</th><td style={{color: '#444'}}>{m.burnCycleCurrent} <span className="text-muted ">[ {amountText(m.burnCycleLife + m.burnCycleCurrent)} ]</span></td></tr>:""}
                         
                                 <tr><th style={{color: '#444'}}>On Since</th><td style={{color: '#444'}}>{moment.utc((m.lastOnTime || m.lastHeartbeatTime).replace('Z', '')).local().format('DD-MMM-YYYY hh:mm a')}</td></tr>
                                <tr ><th style={{color: '#444'}}>Last Online At</th><td style={{color: '#444'}}>{m.lastHeartbeatTime ? moment.utc(m.lastHeartbeatTime.replace('Z', '')).local().format('DD-MMM-YYYY hh:mm a') : 'NA'}</td></tr>
@@ -310,7 +364,7 @@ const amountText = amt => {
         <div className="modal-content">
             <div className="modal-header">
                 <h5 className="modal-title">FAUALT REPORT</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleModalClose}>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -371,6 +425,7 @@ const amountText = amt => {
 }
 
 UserTableRow.propTypes = {
+  MachineType:PropTypes.any,
   m:PropTypes.any,
   key: PropTypes.any,
   sr:PropTypes.any,

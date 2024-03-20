@@ -17,7 +17,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // import AppTasks from '../app-tasks';
 // import AppNewsUpdate from '../app-news-update';
-// import { GetClentNameDetails } from "src/_mock/customers";
+import { GetClentNameDetails } from "src/_mock/customers";
 
 import {fetchData} from "../../../_mock/machineData";
 // import AppOrderTimeline from '../app-order-timeline';
@@ -34,22 +34,30 @@ import AppWidgetSummary from '../app-widget-summary';
 
 // started function of dashboard ui here
 
-const userInfo=JSON.parse(sessionStorage.getItem("userInfo")) || [] ;
+// const UserInfo=JSON.parse(sessionStorage.getItem("userInfo")) || [] ;
 export default function AppView() {
   // const [cities,setCities]=useState([]);
   const [pathName,setPathName]=useState({data:[],dataAll:[]});
-  // const [setMachineType]=useState('');
+  const [machineType,setMachineType]=useState('');
  
 
   // calling for api data
   const LoadData=()=>{
     const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
-    console.log(UserInfo);
+       console.log(UserInfo);
+
+       if(UserInfo.clientName)
+       {
+        const obj={
+          clientName:UserInfo.clientName
+        }
+        GetClentNameDetails(obj).then((r)=>{
+          const [{ MachineType }] = r.data;
+          setMachineType(MachineType);
+        })
+       }
    
-                                    
-   
-      
-         const Cities=(UserInfo.city).split(',') || [''];
+      const Cities=(UserInfo.city).split(',') || [''];
          if(Cities[0]==="null")
          {
           Cities[0]=" "
@@ -156,7 +164,7 @@ export default function AppView() {
         {/* total collection */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title={userInfo.clientName ? "Defective Sensor" :"Total Collections"}
+            title={machineType==="RECD" ? "Defective Sensor" :"Total Collections"}
             total={pathName.data.length ?amountText(pathName.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
             color="info"
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
@@ -165,7 +173,7 @@ export default function AppView() {
            {/* item dispensed */}
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title={userInfo.clientName ? "Tempered" :"Item Dispnesed"}
+            title={machineType==="RECD" ? "Tempered" :"Item Dispnesed"}
             total={pathName.data.length ?(pathName.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
             color="error"
             icon={<img alt="icon" src="/assets/icons/items.png" />}

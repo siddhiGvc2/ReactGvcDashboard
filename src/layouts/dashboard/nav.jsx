@@ -82,7 +82,7 @@ export  function Nav({ openNav, onCloseNav }) {
  // combination of account ui and menu ui
   const renderContent = (
     <>
-    <Box sx={{width:'100%',height:'90px',backgroundColor:'white',paddingTop:'5px'}}>
+    <Box sx={{width:'100%',height:'80px',backgroundColor:'white',paddingTop:'5px'}}>
     <Logo sx={{ mt: 2, ml: 4 ,backgroundColor:'white',width:'150px',display:'flex',alignItems:'center',marginBottom:'10px'}} />
     </Box>
    

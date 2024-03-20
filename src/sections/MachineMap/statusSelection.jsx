@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import PropTypes from 'prop-types';
 import React, {  useState ,useEffect} from 'react';
 
@@ -9,7 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 import {getAllData } from 'src/_mock/fildData';
 
-function StatusSelection({ sx, ...other }) {
+function StatusSelection({MachineType, sx, ...other }) {
   // const [mStatus] = useState(['Online', 'Offline']);
   const [machineStatus, setMachineStatus] = useState(['Online', 'Offline']);
   // const [sStatus] = useState(['Ok', 'Low','Empty']);
@@ -22,6 +23,14 @@ function StatusSelection({ sx, ...other }) {
 
 
   useEffect(()=>{
+    if(MachineType==="Incineraotor")
+    {
+      $('.vending').remove();
+    }
+    else if(MachineType==="Vending")
+    {
+      $('.incinerator').remove();
+    }
     sessionStorage.setItem('machineStatus',JSON.stringify(machineStatus));
     sessionStorage.setItem('stockStatus',JSON.stringify(stockStatus));
     sessionStorage.setItem('burnStatus',JSON.stringify(burnStatus));
@@ -95,10 +104,11 @@ function StatusSelection({ sx, ...other }) {
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Stock Status</h5>
+        <div className="mt-2 pb-2 border-bottom-1 vending">
+          <h5 className="text-primary d-inline">{MachineType!=="RECD" ?"Stock Status":"Temperature Status"}</h5>
           <div className="row">
             <div className="col-12 d-flex">
+            {MachineType !== "RECD" && (
               <Select
                 multiple
                 value={stockStatus}
@@ -110,27 +120,51 @@ function StatusSelection({ sx, ...other }) {
                     : 'None Selected'
                   }
               >
-                <MenuItem value="3">
-                  <Checkbox checked={stockStatus.indexOf('3') > -1} />
-                  Ok
-                </MenuItem>
-                <MenuItem value="1">
-                  <Checkbox checked={stockStatus.indexOf('1') > -1} />
-                  Low
-                </MenuItem>
-                <MenuItem value="0">
-                  <Checkbox checked={stockStatus.indexOf('0') > -1} />
-                  Empty
-                </MenuItem>
-               
-              </Select>
+                     <MenuItem value="3">
+                          <Checkbox checked={stockStatus.indexOf('3') > -1} />
+                        Ok
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={stockStatus.indexOf('1') > -1} />
+                          Low
+                        </MenuItem>
+                    
+                        <MenuItem value="0">
+                          <Checkbox checked={stockStatus.indexOf('0') > -1} />
+                          Empty
+                        </MenuItem>
+                    </Select>
+                 )}
+                  {MachineType === "RECD" && (
+              <Select
+                multiple
+                value={stockStatus}
+                onChange={handleStockStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+                        <MenuItem value="3">
+                          <Checkbox checked={stockStatus.indexOf('3') > -1} />
+                          Ok
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={stockStatus.indexOf('1') > -1} />
+                          Not Ok
+                        </MenuItem>
+                    </Select>
+                 )}
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Burn Status</h5>
+        <div className="mt-2 pb-2 border-bottom-1 incinerator">
+          <h5 className="text-primary d-inline">{MachineType!=="RECD" ?"Burn Status":"Pressure Status"}</h5>
           <div className="row">
             <div className="col-12 d-flex">
+            {MachineType !== "RECD" && (
               <Select
                 multiple
                 value={burnStatus}
@@ -142,26 +176,56 @@ function StatusSelection({ sx, ...other }) {
                     : 'None Selected'
                   }
               >
-                 <MenuItem value="0">
-                  <Checkbox checked={burnStatus.indexOf('0') > -1} />
-                  Idle
-                </MenuItem>
-                <MenuItem value="1">
-                  <Checkbox checked={burnStatus.indexOf('1') > -1} />
-                  Burning
-                </MenuItem>
-                <MenuItem value="2">
-                  <Checkbox checked={burnStatus.indexOf('2') > -1} />
-                  Error
-                </MenuItem>
+              
+                        <MenuItem value="0">
+                          <Checkbox checked={burnStatus.indexOf('0') > -1} />
+                          Idle
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={burnStatus.indexOf('1') > -1} />
+                          Burning
+                        </MenuItem>
+                        <MenuItem value="2">
+                          <Checkbox checked={burnStatus.indexOf('2') > -1} />
+                          Error
+                        </MenuItem>
+                      
+                 
               </Select>
+                 )}
+
+            {MachineType === "RECD" && (
+              <Select
+                multiple
+                value={burnStatus}
+                onChange={handleBurnStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
+                renderValue={(selected ) => 
+                    selected.length > 0
+                    ? `${selected.length} Selected`
+                    : 'None Selected'
+                  }
+              >
+    
+                       <MenuItem value="3">
+                          <Checkbox checked={burnStatus.indexOf('3') > -1} />
+                          Ok
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={burnStatus.indexOf('1') > -1} />
+                          Not Ok
+                        </MenuItem>
+                 
+              </Select>
+                 )}
             </div>
           </div>
         </div>
         <div className="mt-2 pb-2 border-bottom-1">
-          <h5 className="text-primary d-inline">Door Status</h5>
+          <h5 className="text-primary d-inline">{MachineType!=="RECD" ?"Door Status":"Temper Status"}</h5>
           <div className="row">
             <div className="col-12 d-flex">
+            {MachineType !== "RECD" && (
               <Select
                 multiple
                 value={doorStatus}
@@ -173,23 +237,61 @@ function StatusSelection({ sx, ...other }) {
                   : 'None Selected'
                 }
               >
-                   <MenuItem value="0">
-                  <Checkbox checked={doorStatus.indexOf('0') > -1} />
-                  Door Open
-                </MenuItem>
-                <MenuItem value="1">
-                  <Checkbox checked={doorStatus.indexOf('1') > -1} />
-                  Door Close
-                </MenuItem>
-                <MenuItem value="2">
-                  <Checkbox checked={doorStatus.indexOf('2') > -1} />
-                  Door Forced Open
-                </MenuItem>
+                          <MenuItem value="0">
+                          <Checkbox checked={doorStatus.indexOf('0') > -1} />
+                          Door Open
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={doorStatus.indexOf('1') > -1} />
+                          Door Close
+                        </MenuItem>
+                        <MenuItem value="2">
+                          <Checkbox checked={doorStatus.indexOf('2') > -1} />
+                          Door Forced Open
+                        </MenuItem>
+                
+
+                  {MachineType === "RECD" && (
+                      <div>
+                        <MenuItem value="3">
+                          <Checkbox checked={doorStatus.indexOf('3') > -1} />
+                          Ok
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={doorStatus.indexOf('1') > -1} />
+                          Not Ok
+                        </MenuItem>
+                      </div>
+                    )}
+                  
+
               </Select>
+              )}
+               {MachineType === "RECD" && (
+              <Select
+                multiple
+                value={doorStatus}
+                onChange={handleDoorStatusChange}
+                style={{ borderBlockStyle: 'inherit',height:'40px',width:'100%' }}
+                renderValue={(selected ) => 
+                  selected.length > 0
+                  ? `${selected.length} Selected`
+                  : 'None Selected'
+                }
+              >
+                       <MenuItem value="3">
+                          <Checkbox checked={doorStatus.indexOf('3') > -1} />
+                          Ok
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <Checkbox checked={doorStatus.indexOf('1') > -1} />
+                          Not Ok
+                        </MenuItem>
+                  </Select>
+              )}
             </div>
           </div>
         </div>
-
         {/* Other Dropdowns */}
         {/* ... */}
       </Stack>
@@ -199,6 +301,7 @@ function StatusSelection({ sx, ...other }) {
 
 StatusSelection.propTypes = {
   sx: PropTypes.object,
+  MachineType:PropTypes.any
 };
 
 export default StatusSelection;

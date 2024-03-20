@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import moment from "moment";
 import {  useState,useEffect } from 'react';
 
@@ -11,11 +12,14 @@ import Typography from '@mui/material/Typography';
 // import { getAllData } from "src/_mock/fildData";
 // import { products } from 'src/_mock/products';
 // import { UserView } from 'src/sections/machineDataTable/view';
+import {GetClentNameDetails} from 'src/_mock/customers';
+
 import Map from "../map";
 import MachineCard from '../machine-card';
 import { store } from "../../../Redux/store";
 import FieldSelection from "../fieldSelection"
 import StatusSelection from '../statusSelection';
+
 
 // import { useState } from 'react';
 // import UserTableToolbar from 'src/sections/user/user-table-toolbar';
@@ -38,7 +42,7 @@ export default function MachineMapView() {
   // const [mapData,setMapData]=useState(null);
   const [center,setCenter]=useState(null);
   const [locations,setLocations]=useState(null);
- 
+  const [machineType,setMachineType]=useState('');
   // getting data from file 'src/Redux/store'
   store.subscribe(() => {
     // store in data hook
@@ -54,6 +58,24 @@ export default function MachineMapView() {
 
 
   useEffect(()=>{
+    const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+     const Obj={
+      clientName:UserInfo.clientName
+     }
+    GetClentNameDetails(Obj).then((r)=>{
+      // const MachineType=r.data[0].MachineType
+      const [{ MachineType }] = r.data;
+      if(MachineType==="Incinerator")
+      {
+        $('.vending').remove();
+      }
+      else if(MachineType==="Vending")
+      {
+        $('.incinerator').remove();
+      }
+      setMachineType(MachineType);
+
+    })
       setTimeout(()=>{
         const Data=data.data;
         const index = Data.length > 0 ? parseInt(Data.length / 2 ,10) : 0;
@@ -122,19 +144,21 @@ const sum = (a, b) => a + b;
         {/* all status selection ui machine status ,burn status, stock sttaus, door status in StatusSelection component */}
        <Grid xs={12} md={12} lg={2.7}>
          
-        <StatusSelection/>
+        <StatusSelection MachineType={machineType}/>
        </Grid>
   
       <Grid   xs={12} md={12} lg={9.3} >
         <Stack  container spacing='1' display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly' >
           {/* total machines ui */}
         <Grid  xs={12} sm={6} md={3}>
+         
           <MachineCard
             title="Total Machines"
             total={data.dataAll.length}
             color="success"
             icon={<img alt="icon" src="/assets/icons/machineInstalled.png" />}
           />
+           
         </Grid>
           {/* online machines ui */}
         <Grid xs={12} sm={6} md={3}>
@@ -147,74 +171,86 @@ const sum = (a, b) => a + b;
         </Grid>
          
          {/* total collection ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="vending">
+          <div className="vending">
           <MachineCard
-            title="Total Collections"
+            title={machineType ==="RECD" ? "Defective Sensor":"Total Collection"}
             total={data.data.length ?amountText(data.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):'...'}
             color="info"
             icon={<img alt="icon" src="/assets/icons/collection.png" />}
           />
+           </div>
         </Grid>
         
         {/* item dispensed ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="vending">
+        <div className="vending">
           <MachineCard
-            title="Item Despensed"
+            title={machineType ==="RECD" ? "Tempered":"Item Dispensed"}
             total={data.data.length ?(data.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):'...'}
             color="error"
             icon={<img alt="icon" src="/assets/icons/items.png" />}
           />
+          </div>
         </Grid>
-        </Stack>
-        <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'>
+        {/* </Stack> */}
+        {/* <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'> */}
            {/* emty stock ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="vending">
+          <div className="vending">
           <MachineCard
             title="Stock Empty"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).reduce(sum):0}
             color="success"
             icon={<img alt="icon" src="/assets/icons/EmptyStock.png" />}
           />
+            </div>
         </Grid>
          
          {/* low stock ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="vending">
+          <div className="vending">
           <MachineCard
             title="Low Stock"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).reduce(sum):0}
             color="info"
             icon={<img alt="icon" src="/assets/icons/LowStock.png" />}
           />
+          </div>
         </Grid>
         
         {/* burning enabled ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <div className="incinerator">
           <MachineCard
             title="Burning Enabled"
             total={data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).reduce(sum):0}
             color="info"
             icon={<img alt="icon" src="/assets/icons/Burning.png" />}
           />
+          </div>
         </Grid>
 
         {/* burning cycles ui */}
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <div className="incinerator">
           <MachineCard
             title="Total Burning Cycles"
             total={data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).length ?  data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).reduce(sum):0}
             color="error"
             icon={<img alt="icon" src="/assets/icons/BurningCycles.png" />}
           />
+          </div>
         </Grid>
         </Stack>
       </Grid>
       </Grid>
   {/* ******************************* */}
 
-  <Grid container spacing={1} maxWidth='xxl'>
+     <Grid container spacing={1} maxWidth='xxl' >
        {/* zone , ward , beat selection in FieldSelection component */}
-       <Grid xs={12} md={12} lg={2.7}>
+       <Grid xs={12} md={12} lg={2.7} >
          
         <FieldSelection/>
        </Grid>
@@ -222,34 +258,10 @@ const sum = (a, b) => a + b;
 
        {/* table of machineDat in UserView componet */}
       <Grid   xs={12} md={12} lg={9.3} >
-        {locations && <Map center={center} locations={locations}/>}
+        {locations && <Map center={center} locations={locations} MachineType={machineType}/>}
       </Grid>
       </Grid>
-      {/* <Stack
-        direction="row"
-        alignItems="center"
-        flexWrap="wrap-reverse"
-        justifyContent="flex-end"
-        sx={{ mb: 5 }}
-      >
-        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-          <ProductFilters
-            openFilter={openFilter}
-            onOpenFilter={handleOpenFilter}
-            onCloseFilter={handleCloseFilter}
-          />
-
-          <ProductSort />
-        </Stack>
-      </Stack>
-
-      <Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid key={product.id} xs={12} sm={6} md={3}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
-      </Grid> */}
+    
 
     
     </Container>

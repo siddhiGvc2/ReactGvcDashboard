@@ -1,4 +1,4 @@
-// import $ from 'jquery';
+import $ from 'jquery';
 import React, { useState,useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -20,8 +20,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { fetchUsers } from 'src/_mock/user';
-import { GetClentNameDetails} from 'src/_mock/customers';
+// import { GetClentNameDetails} from 'src/_mock/customers';
 import {zoneData,wardData,beatData} from 'src/_mock/fildData';
+import { GetClentInfoDetails,GetClentNameDetails} from 'src/_mock/customers';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -75,7 +76,7 @@ export default function UserPage() {
   const [password,setPassword]=useState('');
   const [password2,setPassword2]=useState('');
   const [clientName,setClientName]=useState('');
-  const [cities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+  const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
   const [zones,setZones]=useState([]);
   const [wards,setWards]=useState([]);
   const [beats,setBeats]=useState([]);
@@ -104,24 +105,51 @@ export default function UserPage() {
   
   
     if(UserInfo.clientName)
-  {
-    const obj={
-      clientName:UserInfo.clientName
+    {
+      const obj={
+        clientName:UserInfo.clientName
+      }
+       GetClentInfoDetails(obj).then((r)=>{
+          //  console.log(r);
+           setCities([]);
+           setCitiesName([]);
+           const cityArray=[];
+             r.data.map((elem)=>
+              cityArray.push(elem.City)
+             )
+             setCities(cityArray);
+             setCitiesName(cityArray)
+       })
+  
+       GetClentNameDetails(obj).then((r)=>{
+           console.log(r);
+           const Data=r.data;
+           $('.CInfo1').text(Data[0].CInfo1);
+           if(Data[0].CInfo1===''){
+              $('.City').remove();
+           }
+           $('.CInfo2').text(Data[0].CInfo2);
+            if(Data[0].CInfo2===''){
+              $('.Zone').remove();
+           }
+           $('.CInfo3').text(Data[0].CInfo3);
+            if(Data[0].CInfo3===''){
+              $('.Ward').remove();
+           }
+           $('.CInfo4').text(Data[0].CInfo4);
+            if(Data[0].CInfo4===''){
+              $('.Beat').remove();
+           }
+            setCInfo([]);
+            const CInfos=[];
+             CInfos.push(r.data[0].CInfo1);
+             CInfos.push(r.data[0].CInfo2);
+             CInfos.push(r.data[0].CInfo3);
+             CInfos.push(r.data[0].CInfo4);
+  
+             setCInfo(CInfos)
+       })
     }
-    
-
-     GetClentNameDetails(obj).then((r)=>{
-         console.log(r);
-          setCInfo([]);
-          const CInfos=[];
-           CInfos.push(r.data[0].CInfo1);
-           CInfos.push(r.data[0].CInfo2);
-           CInfos.push(r.data[0].CInfo3);
-           CInfos.push(r.data[0].CInfo4);
-
-           setCInfo(CInfos)
-     })
-  }
    // getting data from fecthData function
   fetchUsers().then((res)=>{
     
@@ -580,10 +608,10 @@ export default function UserPage() {
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
-                      <div className="col-md-6 clientName" style={{ display: isAdmin === 1 ? 'block' : 'none' }}>
+                      <div className="col-md-6 clientName" style={{ display: isAdmin ==="1" ? 'block' : 'none' }}>
                         <div className="form-group my-2">
                         <h5 className="text-primary d-inline">Cient Name</h5>
-                               <input type="text" className="form-control" name="clientName" id="clientName" onChange={(e)=>setClientName(e.target.value)}/>
+                               <input  readOnly={!!sessionStorage.getItem("clientName")}  type="text" className="form-control" name="clientName" id="clientName" onChange={(e)=>setClientName(e.target.value)} value={sessionStorage.getItem("clientName")}/>
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
@@ -592,7 +620,7 @@ export default function UserPage() {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">City:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[0]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type='button' className="btn btn-sm btn-success text-white my-auto"
@@ -616,22 +644,15 @@ export default function UserPage() {
                   return `${items.length} Selected`
               }}
               >
-                 <MenuItem value="Mumbai">
-                  <Checkbox checked={cityName.indexOf('Mumbai') > -1} />
-                  Mumbai
-                </MenuItem>
-                <MenuItem value="Delhi">
-                  <Checkbox checked={cityName.indexOf('Delhi') > -1} />
-                  Delhi
-                </MenuItem>
-                <MenuItem value="SS-UK">
-                  <Checkbox checked={cityName.indexOf('SS-UK') > -1} />
-                  SS-UK
-                </MenuItem>
-                <MenuItem value="DoE-HAR">
-                  <Checkbox checked={cityName.indexOf('DoE-HAR') > -1} />
-                  DoE-HAR
-                </MenuItem>
+                   {
+                  cities.map((elem)=>
+                     <MenuItem value={elem}>
+                    <Checkbox checked={cityName.indexOf(elem) > -1} />
+                    {elem}
+                  </MenuItem>
+
+                  )
+                }
               </Select>
                                     <button type='button' className="btn btn-sm btn-danger text-white my-auto"
                                        onClick={selectNoneCities} ><i className="fa fa-times"/></button>
@@ -641,7 +662,7 @@ export default function UserPage() {
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">Zone:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[1]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type='button' className="btn btn-sm btn-success text-white my-auto"
@@ -686,7 +707,7 @@ export default function UserPage() {
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">Ward:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[2]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type="button" className="btn btn-sm btn-success text-white my-auto"
@@ -730,7 +751,7 @@ export default function UserPage() {
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
-                        <h5 className="text-primary d-inline">Beat:</h5>
+                        <h5 className="text-primary d-inline">{cInfo[3]}:</h5>
                             <div className="row">
                                 <div className="col-12 d-flex">
                                     <button type="button" className="btn btn-sm btn-success text-white my-auto"

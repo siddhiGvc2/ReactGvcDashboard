@@ -1,4 +1,5 @@
 
+18-03-24: genset applied.
 18-03-24: login map for all sers completed. File/Folder Name :src/sections/Reports/LoginMaps/viewMap.jsx
 18-03-24: self map completed . File/Folder Name :src/sections/Reports/LoginMaps/selfMap.jsx
 16-03-24: add user window displayed in Modal

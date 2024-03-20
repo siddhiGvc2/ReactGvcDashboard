@@ -11,7 +11,7 @@ import { Container } from '@mui/system';
 // import {fetchData} from "../../_mock/machineData";
 
 let map;
-export default function Map({center,locations}){
+export default function Map({center,locations,MachineType}){
  
 
    const amountText = amt => {
@@ -119,20 +119,20 @@ export default function Map({center,locations}){
      const marker = L.marker(location.coordinates).addTo(map);
   
      marker.bindPopup(`
-          <b style="font-size: 1.25em;">${location.data.uid} ${location.data.machineId}</b>
+     <b style="font-size: 1.25em;">${location.data.uid} ${location.data.machineId}</b>
                          <table class="table">
                              <tbody> 
                                    <tr><th style="color: #444">Status</th><td style="color: #444" class="text-${st ? 'success' : 'danger'}">${Status}</td></tr>
                                  <tr><th style="color: #444">IMSI</th><td style="color: #444">${location.data.sim_number}</td></tr>
                                  <tr><th style="color: #444">RSSI</th><td style="color: #444">${location.data.rssi}</td></tr>
-                                 <tr><th style="color: #444">Collection</th><td style="color: #444">&#8377;&nbsp;${location.data.cashCurrent} <span class="text-muted">[ &#8377;&nbsp;${amountText(location.data.cashLife + location.data.cashCurrent)} ]</span></td></tr>
-                                 <tr><th style="color: #444">Items Dispensed</th><td style="color: #444">${location.data.qtyCurrent} <span class="text-muted">[ ${amountText(location.data.qtyLife + location.data.qtyCurrent)} ]</span></td></tr>
+                                 ${MachineType!=="Incinerator"?<tr><th style={{color: '#444'}}>Collection</th><td style={{color: '#444'}}>&#8377;&nbsp;${location.data.cashCurrent} <span className="text-muted">[ &#8377;&nbsp;${amountText(location.data.cashLife + location.data.cashCurrent)} ]</span></td></tr>:""}
+                                 ${MachineType!=="Incinerator"?<tr><th style={{color: '#444'}}>Items Dispensed</th><td style={{color: '#444'}}>${location.data.qtyCurrent} <span className="text-muted">[ ${amountText(location.data.qtyLife + location.data.qtyCurrent)} ]</span></td></tr>:""}
                                  
-                                 <tr id="itemsBurntRow" ><th style="color: #444;" >Items Burnt</th><td style="color: #444" >${location.data.doorCurrent} <span class="text-muted ">[ ${amountText(location.data.doorLife + location.data.doorCurrent)} ]</span></td></tr>
-                                 <tr id="burningCyclesRow"><th style="color: #444;" >Burning Cycles</th><td style="color: #444">${location.data.burnCycleCurrent} <span class="text-muted ">[ ${amountText(location.data.burnCycleLife + location.data.burnCycleCurrent)} ]</span></td></tr>
+                                 ${MachineType!=="Vending"?<tr id="itemsBurntRow" ><th style={{color: '#444'}}>Items Burnt</th><td style={{color: '#444'}} >${location.data.doorCurrent} <span className="text-muted ">[ ${amountText(location.data.doorLife + location.data.doorCurrent)} ]</span></td></tr>:""}
+                                 ${MachineType!=="Vending"?<tr id="burningCyclesRow"><th style={{color: '#444'}} >Burning Cycles</th><td style={{color: '#444'}}>${location.data.burnCycleCurrent} <span className="text-muted ">[ ${amountText(location.data.burnCycleLife + location.data.burnCycleCurrent)} ]</span></td></tr>:""}
                          
                                  <tr><th style="color: #444">On Since</th><td style="color: #444">${moment.utc((location.data.lastOnTime || location.data.lastHeartbeatTime).replace('Z', '')).local().format('DD-MMM-YYYY<br/>hh:mm a')}</td></tr>
-                                 {{!-- <tr class="${st ? 'd-none' : ''}"><th style="color: #444">Last Online At</th><td style="color: #444">${location.data.lastHeartbeatTime ? moment.utc(location.data.lastHeartbeatTime.replace('Z', '')).local().format('DD-MMM-YYYY<br/>hh:mm a') : 'NA'}</td></tr> --}}
+                                 <tr class="${st ? 'd-none' : ''}"><th style="color: #444">Last Online At</th><td style="color: #444">${location.data.lastHeartbeatTime ? moment.utc(location.data.lastHeartbeatTime.replace('Z', '')).local().format('DD-MMM-YYYY<br/>hh:mm a') : 'NA'}</td></tr> 
                              </tbody>
                          </table>
      `);
@@ -140,7 +140,7 @@ export default function Map({center,locations}){
  
   
       
-  }, [center, locations]);
+  }, [center, locations,MachineType]);
 
   useEffect(() => {
     loadMap();
@@ -174,5 +174,6 @@ export default function Map({center,locations}){
 
 Map.propTypes = {
     center: PropTypes.any,
-    locations:PropTypes.any
+    locations:PropTypes.any,
+    MachineType:PropTypes.any
   };
