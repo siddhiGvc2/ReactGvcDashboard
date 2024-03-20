@@ -156,7 +156,7 @@ const sum = (a, b) => a + b;
       <Grid   xs={12} md={12} lg={9.3} >
         <Stack  container spacing='1' display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly' >
           {/* total machines ui */}
-        <Grid  xs={12} sm={6} md={3}>
+        <Grid  xs={12} sm={6} md={machineType==="Vending" ? 4 :3}>
           <MachineCard
             title="Total Machines"
             total={data.dataAll.length}
@@ -165,7 +165,7 @@ const sum = (a, b) => a + b;
           />
         </Grid>
           {/* online machines ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3}>
           <MachineCard
             title="Online Machines"
             total={data.data.filter(filterOnline).length}
@@ -175,7 +175,7 @@ const sum = (a, b) => a + b;
         </Grid>
          
          {/* total collection ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <MachineCard
             title={machineType ==="RECD" ? "Defective Sensor":"Total Collection"}
             total={data.data.length ?amountText(data.dataAll.map(q => (q.cashCurrent + q.cashLife)).reduce(sum)):0}
@@ -185,7 +185,7 @@ const sum = (a, b) => a + b;
         </Grid>
         
         {/* item dispensed ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <MachineCard
             title={machineType ==="RECD" ? "Tempered":"Item Dispensed"}
             total={data.data.length ?(data.dataAll.map(q => (q.qtyCurrent +  q.qtyLife)).reduce(sum)):0}
@@ -196,7 +196,7 @@ const sum = (a, b) => a + b;
         {/* </Stack> */}
         {/* <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'> */}
            {/* emty stock ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <MachineCard
             title="Stock Empty"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 0).map(q => 1).reduce(sum):0}
@@ -206,7 +206,7 @@ const sum = (a, b) => a + b;
         </Grid>
          
          {/* low stock ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <MachineCard
             title="Low Stock"
             total={data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.spiral_a_status === 1).map(q => 1).reduce(sum):0}
@@ -216,7 +216,7 @@ const sum = (a, b) => a + b;
         </Grid>
         
         {/* burning enabled ui */}
-        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="incinerator">
           <MachineCard
             title="Burning Enabled"
             total={data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).length?data.data.filter(online).filter(m => m.burn_status === 1).map(q => 1).reduce(sum):0}
@@ -227,7 +227,7 @@ const sum = (a, b) => a + b;
 
         {/* burning cycles ui */}
 
-        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="incinerator">
           <MachineCard
             title="Total Burning Cycles"
             total={data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).length ?  data.data.map(q => (q.burnCycleCurrent+q.burnCycleLife)).reduce(sum):0}

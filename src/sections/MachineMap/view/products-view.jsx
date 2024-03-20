@@ -150,7 +150,7 @@ const sum = (a, b) => a + b;
       <Grid   xs={12} md={12} lg={9.3} >
         <Stack  container spacing='1' display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly' >
           {/* total machines ui */}
-        <Grid  xs={12} sm={6} md={3}>
+        <Grid  xs={12} sm={6} md={machineType==="Vending" ? 4 :3}>
          
           <MachineCard
             title="Total Machines"
@@ -161,7 +161,7 @@ const sum = (a, b) => a + b;
            
         </Grid>
           {/* online machines ui */}
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3}>
           <MachineCard
             title="Online Machines"
             total={data.data.filter(filterOnline).length}
@@ -171,7 +171,7 @@ const sum = (a, b) => a + b;
         </Grid>
          
          {/* total collection ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <div className="vending">
           <MachineCard
             title={machineType ==="RECD" ? "Defective Sensor":"Total Collection"}
@@ -183,7 +183,7 @@ const sum = (a, b) => a + b;
         </Grid>
         
         {/* item dispensed ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
         <div className="vending">
           <MachineCard
             title={machineType ==="RECD" ? "Tempered":"Item Dispensed"}
@@ -196,7 +196,7 @@ const sum = (a, b) => a + b;
         {/* </Stack> */}
         {/* <Stack  container spacing="1" display='flex' flexWrap='wrap' direction='row' justifyContent='space-evenly'> */}
            {/* emty stock ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <div className="vending">
           <MachineCard
             title="Stock Empty"
@@ -208,7 +208,7 @@ const sum = (a, b) => a + b;
         </Grid>
          
          {/* low stock ui */}
-        <Grid xs={12} sm={6} md={3} className="vending">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="vending">
           <div className="vending">
           <MachineCard
             title="Low Stock"
@@ -220,7 +220,7 @@ const sum = (a, b) => a + b;
         </Grid>
         
         {/* burning enabled ui */}
-        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="incinerator">
         <div className="incinerator">
           <MachineCard
             title="Burning Enabled"
@@ -233,7 +233,7 @@ const sum = (a, b) => a + b;
 
         {/* burning cycles ui */}
 
-        <Grid xs={12} sm={6} md={3} className="incinerator">
+        <Grid xs={12} sm={6} md={machineType==="Vending" ? 4 :3} className="incinerator">
         <div className="incinerator">
           <MachineCard
             title="Total Burning Cycles"

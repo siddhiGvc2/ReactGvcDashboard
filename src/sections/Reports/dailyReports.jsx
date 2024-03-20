@@ -40,6 +40,7 @@ export default function DailyReports(){
     const [beatName,setBeatsName]=useState([]);
     const [machineName,setMachineName]=useState([]);
     const [isChecked, setIsChecked] = useState(true);
+    const [machineType,setMachineType]=useState('');
 
   const handleChange = () => {
     setIsChecked(!isChecked);
@@ -82,6 +83,7 @@ export default function DailyReports(){
      GetClentNameDetails(obj).then((r)=>{
          console.log(r);
          const Data=r.data;
+         setMachineType(Data[0].MachineType);
      $('.CInfo1').text(Data[0].CInfo1);
      if(Data[0].CInfo1===''){
         $('.City').remove();
@@ -225,6 +227,12 @@ export default function DailyReports(){
            const selectNoneMachines=()=>{
              setMachineName([])
            }
+
+
+           useEffect(()=>{
+            setReportData(null);
+
+           },[startDate,endDate,zoneName,wardName,beatName,machineName])
 
            
            const LoadReport=()=>{
@@ -531,7 +539,7 @@ export default function DailyReports(){
                 
                
            {/* report teble ui */}
-           {reportData && (
+           {reportData && reportData.machines.length >0 && (
   <TableHeader
     data={reportData}
     zones={zones.filter(item => !zoneName.includes(item))}
@@ -540,6 +548,7 @@ export default function DailyReports(){
     startDate={startDate}
     endDate={endDate}
     checked={isChecked}
+    MachineType={machineType}
   />
 )}
               
