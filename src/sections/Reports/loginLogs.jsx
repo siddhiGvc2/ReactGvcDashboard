@@ -167,8 +167,10 @@ export default function LoginLogs(){
                 </div>
                  <div>
                
+                {/* All entry loginLogs ui */}
                  {isChecked && data && <UserView  users={data} />}
                 
+                {/* Last Entry login logs ui */}
                  {!isChecked && last && <LastEntry users={last}/>}
                  </div>
                

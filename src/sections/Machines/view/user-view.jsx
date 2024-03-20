@@ -118,6 +118,7 @@ export default function MachinePage() {
     }
     
 
+    // getting client details
      GetClentNameDetails(obj).then((r)=>{
          console.log(r);
           setCInfo([]);
@@ -135,6 +136,7 @@ export default function MachinePage() {
   },[])
 
 
+  // input machines list loading function
   const LoadMachineNameDDL = () => {
     console.log("select2function started");
   
@@ -164,7 +166,7 @@ export default function MachinePage() {
   };
   
 
- 
+//  createMapping submit form function
   const SubmitForm=()=>{
    const obj={
     machine: selectedOption.value,
@@ -284,9 +286,10 @@ export default function MachinePage() {
    
 
   return <>
+     {/* Popup message */}
       <Stack spacing={2} sx={{ width: '100%' }}>
     
-    <Snackbar  anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+    <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
       <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
         {message}
       </Alert>
@@ -295,6 +298,7 @@ export default function MachinePage() {
      </Stack>
   
     <Container maxWidth="xxl">
+      {/* createMapping button */}
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Machines</Typography>
         <button type='button' className="btn btn-sm btn-warning mx-2 text-white float-right" id="btn-mapping" onClick={handleModalOpen}>Create

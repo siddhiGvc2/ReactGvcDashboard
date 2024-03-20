@@ -224,6 +224,7 @@ export default function DailyReports(){
         const selectAllMachines=()=>{
             setMachineName(machines)
            }
+           
            const selectNoneMachines=()=>{
              setMachineName([])
            }

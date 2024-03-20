@@ -173,6 +173,8 @@ export default function UserPage() {
   // };
 
 
+  // new user pupu open function
+
   const handleModalOpen = () => {
    
  
@@ -384,6 +386,9 @@ export default function UserPage() {
       setBeatsName([])
     }
 
+
+
+    // save new user function
     const SaveUser=()=>{
       const obj = {
         name,

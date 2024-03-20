@@ -36,7 +36,7 @@ export default function HourlyReport(){
     };
 
    
-    
+    // Hourly report data function started from here
     const LoadData=()=>{
         setData([]);
         setData1([]);

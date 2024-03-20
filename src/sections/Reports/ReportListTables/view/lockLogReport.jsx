@@ -1,5 +1,5 @@
 // import $ from 'jquery';
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 import PropTypes from 'prop-types';
 import React, { useRef,useState } from 'react';
 
@@ -71,25 +71,25 @@ export default function LockLogView({users}) {
 
   
 
-  const printData=()=> {
-    const printContents = tblDataRef.current.outerHTML;
+//   const printData=()=> {
+//     const printContents = tblDataRef.current.outerHTML;
  
-    const originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
+//     const originalContents = document.body.innerHTML;
+//     document.body.innerHTML = printContents;
+//     window.print();
    
-    document.body.innerHTML = originalContents;
-    window.location.reload();
-} 
+//     document.body.innerHTML = originalContents;
+//     window.location.reload();
+// } 
 
 
-  const printExcelData = () => {
-    const table = tblDataRef.current;
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'report.xlsx');
-  };
+//   const printExcelData = () => {
+//     const table = tblDataRef.current;
+//     const ws = XLSX.utils.table_to_sheet(table);
+//     const wb = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+//     XLSX.writeFile(wb, 'report.xlsx');
+//   };
 
  
  
@@ -204,13 +204,13 @@ export default function LockLogView({users}) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      <p style={{display:'flex',justifyContent:'flex-end'}}>
+      {/* <p style={{display:'flex',justifyContent:'flex-end'}}>
                 <button type="button" className="btn btn-outline-info" onClick={printExcelData}>
                     <i className="fas fa-file-excel"/> &nbsp; Excel
                 </button>
                 <button type="button" className="btn btn-outline-success" onClick={printData}>Print
                     Report</button>
-                </p>
+                </p> */}
     </Container>
 
    

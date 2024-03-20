@@ -82,14 +82,18 @@ export default function UserTableRow({
     }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
 };
 
+// view mwnu open function
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
 
+  // view menu clsoe function
   const handleCloseMenu = () => {
     setOpen(null);
   };
 
+
+  // Open  Popup function of technician form
   const handleModalOpen = () => {
    
  
@@ -99,6 +103,8 @@ export default function UserTableRow({
       $('[name="userName"]').val(sessionStorage.getItem("name"));
     },200)
   };
+
+  // Close popup function of technicaian form
   const handleModalClose = () => {
     setOpenModal(false);
   };
@@ -111,6 +117,7 @@ export default function UserTableRow({
   };
 
 
+  // submit form of technician form 
   const SubmitForm=()=>{
     const obj={
     machineNumber: $('[name="machine"]').val(),
@@ -134,6 +141,7 @@ export default function UserTableRow({
   const online = a => moment().diff(moment.utc((a.lastHeartbeatTime || a.lastOnTime).replace('Z', '')), 'minute') < 5;
 
 
+  // address of machine table 
   const address = a => (
     <small>
       <a
@@ -147,6 +155,8 @@ export default function UserTableRow({
     </small>
   );
 
+
+  // display stock dtatus function of table row
   function stockStatus(i, visible) {
     
     if (!visible) return '';
@@ -159,6 +169,7 @@ export default function UserTableRow({
     }
 }
 
+// display burnStatus function of table row
 function burnStatus(i, visible) {
     if (!visible) return '';
     switch (i) {
@@ -169,6 +180,7 @@ function burnStatus(i, visible) {
     }
 }
 
+// display lockStatus function of table row.
  function lockStatus(i,ser) {
     
        
@@ -185,7 +197,7 @@ function burnStatus(i, visible) {
 // const filterOnline = q => moment().diff(moment.utc((q.lastHeartbeatTime || q.lastOnTime).replace('Z', '')), 'minute') < 5;
   
 
-
+// converting integer to text amount function
 const amountText = amt => {
   amt = amt || 0;
 
@@ -217,6 +229,7 @@ const amountText = amt => {
 
   return (
     <>
+    {/* Alert popup ui */}
        <Stack spacing={2} sx={{ width: '100%' }}>
     
     <Snackbar  anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
@@ -242,7 +255,7 @@ const amountText = amt => {
            <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label>
         </TableCell>
 
-        {MachineType!=="RECD" && <TableCell>{stockStatus(m.spiral_a_status, online(m))}</TableCell>}
+        {MachineType!=="RECD" && MachineType!=="Incinerator"&& <TableCell>{stockStatus(m.spiral_a_status, online(m))}</TableCell>}
         {MachineType === "RECD" && (
               <TableCell>
                   {(() => {
@@ -256,7 +269,7 @@ const amountText = amt => {
                   })()}
               </TableCell>
           )}
-           {MachineType!=="RECD" && <TableCell>{burnStatus(m.burn_status, online(m))}</TableCell>}
+           {MachineType!=="RECD" && MachineType!=="Vending" && <TableCell>{burnStatus(m.burn_status, online(m))}</TableCell>}
            {MachineType === "RECD" && (
               <TableCell>
                   {(() => {
@@ -284,8 +297,9 @@ const amountText = amt => {
                   })()}
               </TableCell>
           )}
+
             {MachineType === "RECD" && (
-              <TableCell>
+              <TableCell >
                   {(() => {
                       if ((m.spiral_a_status===1 || m.spiral_a_status===3 || m.spiral_a_status===5 || m.spiral_a_status===7) && online(m)) {
                           return <span className="badge py-1 px-3 badge-pill badge-danger">Error</span>;

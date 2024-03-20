@@ -46,6 +46,8 @@ export default function UserPage() {
 
   const [machineType,setMachineType]=useState('');
  
+
+  // getting data from Redux/store
   store.subscribe(() => {
     setData(store.getState().data.data);
    

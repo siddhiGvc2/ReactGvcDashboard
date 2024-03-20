@@ -56,7 +56,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 
 
-//  Users ui started here
+//  Customer Data ui started here
 
 export default function CustomerDataView({users}) {
   // const[users,setUsers]=useState([]);

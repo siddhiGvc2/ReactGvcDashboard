@@ -54,13 +54,17 @@ export default function InventoryPage(){
     // const [stockObj,setStockObj]=useState({});
     
    
-
+// modal for setStocks
     const [openModal1, setOpenModal1] = useState(false);
+
+    // modal for transfter invertory
     const [openModal2, setOpenModal2] = useState(false);
 
     const [showAlert, setShowAlert] = useState(false);
     const [message,setMessage]=useState("");
     const [type,setType]=useState("");
+
+    // show alert popup function
     const showAlertMessage = () => {
         setShowAlert(true);
     
@@ -72,9 +76,12 @@ export default function InventoryPage(){
 
 
     useEffect(()=>{
+        // calling input list loading function
           LoadUserNameDDL();
     },[])
 
+
+    // opening modal 1
     const handleModalOpen1 = () => {
    
  
@@ -84,6 +91,8 @@ export default function InventoryPage(){
         //     LoadUserNameDDL();
         // },50)
       };
+
+    //   closing modal 1
       const handleModalClose1 = () => {
         setOpenModal1(false);
       };
@@ -202,6 +211,8 @@ export default function InventoryPage(){
 
     }
     
+
+    // edit transaction function
     const updateTransaction=()=>{
   
         const obj={
@@ -221,6 +232,8 @@ export default function InventoryPage(){
 
     }
 
+
+    // edit stock function
     const updateStock=()=>{
       
         const obj={
@@ -239,6 +252,7 @@ export default function InventoryPage(){
   
 
     return<>
+     {/* alert popup ui */}
      <Stack spacing={2} sx={{ width: '100%' }}>
     
     <Snackbar  anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
@@ -320,7 +334,11 @@ export default function InventoryPage(){
                 </div>
                  <div>
                
+                 {/* transaction table ui */}
                  { data && isChecked && <InventoryView users={data} />}
+
+
+                  {/* stocks table ui */}
                  { stockData && !isChecked && <InventoryStocksView users={stockData} />}
                
                 

@@ -256,7 +256,7 @@ const sum = (a, b) => a + b;
        </Grid>
   
 
-       {/* table of machineDat in UserView componet */}
+       {/* map ui componet */}
       <Grid   xs={12} md={12} lg={9.3} >
         {locations && <Map center={center} locations={locations} MachineType={machineType}/>}
       </Grid>

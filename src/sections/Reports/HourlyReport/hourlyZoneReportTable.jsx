@@ -44,16 +44,16 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
       })
    },[])
      
-    const printData=()=> {
-        const printContents = tblDataRef.current.outerHTML;
+    // const printData=()=> {
+    //     const printContents = tblDataRef.current.outerHTML;
      
-        const originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
+    //     const originalContents = document.body.innerHTML;
+    //     document.body.innerHTML = printContents;
+    //     window.print();
        
-        document.body.innerHTML = originalContents;
-        window.location.reload();
-    } 
+    //     document.body.innerHTML = originalContents;
+    //     window.location.reload();
+    // } 
 
    
       const printExcelData = () => {
@@ -397,8 +397,8 @@ export default function HourlyZoneTable({data,data1,data2,data3,data4,data5}){
                 <button type="button" className="btn btn-outline-info" onClick={printExcelData}>
                     <i className="fas fa-file-excel"/> &nbsp; Excel
                 </button>
-                <button type="button" className="btn btn-outline-success" onClick={printData} >Print
-                    Report</button>
+                {/* <button type="button" className="btn btn-outline-success" onClick={printData} >Print
+                    Report</button> */}
             </p>
         </div>
     </div>

@@ -56,7 +56,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 
 
-//  Users ui started here
+//  Customer Info ui started here
 
 export default function CustomerInfoView({users}) {
   // const[users,setUsers]=useState([]);
@@ -74,7 +74,7 @@ export default function CustomerInfoView({users}) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   
-
+// Pdf dowloand function
   const printData=()=> {
     const printContents = tblDataRef.current.outerHTML;
  
@@ -86,7 +86,7 @@ export default function CustomerInfoView({users}) {
     window.location.reload();
 } 
 
-
+// excel download function
   const printExcelData = () => {
     const table = tblDataRef.current;
     const ws = XLSX.utils.table_to_sheet(table);

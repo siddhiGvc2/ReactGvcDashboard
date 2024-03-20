@@ -36,6 +36,8 @@ export default function ColorSetting(){
 
     useEffect(() => {
        
+
+      // getting existing colors from api and displayed it
     
         LoadColors().then((data)=>{
             console.log(data);
@@ -113,6 +115,8 @@ export default function ColorSetting(){
       }, []);
 
 
+
+      // set new colors with function 
       const SetColors=()=>{
          const obj={
             primary:$('.colorInput1').val(),
@@ -152,6 +156,8 @@ export default function ColorSetting(){
       }
 
     return<>
+
+    {/* alert popup ui */}
            <Stack spacing={2} sx={{ width: '100%' }}>
     
     <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
