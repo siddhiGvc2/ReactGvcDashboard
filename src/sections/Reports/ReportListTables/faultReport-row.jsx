@@ -73,7 +73,7 @@ export default function FaultReportRow({
        <TableCell align="center">{row.actionTaken}</TableCell>
        <TableCell align="center">{row.faultStatus}</TableCell>
       
-       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

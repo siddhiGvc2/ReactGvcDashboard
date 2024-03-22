@@ -68,7 +68,7 @@ export default function SSNReportRow({
        <TableCell align="center">{row.newMachineID}</TableCell>
      
       
-       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

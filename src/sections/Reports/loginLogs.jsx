@@ -81,10 +81,12 @@ export default function LoginLogs(){
                 results.push(resultArray[i].firstEntry);
               
             }
+            results.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             console.log(results)
             setLast(results);
             }
             else{
+                res.obj.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setData(res.obj);
             }
            

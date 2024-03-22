@@ -56,6 +56,7 @@ export default function CustomerDataRow({
   beat,
   ward,
   row,
+  LoadData
   
 }) {
   const [open, setOpen] = useState(null);
@@ -118,7 +119,11 @@ export default function CustomerDataRow({
       showAlertMessage(true);
       setType("success");
       setMessage("Saved Succesfully");
-      handleModalClose()
+      handleModalClose();
+      setTimeout(()=>{
+        LoadData();
+      },1000)
+    
      })
 
   }
@@ -129,6 +134,10 @@ export default function CustomerDataRow({
       showAlertMessage(true);
       setType("success");
       setMessage("Deleted Succesfully");
+      setTimeout(()=>{
+        LoadData();
+      },1000)
+    
      
     })
   }
@@ -296,7 +305,7 @@ CustomerDataRow.propTypes = {
   city: PropTypes.any,
   zone: PropTypes.any,
   email: PropTypes.any,
-
+  LoadData:PropTypes.any,
   name: PropTypes.any,
   ward: PropTypes.any,
   role: PropTypes.any,

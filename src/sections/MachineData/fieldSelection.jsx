@@ -238,7 +238,7 @@ useEffect(()=>{
     >
       <Stack spacing={0.5}>
         {/* Machine Status Dropdown */}
-        <div className="mt-2 pb-2 border-bottom-1" id="city">
+        <div className="mt-2 pb-2 border-bottom-1 City" id="city">
           <h5 className="text-primary d-inline">{cInfo[0]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -280,7 +280,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1 Zone">
           <h5 className="text-primary d-inline">{cInfo[1]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -323,7 +323,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1 Ward">
           <h5 className="text-primary d-inline">{cInfo[2]}</h5>
           <div className="row">
             <div className="col-12 d-flex">
@@ -365,7 +365,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-2 border-bottom-1">
+        <div className="mt-2 pb-2 border-bottom-1 Beat">
           <h5 className="text-primary d-inline">{cInfo[3]}</h5>
           <div className="row">
             <div className="col-12 d-flex">

@@ -58,7 +58,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 //  Customer Data ui started here
 
-export default function CustomerDataView({users}) {
+export default function CustomerDataView({users,LoadData}) {
   // const[users,setUsers]=useState([]);
   const tblDataRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -186,7 +186,7 @@ export default function CustomerDataView({users}) {
                       key={row.id}
                  
                       row={row}
-                     
+                      LoadData={LoadData}
                    
                     />
                   ))}
@@ -227,5 +227,6 @@ export default function CustomerDataView({users}) {
 
 
 CustomerDataView.propTypes = {
-  users:PropTypes.any
+  users:PropTypes.any,
+  LoadData:PropTypes.any
 };

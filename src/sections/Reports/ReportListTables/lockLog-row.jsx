@@ -73,7 +73,7 @@ export default function LockLogRow({
        <TableCell align="center">{row.doorStatus}</TableCell>
      
       
-       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

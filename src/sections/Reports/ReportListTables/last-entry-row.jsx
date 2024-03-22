@@ -69,11 +69,11 @@ export default function LastEntryTableRow({
        </TableCell>
      
      
-        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
         <TableCell onClick={()=>handleClick(row.lastLocationLat,row.lastLocationLong)} sx={{textAlign:'center'}}>
        <i className="fa-solid fa-globe" style={{color: 'blue',cursor: 'pointer'}} /> {row.lastLocationLat}  {row.lastLocationLong }
        </TableCell>
-       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.lastDateTime).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

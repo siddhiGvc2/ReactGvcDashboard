@@ -56,7 +56,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 //  Users ui started here
 
-export default function InventoryStocksView({users}) {
+export default function InventoryStocksView({users,LoadData}) {
   // const[users,setUsers]=useState([]);
   const tblDataRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -181,7 +181,7 @@ export default function InventoryStocksView({users}) {
                       key={row.id}
                  
                       row={row}
-                     
+                      LoadData={LoadData}
                    
                     />
                   ))}
@@ -222,5 +222,6 @@ export default function InventoryStocksView({users}) {
 
 
 InventoryStocksView.propTypes = {
-  users:PropTypes.any
+  users:PropTypes.any,
+  LoadData:PropTypes.any
 };

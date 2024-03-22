@@ -29,6 +29,7 @@ export default function InventoryRow({
   ward,
   row,
   
+  
 }) {
   const [open, setOpen] = useState(null);
 
@@ -70,7 +71,7 @@ export default function InventoryRow({
        <TableCell>{row.QtyDelivered}</TableCell>
        <TableCell>{row.CashReceived}</TableCell>
        <TableCell>{row.Remark}</TableCell>
-        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

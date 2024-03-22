@@ -16,7 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import { deleteUser,fetchUsers, setPassword } from 'src/_mock/user';
+import { deleteUser, setPassword } from 'src/_mock/user';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
@@ -55,6 +55,7 @@ export default function UserTableRow({
   ward,
   row,
   handleClick,
+  LoadUsers
 }) {
   const [open, setOpen] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -131,6 +132,9 @@ export default function UserTableRow({
         setType("success");
         setMessage("Changed Successfully") ;
         handleModalClose();
+        setTimeout(()=>{
+          LoadUsers();
+        },1000)
       })
     }
    
@@ -148,7 +152,9 @@ export default function UserTableRow({
         setType("success");
         setMessage("Deleted Successfully") ;
          
-          fetchUsers();
+        setTimeout(()=>{
+          LoadUsers();
+        },1000)
        })
     
    
@@ -309,4 +315,5 @@ UserTableRow.propTypes = {
   role: PropTypes.any,
   selected: PropTypes.any,
   beat: PropTypes.string,
+  LoadUsers:PropTypes.any
 };

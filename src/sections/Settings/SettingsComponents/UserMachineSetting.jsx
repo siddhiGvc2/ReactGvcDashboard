@@ -13,7 +13,7 @@ const MaxTotalCount=import.meta.env.VITE_REACT_APP_MAXIMUM_TOTAL_COUNT;
 const Alert = React.forwardRef((props, ref) => (
     <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
   ));
-const MachineNumber=import.meta.VITE_REACT_APP_MACHINE_NUMBER;
+const MachineNumber=import.meta.env.VITE_REACT_APP_MACHINE_NUMBER;
 
 
 
@@ -30,25 +30,24 @@ export default function UserMachineSetting(){
         }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
     };
 
-    useEffect(()=>{
-        // const userInfo=JSON.parse(sessionStorage.getItem("userInfo"));
-        const machineNumber = MachineNumber;
+    const OnInputMachineNumber=()=>{
+         // const userInfo=JSON.parse(sessionStorage.getItem("userInfo"));
+         const machineNumber = MachineNumber;
         
-        // Assuming $('[name="machineID"]').val() is the value of an input field with name "machineID"
-        const inputFieldValue = $('[name="machineID"]').val();
-        $('.ad').css({
-            'display': machineNumber !== inputFieldValue ? 'none' : 'block'
-        });
-            $('.na').css({
-            'visibility': machineNumber !== inputFieldValue ? 'hidden' : 'visible'
-        });
-          $('.us').css({
-            'display': machineNumber !== inputFieldValue ? 'block' : 'none'
-        });
-           $('.ba').css({
-           'display': machineNumber !== inputFieldValue ? 'none' : 'block'
-        });
-    },[])
+         // Assuming $('[name="machineID"]').val() is the value of an input field with name "machineID"
+         const inputFieldValue = $('[name="machineID"]').val();
+         console.log(inputFieldValue,machineNumber);
+         $('.ad').css({
+             'display': machineNumber !== inputFieldValue ? 'none' : ''
+         });
+
+    }
+
+    useEffect(()=>{
+        OnInputMachineNumber();
+    })
+       
+        
 
     const Get=()=>{
 
@@ -171,7 +170,7 @@ export default function UserMachineSetting(){
                                          <div className="col-md-4 col-lg-4 mr-2">
                                               <div className="form-group my-2">
                                               
-                                                  <input  placeholder="Serial Number *" type="text" className="form-control" name="machineID"  />
+                                                  <input  placeholder="Serial Number *" type="text" className="form-control" name="machineID" onInput={OnInputMachineNumber}  />
                                                   <div className="invalid-feedback" />
                                               </div>
                                       
@@ -184,7 +183,7 @@ export default function UserMachineSetting(){
                                               
                                           </div>
                                           </div>
-                                   <div className="row col-lg-6"  style={{display:'flex'}}>
+                                   <div className="row col-lg-6 ad"  style={{display:'flex'}}>
                                           
                                           <div className="col-md-3 col-lg-4 mr-2 ml-0">
                                               <div className="form-group my-2">

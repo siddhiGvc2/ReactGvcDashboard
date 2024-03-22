@@ -213,7 +213,8 @@ export default function CustomerPage(){
             showAlertMessage(true);
             setType("success");
             setMessage("Saved Succesfully");
-            handleModalClose1()
+            handleModalClose1();
+            LoadData();
         });
 
     }
@@ -228,7 +229,8 @@ export default function CustomerPage(){
             showAlertMessage(true);
             setType("success");
             setMessage("Saved Succesfully");
-            handleModalClose2()
+            handleModalClose2();
+            LoadData();
         })
     }
   
@@ -291,8 +293,8 @@ export default function CustomerPage(){
               
                  <div>
                
-                 { data && isChecked && <CustomerDataView users={data} />}
-                 { stockData && !isChecked && <CustomerInfoView users={stockData} />}
+                 { data && isChecked && <CustomerDataView users={data} LoadData={LoadData} />}
+                 { stockData && !isChecked && <CustomerInfoView users={stockData} LoadData={LoadData}/>}
                
                 
                 

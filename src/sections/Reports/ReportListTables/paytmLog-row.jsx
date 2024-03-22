@@ -67,7 +67,7 @@ export default function PaytmLogRow({
        <TableCell align="center">{row.orderID}</TableCell>
        <TableCell align="center">{row.txnID}</TableCell>
        <TableCell align="center">{row.mobNumber}</TableCell>
-       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

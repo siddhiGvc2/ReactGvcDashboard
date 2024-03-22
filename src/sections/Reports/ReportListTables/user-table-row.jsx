@@ -71,7 +71,7 @@ export default function UserTableRow({
         <TableCell align="center">{row.deviceModel}</TableCell>
         <TableCell align="center">{row.Remark}</TableCell>
         <TableCell align="center">{row.MachineNumber}</TableCell>
-        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+        <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
       
 
        

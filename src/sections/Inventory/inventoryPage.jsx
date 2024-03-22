@@ -42,8 +42,10 @@ const Alert = React.forwardRef((props, ref) => (
   };
 export default function InventoryPage(){
     const [selectedOption, setSelectedOption] = useState([]);
-    const [selectedOption1, setSelectedOption1] = useState([]);
+    // const [selectedOption1, setSelectedOption1] = useState([]);
+    const [selectedOption2, setSelectedOption2] = useState([]);
     const [options,setOptions]=useState([]);
+    const [options2,setOptions2]=useState([]);
     const [data,setData]=useState(null);
     const [stockData,setStockData]=useState(null);
     // const [last,setLast]=useState(null);
@@ -76,6 +78,7 @@ export default function InventoryPage(){
 
 
     useEffect(()=>{
+       
         // calling input list loading function
           LoadUserNameDDL();
     },[])
@@ -86,10 +89,10 @@ export default function InventoryPage(){
    
  
         setOpenModal1(true);
-        // setTimeout(()=>{
+        setTimeout(()=>{
              
-        //     LoadUserNameDDL();
-        // },50)
+            $('#mdlInventory [name="from"]').val(sessionStorage.getItem("name"));
+        },50)
       };
 
     //   closing modal 1
@@ -130,6 +133,7 @@ export default function InventoryPage(){
                 label: option.name || option.serial
               }));
             setOptions(filteredData)
+            setOptions2(filteredData)
 
             // Populate the Select2 dropdown
             // $('#to').select2({
@@ -165,8 +169,12 @@ export default function InventoryPage(){
         setSelectedOption(elem);
       };
 
-      const handleSelectChange1 = (elem) => {
-        setSelectedOption1(elem);
+    //   const handleSelectChange1 = (elem) => {
+    //     setSelectedOption1(elem);
+    //   };
+
+      const handleSelectChange2 = (elem) => {
+        setSelectedOption2(elem);
       };
     
 
@@ -216,8 +224,8 @@ export default function InventoryPage(){
     const updateTransaction=()=>{
   
         const obj={
-            from: selectedOption1.value,
-            to: $('#mdlInventory [name="to"]').val(),
+            from:$('#mdlInventory [name="from"]').val(),
+            to:  selectedOption2.value,
             qtyDelivered: $('#mdlInventory [name="qtyDelivered"]').val(),
             cashReceived: $('#mdlInventory [name="cashReceived"]').val(),
             remark: $('#mdlInventory [name="remark"]').val(),
@@ -227,7 +235,12 @@ export default function InventoryPage(){
             showAlertMessage(true);
             setType("success");
             setMessage("Saved Succesfully");
+          
+            
             handleModalClose1()
+            setTimeout(()=>{
+                LoadData()
+              },1000)
         });
 
     }
@@ -247,6 +260,9 @@ export default function InventoryPage(){
             setType("success");
             setMessage("Saved Succesfully");
             handleModalClose2()
+            setTimeout(()=>{
+                LoadData()
+              },1000)
         })
     }
   
@@ -335,11 +351,11 @@ export default function InventoryPage(){
                  <div>
                
                  {/* transaction table ui */}
-                 { data && isChecked && <InventoryView users={data} />}
+                 { data && isChecked && <InventoryView users={data} LoadData={LoadData} />}
 
 
                   {/* stocks table ui */}
-                 { stockData && !isChecked && <InventoryStocksView users={stockData} />}
+                 { stockData && !isChecked && <InventoryStocksView users={stockData} LoadData={LoadData}/>}
                
                 
                 
@@ -368,27 +384,35 @@ export default function InventoryPage(){
                 </button>
             </div>
             <div className="modal-body">
-                <input type="hidden" className="num" value="0" name="id" />
+             
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5>From:</h5>
-                        <Select
+                        {/* <Select
                                 name="from"
                                 value={selectedOption1}
                                 onChange={handleSelectChange1}
                                 options={options}
                                 isSearchable // Equivalent to isSearchable={true}
                                 placeholder="Select option..."
-                            />
-                            {/* <input type="text" className="form-control" name="from" readOnly onChange={handleInventoryInputChange}/> */}
+                            /> */}
+                            <input type="text" className="form-control" name="from" readOnly onChange={handleInventoryInputChange}/>
                             <div className="invalid-feedback"/>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="form-group my-2">
                         <h5>To:</h5>
-                            <input type="text" className="form-control" id="to" name="to" onChange={handleInventoryInputChange}/>
+                          <Select
+                                name="to"
+                                value={selectedOption2}
+                                onChange={handleSelectChange2}
+                                options={options2}
+                                isSearchable // Equivalent to isSearchable={true}
+                                placeholder="Select option..."
+                            />
+                            {/* <input type="text" className="form-control" id="to" name="to" onChange={handleInventoryInputChange}/> */}
                             <div className="invalid-feedback" />
                         </div>
                     </div>

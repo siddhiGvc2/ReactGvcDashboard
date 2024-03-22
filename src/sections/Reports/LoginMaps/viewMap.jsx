@@ -633,10 +633,11 @@ const LoadData=useCallback((time)=>{
                         </div>
                     </div>
                   
-                  <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2 ">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-12 col-12 my-2 " style={{position:'relative'}}>
                         <h5>Search User:</h5>
                         <div className="row">
                             <div className="col-12 ">
+                           
                                 {/* <input type="search" className="form-control" name="searchInput" /> */}
                                 <Select
                                 name="searchInput"
@@ -645,16 +646,24 @@ const LoadData=useCallback((time)=>{
                                 options={options}
                                 isSearchable // Equivalent to isSearchable={true}
                                 placeholder="Select option..."
+                                style={{
+                                  height:'100px',
+                                  marginBottom:'-100px'
+                                }}
+                                menuPosition="fixed"
                                 
 
                             />
+                            
                              <div className="invalid-feedback"/>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div id="map" />
                </div>
-                <div id="map"  style={{ height: '600px', marginTop:'20px'}}/>
+                 
                 </div>
                 
            

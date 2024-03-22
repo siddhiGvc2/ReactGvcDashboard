@@ -69,7 +69,7 @@ export default function SvLogRow({
        <TableCell align="center">{row.Beats}</TableCell>
      
       
-       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-MM')}</TableCell>
+       <TableCell align="center">{moment(row.createdAt).format('DD-MMM-YYYY:HH-mm')}</TableCell>
        
       
 

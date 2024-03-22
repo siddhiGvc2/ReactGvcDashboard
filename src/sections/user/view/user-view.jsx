@@ -151,13 +151,15 @@ export default function UserPage() {
        })
     }
    // getting data from fecthData function
+    LoadUsers();
+    
+  },[])
+ const LoadUsers=()=>{
   fetchUsers().then((res)=>{
     
     setUsers(res);
   })
-    
-  },[])
-
+ }
 
   // useEffect(()=>{
   //   // getting data from fecthData function
@@ -449,10 +451,10 @@ export default function UserPage() {
           setType("success");
           setMessage("Saved Succesfully");
           handleModalClose();
-          fetchUsers().then((res)=>{
-    
-            setUsers(res);
+          setTimeout(()=>{
+            LoadUsers()
           })
+        
 
          })
          .catch((err)=>{
@@ -540,6 +542,7 @@ export default function UserPage() {
                       ward={row.ward}
                       beat={row.beat}
                       row={row}
+                      LoadUsers={LoadUsers}
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.id)}
