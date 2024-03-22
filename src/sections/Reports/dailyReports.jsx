@@ -1,7 +1,7 @@
 // import 'bootstrap-switch-button/dist/bootstrap3/bootstrap-switch-button.min.css';
 import $ from "jquery";
 import moment from "moment";
-import { useState, useEffect} from 'react';
+import { useState, useEffect,useCallback} from 'react';
 // import * as XLSX from 'xlsx';
 import SwitchButton from 'bootstrap-switch-button-react';
 
@@ -21,10 +21,12 @@ import TableHeader from "./dailyReportComponents/tableHeader";
 
 
 
-
+// const sr=1;
 export default function DailyReports(){
     // const tblDataRef = useRef(null);
     const [reportData,setReportData]=useState(null);
+    const [sDate,setSdate]=useState(moment().format('YYYY-MM-DD'));
+    const [eDate,setEdate]=useState(moment().format('YYYY-MM-DD'));
     const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
     const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
     const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
@@ -33,7 +35,7 @@ export default function DailyReports(){
     const [wards,setWards]=useState([]);
     const [beats,setBeats]=useState([]);
     const [machines,setMachines]=useState([])
-  
+    const [numbDaysArray,setNumDaysArray]=useState([]);
     const [cityName, setCitiesName] = useState(['Mumbai']);
     const [zoneName,setZonesName]=useState([]);
     const [wardName,setWardsName]=useState([]);
@@ -224,20 +226,59 @@ export default function DailyReports(){
         const selectAllMachines=()=>{
             setMachineName(machines)
            }
-           
+
            const selectNoneMachines=()=>{
              setMachineName([])
            }
 
 
-           useEffect(()=>{
-            setReportData(null);
+           const start = useCallback(() => moment(startDate), [startDate]);
+           const end = useCallback(() => moment(endDate), [endDate]);
+      
+           const numDays = useCallback(() =>
+           isChecked ? moment(end()).diff(start(), 'day') + 1 : 0
+         , [start, end, isChecked]);
+      
 
-           },[startDate,endDate,zoneName,wardName,beatName,machineName])
+           
+          
+         
+        
+           
+        
+             
+                   const setArray=useCallback(() =>{
+                    const Length=numDays();
+                    const numArray=[]
+                    for(let i=0;i<Length;i+=1)
+                    {
+                        numArray.push(i+1);
+                    }
+                    setStartDate(sDate);
+                    setEndDate(eDate);
+                   
+                    setNumDaysArray(numArray)
+
+                    // console.log(numbDaysArray);
+                },[numDays,sDate,eDate])
+        
+                useEffect(()=>{
+                
+                    // setReportData({machines:[]});
+                //   setNumDaysArray([])
+                    setArray();
+                },[setArray])
+
+          
+                useEffect(()=>{
+                    setReportData({machines:[]});
+
+                },[cityName,zoneName,wardName,beatName,machineName,startDate,endDate])
+
 
            
            const LoadReport=()=>{
-            // setReportData([]);
+            // setReportData({machines:[]});
             console.log(machineName);
             const serialNumbers = machineName.map(option => option.value);
             console.log("Serials",serialNumbers);
@@ -467,8 +508,8 @@ export default function DailyReports(){
                                         
                                                 {
                                                machines.map((elem) => (
-                                                    <MenuItem value={elem.value} key={elem.label}>
-                                                    <Checkbox checked={machineName.indexOf(elem.value) > -1} />
+                                                    <MenuItem value={elem} key={elem.label}>
+                                                    <Checkbox checked={machineName.indexOf(elem) > -1} />
                                                     {elem.label}
                                                     </MenuItem>
                                                 ))
@@ -512,7 +553,7 @@ export default function DailyReports(){
                         <h5>Start Date:</h5>
                         <div className="row">
                             <div className="col-12 d-flex">
-                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="startDate" min="2023-07-08" onChange={(e)=>setStartDate(e.target.value)} />
+                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="startDate" min="2023-07-08" onChange={(e)=>setSdate(e.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -520,7 +561,7 @@ export default function DailyReports(){
                         <h5>End Date:</h5>
                         <div className="row">
                             <div className="col-12 d-flex">
-                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="endDate" min="2023-07-08" onChange={(e)=>setEndDate(e.target.value)}/>
+                                <input type="date" className="form-control" defaultValue={moment().format('YYYY-MM-DD')} name="endDate" min="2023-07-08" onChange={(e)=>setEdate(e.target.value)}/>
                             </div>
                         </div>
                     </div>
@@ -540,18 +581,19 @@ export default function DailyReports(){
                 
                
            {/* report teble ui */}
-           {reportData && reportData.machines.length >0 && (
+           {reportData && reportData.machines.length >0 ? 
   <TableHeader
     data={reportData}
     zones={zones.filter(item => !zoneName.includes(item))}
     wards={wards.filter(item => !wardName.includes(item))}
     beats={beats.filter(item => !beatName.includes(item))}
+    numbDaysArray={numbDaysArray}
     startDate={startDate}
-    endDate={endDate}
+    endDate={(endDate)}
     checked={isChecked}
     MachineType={machineType}
   />
-)}
+:null}
               
 
 

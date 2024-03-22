@@ -77,9 +77,12 @@ export default function MachineMapView() {
 
     })
       setTimeout(()=>{
+        if(data.data.length>0)
+        {
         const Data=data.data;
         const index = Data.length > 0 ? parseInt(Data.length / 2 ,10) : 0;
-                
+                if(Data.length>0)
+                {
         const Lat=Data[index].lat;
        const Lon=Data[index].lon;
        const centers=[Lat,Lon];
@@ -95,7 +98,10 @@ export default function MachineMapView() {
     //  console.log(location)
      setCenter(centers);
      setLocations(location)
-      },1000)
+      }
+      }
+      },3000)
+    
   },[data])
 
 

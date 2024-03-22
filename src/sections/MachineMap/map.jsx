@@ -54,7 +54,7 @@ export default function Map({center,locations,MachineType}){
       
    console.log(locations);
    let Length = 0;
-   const locationsData = localStorage.getItem("Locations");
+   const locationsData = sessionStorage.getItem("Locations");
    const locationsArray=JSON.parse(locationsData);
    
    if (locationsData) {
@@ -90,7 +90,7 @@ export default function Map({center,locations,MachineType}){
 
 // }
   
-    localStorage.setItem("Locations",JSON.stringify(locations));
+    sessionStorage.setItem("Locations",JSON.stringify(locations));
    map = L.map('map', {
      center,
      zoom: 9,

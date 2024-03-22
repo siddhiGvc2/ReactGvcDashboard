@@ -21,11 +21,17 @@ import {GetClentNameDetails} from 'src/_mock/customers';
 
 
 const sr=1;
-export default function TableHeader({data,zones,wards,beats,startDate,endDate,checked,MachineType}){
+
+export default function TableHeader({data,zones,wards,beats,numbDaysArray,startDate,endDate,checked,MachineType}){
     const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
+
     const tblDataRef = useRef(null);
-    const [numbDaysArray,setNumDaysArray]=useState([]);
+
+
+  
     useEffect(()=>{
+
+      
         const UserInfo=JSON.parse(sessionStorage.getItem("userInfo"));
       
       
@@ -71,13 +77,13 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
         XLSX.writeFile(wb, 'report.xlsx');
       };
 
-    const start = useCallback(() => moment(startDate), [startDate]);
-    const end = useCallback(() => moment(endDate), [endDate]);
+    const start = useCallback(() => moment(startDate),[startDate]);
+    const end = useCallback(() => moment(endDate),[endDate]);
     const sum = m=> m.summary[moment(startDate).format('DD-MMM-YYYY')];
     const tot = (k,m) => Object.values(m.summary).length ? Object.values(m.summary).map(q => parseInt(q[k],10)).reduce((a, b) => a + b) : 0;
     const avg = (k, m) => parseInt(Object.values(m.summary).length ? Object.values(m.summary).map(q => parseInt(q[k], 10)).reduce((a, b) => a + b) / Object.values(m.summary).length : 0, 10);
     const numDays = useCallback(() =>
-    checked ? moment(end()).diff(start(), 'day') + 1 : 0
+    checked ? moment(end()).diff(start(), 'day') + 2 : 0
   , [start, end, checked]);
     const gt = k => data.machines.flatMap(m => Object.values(m.summary)).length ? data.machines.flatMap(m => Object.values(m.summary)).map(q => parseInt(q[k] ,10)).reduce((a, b) => a + b) : 0;
     const gta = (k, i = 1) => (data.machines.flatMap(m => Object.values(m.summary)).length ? data.machines.flatMap(m => Object.values(m.summary)).map(q => parseInt(q[k],10)).reduce((a, b) => a + b) / ((checked ? numDays : 1) * (sr - 1)) : 0).toFixed(i);
@@ -97,25 +103,8 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
 
         };
 
-     
-           const setArray=useCallback(() =>{
-            const Length=numDays();
-            for(let i=0;i<Length;i+=1)
-            {
-                numbDaysArray.push(i+1);
-            }
-    
-            setNumDaysArray(numbDaysArray)
-            console.log(numbDaysArray);
-        },[numbDaysArray,numDays])
-
-        useEffect(()=>{
-          setNumDaysArray([])
-            setArray();
-        },[setArray])
       
      
-   
      return (
         <div className="col-12" id="divData">
         <div className="card">
@@ -230,48 +219,48 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
         </thead>
         <tbody>
           
-             {numbDaysArray && data && data.machines.map((m, i) => (
+             {numbDaysArray && data.machines.length>0 && data.machines.map((m, i) => (
                  <React.Fragment key={i}>
                  {/* First row */}
                  <tr className="data">
-                   <td rowSpan={checked ? numDays()+2:1} className="text-center" style={{ verticalAlign: 'center' }}>{i + 1}</td>
-                   <td rowSpan={checked ? numDays()+2:1} style={{ verticalAlign: 'center' }}>{m.uid}<br /><small className="text-muted">{m.serial}</small></td>
-                   <td rowSpan={checked ? numDays()+2:1} style={{ verticalAlign: 'center', whiteSpace: 'nowrap' }} >{cInfo[1]}: {m.zone}<br />{cInfo[2]}: {m.ward}<br />{cInfo[3]}: {m.beat}</td>
-                   <td rowSpan={checked ? numDays()+2:1} style={{ maxWidth: '10em', verticalAlign: 'center' }}>{m.address}</td>
-                   <td rowSpan={checked ? numDays()+2:1} style={{ verticalAlign: 'center' }}>{m.data2}</td>
-                   {checked && checked ? <>
-                     
-                    
-                       {/* <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{moment(startDate).format('DD-MMM-YYYY')}</td>
-                       <td>{sum(m).vend}</td>
-                       <td>&#8377;&nbsp;{sum(m).cash}</td>
-                       <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{dayString(sum(m).onTime)}</td>
-                       <td>{sum(m).burn}</td>
-                       <td>{sum(m).burn * 8}</td> */}
-                     </>:
-                      <> <td  style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
+                   <td rowSpan={checked ? numDays()+1:1} className="text-center" style={{ verticalAlign: 'center' }}>{i + 1}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.uid}<br /><small className="text-muted">{m.serial}</small></td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center', whiteSpace: 'nowrap' }} >{cInfo[1]}: {m.zone}<br />{cInfo[2]}: {m.ward}<br />{cInfo[3]}: {m.beat}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ maxWidth: '10em', verticalAlign: 'center' }}>{m.address}</td>
+                   <td rowSpan={checked ? numDays()+1:1} style={{ verticalAlign: 'center' }}>{m.data2}</td>
+                   {!checked && MachineType!=="Incinerator" && MachineType!=="Vending" ?  <> <td  style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
                        <td>{tot('vend', m)}</td>
                        <td>&#8377;&nbsp;{tot('cash', m)}</td>
                        <td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>{dayString(tot('onTime', m))}<br /><small className="text-muted">{dayString(avg('onTime', m))} / day</small></b></td>
                        <td>{tot('burn', m)}</td>
-                       <td>{tot('burn', m) * 8}</td></>
+                       <td>{tot('burn', m) * 8}</td></>:null
+                   }
+                    {!checked && MachineType==="Incinerator" ?  <> <td colSpan="2" style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
+                       <td colSpan="2">{tot('burn', m)}</td>
+                       <td colSpan="2">{tot('burn', m) * 8}</td></>:null
+                   }
+                    {!checked && MachineType==="Vending" ?  <> <td colSpan="2"  style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>Total</b></td>
+                       <td colSpan="1">{tot('vend', m)}</td>
+                       <td colSpan="1">&#8377;&nbsp;{tot('cash', m)}</td>
+                       <td colSpan="2" style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}><b>{dayString(tot('onTime', m))}<br /><small className="text-muted">{dayString(avg('onTime', m))} / day</small></b></td>
+                      </>:null
                    }
                    
                  </tr>
                  {
-                    checked && MachineType!=="Vending" && MachineType!=="Incinerator" && numbDaysArray.map((elem,j)=>(
+                    checked && MachineType!=="Vending" && MachineType!=="Incinerator" && numbDaysArray.length>0 && numbDaysArray.map((elem,j)=>(
                      <tr className="data" key={j} ><td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }}>{moment(start()).add(j, 'day').format('DD-MMM-YYYY')}</td><td >{sum(m).vend}</td><td>&#8377;&nbsp;{sum(m).cash}</td><td >{dayString(sum(m).onTime)}</td><td>{sum(m).burn}</td><td>{sum(m).burn * 8}</td></tr>
                     ))
                    
                   }
                    {
-                    checked && MachineType==="Vending"  && numbDaysArray.map((elem,j)=>(
+                    checked && MachineType==="Vending" && numbDaysArray.length>0  && numbDaysArray.map((elem,j)=>(
                      <tr className="data" key={j} ><td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }} colSpan="2">{moment(start()).add(j, 'day').format('DD-MMM-YYYY')}</td><td colSpan="1">{sum(m).vend}</td><td colSpan="1">&#8377;&nbsp;{sum(m).cash}</td><td colSpan="2">{dayString(sum(m).onTime)}</td></tr>
                     ))
                    
                   }
                     {
-                    checked && MachineType==="Incinerator"  && numbDaysArray.map((elem,j)=>(
+                    checked && MachineType==="Incinerator" && numbDaysArray.length>0  && numbDaysArray.map((elem,j)=>(
                      <tr className="data" key={j} ><td style={{ whiteSpace: 'nowrap', verticalAlign: 'center' }} colSpan="2">{moment(start()).add(j, 'day').format('DD-MMM-YYYY')}</td><td colSpan="2">{sum(m).burn}</td><td colSpan="2">{sum(m).burn * 8}</td></tr>
                     ))
                    
@@ -320,23 +309,42 @@ export default function TableHeader({data,zones,wards,beats,startDate,endDate,ch
                </React.Fragment>
              ))}
           
-            
+          {numbDaysArray && data.machines.length > 0 && (
+  <>
+    {MachineType !== "Incinerator" && MachineType !== "Vending" && (
+      <tr className="data">
+        <td colSpan="5" className="text-center"><b>Total</b></td>
+        <td />
+        <td><b>{gt('vend')}<br/><small className="text-muted">Avg: {gta('vend', 2)}</small></b></td>
+        <td><b>&#8377;&nbsp;{gt('cash')}<br/><small className="text-muted">Avg: &#8377;&nbsp;{gta('cash', 2)}</small></b></td>
+        <td><b>{dayString(gt('onTime'))}<br/><small className="text-muted">Avg: {dayString(parseInt(gta('onTime', 0), 10))} ({perc(parseInt(gta('onTime', 0), 10), 16 * 60)}%)</small></b></td>
+        <td><b>{gt('burn')}<br/><small className="text-muted">Avg: {gta('burn', 2)}</small></b></td>
+        <td><b>{gt('burn') * 8}<br/><small className="text-muted">Avg: {gta('burn', 2) * 8}</small></b></td>
+      </tr>
+    )}
 
-         <tr className="data">
-                 <td colSpan="5" className="text-center"><b>Total</b></td>
-                 <td/>
-            
-                 <td><b>{gt('vend')}<br/><small className="text-muted">Avg: {gta('vend',2)}</small></b></td>
-            
-                 <td><b>&#8377;&nbsp;{gt('cash')}<br/><small className="text-muted">Avg: &#8377;&nbsp;{gta('cash', 2)}</small></b></td>
-    
-                 <td><b>{dayString(gt('onTime'))}<br/><small className="text-muted">Avg: {dayString(parseInt(gta('onTime', 0) ,10))} ({perc(parseInt(gta('onTime', 0),10), 16 * 60 )}%)</small></b></td>
-                 
-                
-                 <td><b>{gt('burn')}<br/><small className="text-muted">Avg: {gta('burn',2)}</small></b></td>
-                
-                 <td><b>{gt('burn') * 8}<br/><small className="text-muted">Avg: {gta('burn',2)*8}</small></b></td>
-             </tr>
+    {MachineType === "Vending" && (
+      <tr className="data">
+        <td colSpan="5" className="text-center"><b>Total</b></td>
+        <td colSpan="2" />
+        <td colSpan="1"><b>{gt('vend')}<br/><small className="text-muted">Avg: {gta('vend', 2)}</small></b></td>
+        <td colSpan="1"><b>&#8377;&nbsp;{gt('cash')}<br/><small className="text-muted">Avg: &#8377;&nbsp;{gta('cash', 2)}</small></b></td>
+        <td colSpan="2"><b>{dayString(gt('onTime'))}<br/><small className="text-muted">Avg: {dayString(parseInt(gta('onTime', 0), 10))} ({perc(parseInt(gta('onTime', 0), 10), 16 * 60)}%)</small></b></td>
+      </tr>
+    )}
+
+    {MachineType === "Incinerator" && (
+      <tr className="data">
+        <td colSpan="5" className="text-center"><b>Total</b></td>
+        <td colSpan="2" />
+        <td colSpan="2"><b>{gt('burn')}<br/><small className="text-muted">Avg: {gta('burn', 2)}</small></b></td>
+        <td colSpan="2"><b>{gt('burn') * 8}<br/><small className="text-muted">Avg: {gta('burn', 2) * 8}</small></b></td>
+      </tr>
+    )}
+  </>
+)}
+
+          
 
         </tbody>
     </table>
@@ -360,8 +368,9 @@ TableHeader.propTypes = {
     zones: PropTypes.any,
     wards: PropTypes.any,
     beats: PropTypes.any,
-    startDate: PropTypes.any,
-    endDate: PropTypes.any,
+    numbDaysArray:PropTypes.any,
+    startDate:PropTypes.any,
+    endDate:PropTypes.any,
     checked:PropTypes.any,
     MachineType:PropTypes.any
   };
