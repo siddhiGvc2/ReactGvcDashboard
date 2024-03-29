@@ -40,8 +40,16 @@ function FieldSelection({ sx, ...other }) {
         sessionStorage.setItem("cities",JSON.stringify(Cities));
         $('#city').remove();
       }
-
+      else{
+        const Cities=['Mumbai','Delhi','SS-UK','DoE-HAR']
+        sessionStorage.setItem("cities",JSON.stringify(Cities));
+      }
        
+  }
+  else{
+    const Cities=['Mumbai','Delhi','SS-UK','DoE-HAR']
+    sessionStorage.setItem("cities",JSON.stringify(Cities));
+
   }
   if(UserInfo.clientName)
   {
