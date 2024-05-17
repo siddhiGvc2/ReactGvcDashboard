@@ -69,7 +69,7 @@ export default function LoginView() {
 
       useEffect(()=>{
       
-        if(GEOLOCATION==true)
+        if(GEOLOCATION===true)
         {
           console.log(GEOLOCATION)
            getLatLon();
@@ -177,7 +177,7 @@ export default function LoginView() {
           });
         }
         else{
-          if(GEOLOCATION==false)
+          if(GEOLOCATION===false)
             {
               router.push('/dashboard')
             }
