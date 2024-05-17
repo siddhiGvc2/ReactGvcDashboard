@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }) {
     {
       router.push("/");
     }
-    else  if (GEOLOCATION){
+    else  if (GEOLOCATION==true){
      
    
         getLatLon();

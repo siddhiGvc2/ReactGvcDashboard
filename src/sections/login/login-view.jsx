@@ -69,7 +69,7 @@ export default function LoginView() {
 
       useEffect(()=>{
       
-        if(GEOLOCATION)
+        if(GEOLOCATION==true)
         {
           console.log(GEOLOCATION)
            getLatLon();
@@ -177,9 +177,17 @@ export default function LoginView() {
           });
         }
         else{
-          showAlertMessage();
-            setType("error");
-            setMessage("Please Enable The Location")
+          if(GEOLOCATION==false)
+            {
+              router.push('/dashboard')
+            }
+            else{
+              showAlertMessage();
+              setType("error");
+              setMessage("Please Enable The Location")
+
+            }
+         
 
         }
       },1000)
