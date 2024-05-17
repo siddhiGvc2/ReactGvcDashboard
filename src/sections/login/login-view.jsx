@@ -139,9 +139,7 @@ export default function LoginView() {
         password: data.get('password')}
       setTimeout(()=>{
       
-        if(sessionStorage.getItem("Lattitude"))
-        {
-          console.log(sessionStorage.getItem("Lattitude"))
+         
         fetch(`${API}/pub/login`, {
           method: 'POST',
           headers: {
@@ -175,21 +173,8 @@ export default function LoginView() {
             setMessage(`${error}`)
            
           });
-        }
-        else{
-          if(GEOLOCATION===false)
-            {
-              router.push('/dashboard')
-            }
-            else{
-              showAlertMessage();
-              setType("error");
-              setMessage("Please Enable The Location")
-
-            }
-         
-
-        }
+        
+      
       },1000)
   };
 
