@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-// import { getAllData } from "src/_mock/fildData";
+import { getAllData } from "src/_mock/fildData";
 // import { products } from 'src/_mock/products';
 // import { UserView } from 'src/sections/machineDataTable/view';
 import {GetClentNameDetails} from 'src/_mock/customers';
@@ -54,6 +54,17 @@ export default function MachineMapView() {
    
   });
 
+  useEffect(()=>{
+    const interval=setInterval(()=>{
+      getAllData();
+     },5000)
+ 
+     return ()=>{
+       clearInterval(interval)
+     }
+
+  },[])
+
   
 
 
@@ -76,13 +87,17 @@ export default function MachineMapView() {
       setMachineType(MachineType);
 
     })
+
+    
       setTimeout(()=>{
         if(data.data.length>0)
         {
         const Data=data.data;
         const index = Data.length > 0 ? parseInt(Data.length / 2 ,10) : 0;
+      
                 if(Data.length>0)
                 {
+                  console.log(Data);
         const Lat=Data[index].lat;
        const Lon=Data[index].lon;
        const centers=[Lat,Lon];
@@ -97,10 +112,14 @@ export default function MachineMapView() {
        }
     //  console.log(location)
      setCenter(centers);
-     setLocations(location)
+      sessionStorage.setItem("Locations",JSON.stringify(location));
+     setLocations(location);
+     
       }
       }
-      },3000)
+      },1000)
+
+   
     
   },[data])
 

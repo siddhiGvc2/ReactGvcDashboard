@@ -12,7 +12,7 @@ import {zoneData,wardData,beatData,getAllData } from 'src/_mock/fildData';
 import { GetClentInfoDetails,GetClentNameDetails} from 'src/_mock/customers';
 
 function FieldSelection({ sx, ...other }) {
-  const [cities,setCities] = useState(['Mumbai','Delhi','SS-UK','DoE-HAR']);
+  const [cities,setCities] = useState(['Mumbai']);
   const [zones,setZones]=useState([]);
   const [wards,setWards]=useState([]);
   const [beats,setBeats]=useState([]);
