@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
-import { ProductsView } from 'src/sections/MachineData/view';
-import StatusSelection from 'src/sections/MachineData/statusSelection';
+import { ProductsView } from 'src/zestSections/MachineData/view';
+import StatusSelection from 'src/zestSections/MachineData/statusSelection';
 
 
 

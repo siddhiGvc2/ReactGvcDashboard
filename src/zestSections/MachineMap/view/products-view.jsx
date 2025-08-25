@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import { getAllData } from "src/_mock/fildData";
 // import { products } from 'src/_mock/products';
-// import { UserView } from 'src/sections/machineDataTable/view';
+// import { UserView } from 'src/zestSections/machineDataTable/view';
 import {GetClentNameDetails} from 'src/_mock/customers';
 
 import Map from "../map";
@@ -22,7 +22,7 @@ import StatusSelection from '../statusSelection';
 
 
 // import { useState } from 'react';
-// import UserTableToolbar from 'src/sections/user/user-table-toolbar';
+// import UserTableToolbar from 'src/zestSections/user/user-table-toolbar';
 
 
 // import { Stack } from '@mui/material';

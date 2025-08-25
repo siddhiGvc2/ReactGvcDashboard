@@ -12,8 +12,7 @@ import Typography from '@mui/material/Typography';
 // import { products } from 'src/_mock/products';
 import { getAllData } from "src/_mock/fildData";
 import {GetClentNameDetails} from 'src/_mock/customers';
-
-import { UserView } from 'src/sections/machineDataTable/view';
+import { UserView } from 'src/zestSections/machineDataTable/view';
 
 import MachineCard from '../machine-card';
 import { store } from "../../../Redux/store";
@@ -22,7 +21,7 @@ import StatusSelection from '../statusSelection';
 // import { getAllCustomerInfo } from "src/_mock/customers";
 
 // import { useState } from 'react';
-// import UserTableToolbar from 'src/sections/user/user-table-toolbar';
+// import UserTableToolbar from 'src/zestSections/user/user-table-toolbar';
 
 
 // import { Stack } from '@mui/material';

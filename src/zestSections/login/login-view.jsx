@@ -15,6 +15,7 @@ import { useRouter } from 'src/routes/hooks';
 import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
+// import { Select } from '@mui/material';
 
 const API =import.meta.env.VITE_REACT_APP_API;
 const GEOLOCATION=import.meta.env.VITE_REACT_APP_GEOLOCATION;
@@ -29,9 +30,9 @@ const Alert = React.forwardRef((props, ref) => (
 export default function LoginView() {
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
-  const [type,setType]=useState("")
+  const [type,setType]=useState("");
 
-  
+
   const theme = useTheme();
 
   const router = useRouter();
@@ -203,6 +204,13 @@ export default function LoginView() {
               id="password"
               autoComplete="current-password"
             />
+              <select className="form-control" name="city">
+                  <option value="Mumbai" selected>Zest</option>
+                  <option value="Delhi">Kwikpay</option>
+                  <option value="SS-UK">Traffic</option>
+                  <option value="DoE-HAR">Uniline</option>
+
+              </select>
              <LoadingButton
         
         fullWidth

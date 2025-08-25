@@ -2,25 +2,23 @@ import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
-
-import SvLogs from 'src/sections/Reports/svLogs';
-import LockLogs from 'src/sections/Reports/lockLogs';
-import LoginLogs from 'src/sections/Reports/loginLogs';
-import SSNReport from 'src/sections/Reports/ssnReport';
-import FaultReport from 'src/sections/Reports/faultReport';
-import { ProductsView } from 'src/sections/MachineData/view';
-import SelfMap from 'src/sections/Reports/LoginMaps/selfMap';
-import ViewMap from 'src/sections/Reports/LoginMaps/viewMap';
-import DailyReports from 'src/sections/Reports/dailyReports';
-import HourlyReport from 'src/sections/Reports/HourlyReport';
-import ColorSetting from 'src/sections/Settings/colorSetting';
-import MachinePage from 'src/sections/Machines/view/user-view';
-import CustomerPage from 'src/sections/Customers/customerPage';
-import InventoryPage from 'src/sections/Inventory/inventoryPage';
-import MachineSetting from 'src/sections/Settings/machineSetting';
-import PaytmTransactions from 'src/sections/Reports/paytmTransactions';
-import MachineMapView from 'src/sections/MachineMap/view/products-view';
-
+import SvLogs from 'src/zestSections/Reports/svLogs';
+import LockLogs from 'src/zestSections/Reports/lockLogs';
+import LoginLogs from 'src/zestSections/Reports/loginLogs';
+import SSNReport from 'src/zestSections/Reports/ssnReport';
+import FaultReport from 'src/zestSections/Reports/faultReport';
+import { ProductsView } from 'src/zestSections/MachineData/view';
+import SelfMap from 'src/zestSections/Reports/LoginMaps/selfMap';
+import ViewMap from 'src/zestSections/Reports/LoginMaps/viewMap';
+import DailyReports from 'src/zestSections/Reports/dailyReports';
+import HourlyReport from 'src/zestSections/Reports/HourlyReport';
+import ColorSetting from 'src/zestSections/Settings/colorSetting';
+import MachinePage from 'src/zestSections/Machines/view/user-view';
+import CustomerPage from 'src/zestSections/Customers/customerPage';
+import InventoryPage from 'src/zestSections/Inventory/inventoryPage';
+import MachineSetting from 'src/zestSections/Settings/machineSetting';
+import PaytmTransactions from 'src/zestSections/Reports/paytmTransactions';
+import MachineMapView from 'src/zestSections/MachineMap/view/products-view';
 
 
 
@@ -30,7 +28,8 @@ import MachineMapView from 'src/sections/MachineMap/view/products-view';
 
 
 
-// import StatusSelection from 'src/sections/products/statusSelection';
+
+// import StatusSelection from 'src/zestSections/products/statusSelection';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
