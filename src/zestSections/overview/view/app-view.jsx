@@ -56,13 +56,15 @@ export default function AppView() {
           setMachineType(MachineType);
         })
        }
-   
+      if(UserInfo.city)
+      {
       const Cities=(UserInfo.city).split(',') || [''];
          if(Cities[0]==="null")
          {
           Cities[0]=" "
          }
          console.log(Cities);
+        }
     // const city=JSON.parse(sessionStorage.getItem("userCity"));
     fetchData(Cities).then((res)=>{
       setPathName(res);
